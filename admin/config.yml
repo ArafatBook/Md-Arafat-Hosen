@@ -12,3 +12,8 @@ collections:
     folder: "posts"
     create: true
     slug: "{{slug}}"
+    backend:
+  name: github
+  repo: Mdarafathosentop/Md-Arafat-Hosen
+  branch: main
+  site_domain: mdarafathosentop.github.io
