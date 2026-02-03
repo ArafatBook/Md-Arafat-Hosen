@@ -2,62 +2,96 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Md Arafat Hosen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Md Arafat hosen - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <script defer src="script.js"></script>
 </head>
 <body>
 
-<header>
-    <div class="logo" onclick="goHome()">Md Arafat Hosen</div>
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#services">Service</a>
-        <a href="#contact">Contact</a>
-    </nav>
-</header>
+    <header>
+        <div class="container nav-container">
+            <a href="#home" class="logo">Md Arafat hosen</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Service</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-<section id="home" class="section popup">
-    <h1>Welcome to My Freelancing Portfolio</h1>
-    <p>I help clients grow with creative and professional digital services.</p>
-</section>
+    <section id="home" class="hero">
+        <div class="container hero-content">
+            <h1>Expert Digital Solutions</h1>
+            <p>Empowering your business with professional editing and marketing strategies.</p>
+            <a href="#services" class="btn btn-red">Explore Services</a>
+        </div>
+    </section>
 
-<section id="services" class="section">
-    <h2 class="popup">My Services</h2>
+    <section id="services" class="services-section">
+        <div class="container">
+            <h2 class="section-title">My Services</h2>
+            <div class="services-grid">
+                
+                <div class="service-card">
+                    <i class="fas fa-video service-icon"></i>
+                    <h3>YouTube Video Editing</h3>
+                    <p>Transforming raw footage into engaging stories. High-retention editing that keeps your audience hooked from start to finish. 100% Client Satisfaction guaranteed.</p>
+                </div>
 
-    <div class="service-box popup">
-        <h3>YouTube Video Editing</h3>
-        <p>Client satisfaction is my priority. High-quality, engaging and professional video edits.</p>
-    </div>
+                <div class="service-card">
+                    <i class="fas fa-image service-icon"></i>
+                    <h3>YouTube Thumbnail Design</h3>
+                    <p>Eye-catching visuals designed to skyrocket your Click-Through Rate (CTR). Stand out in the search results with professional designs.</p>
+                </div>
 
-    <div class="service-box popup">
-        <h3>YouTube Thumbnail Design</h3>
-        <p>Eye-catching thumbnails that increase CTR and keep clients satisfied.</p>
-    </div>
+                <div class="service-card">
+                    <i class="fas fa-envelope-open-text service-icon"></i>
+                    <h3>Email Marketing</h3>
+                    <p>Strategic campaigns that convert leads into loyal customers. Personalized copywriting that speaks directly to your audience's needs.</p>
+                </div>
 
-    <div class="service-box popup">
-        <h3>Email Marketing</h3>
-        <p>Professional email campaigns designed for maximum client satisfaction.</p>
-    </div>
-</section>
+            </div>
+        </div>
+    </section>
 
-<section id="contact" class="section popup">
-    <h2>Contact Me</h2>
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Contact Me</h2>
+            <div class="contact-wrapper">
+                
+                <div class="contact-card">
+                    <i class="fab fa-whatsapp contact-icon icon-green"></i>
+                    <h3>WhatsApp</h3>
+                    <div class="copy-box">
+                        <span id="wa-number">+8801792854381</span>
+                        <button onclick="copyToClipboard('wa-number')" class="copy-btn">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
 
-    <div class="contact-item">
-        <span>📱 WhatsApp: +8801792854381</span>
-        <button onclick="copyText('+8801792854381')">Copy</button>
-    </div>
+                <div class="contact-card">
+                    <i class="fas fa-envelope contact-icon icon-red"></i>
+                    <h3>Email</h3>
+                    <div class="copy-box">
+                        <span id="email-address">businessarafat15@gmail.com</span>
+                        <button onclick="copyToClipboard('email-address')" class="copy-btn">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
 
-    <div class="contact-item">
-        <span>📧 Email: businessarafat15@gmail.com</span>
-        <button onclick="copyText('businessarafat15@gmail.com')">Copy</button>
-    </div>
-</section>
+            </div>
+        </div>
+    </section>
 
-<footer>
-    <p>© 2026 Md Arafat Hosen | All Rights Reserved</p>
-</footer>
+    <footer>
+        <p>&copy; 2024 Md Arafat hosen. All rights reserved.</p>
+    </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>
