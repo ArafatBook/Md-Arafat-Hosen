@@ -1,10 +1,8 @@
 backend:
-  name: github
-  repo: Mdarafathosentop/Md-Arafat-Hosen
+  name: local
   branch: main
-  auth_type: implicit
-  app_id: "Ov23liMABKaHgRxp4Mvp"
-  site_domain: "https://mdarafathosentop.github.io/Md-Arafat-Hosen"
+
+local_backend: true
 
 media_folder: "images"
 public_folder: "/images"
