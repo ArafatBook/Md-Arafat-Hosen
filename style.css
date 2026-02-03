@@ -1,125 +1,104 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
 body {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
+    background: #fff;
+    color: #000;
     scroll-behavior: smooth;
-    background: #f5f5f5;
-    color: #333;
 }
 
-/* Navbar */
-nav {
-    display: flex;
-    align-items: center;
-    padding: 1rem 3rem;
-    background: #1a1a1a;
-    color: #fff;
+header {
     position: fixed;
     top: 0;
-    left: 0;
     width: 100%;
-    z-index: 9999;
-}
-
-nav .logo {
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 1.2rem;
-    margin-right: 2rem; /* logo এবং tabs-এর মধ্যে gap */
-}
-
-nav ul {
-    list-style: none;
+    background: #000;
+    color: #fff;
     display: flex;
-    gap: 2rem;
-    margin: 0;
+    justify-content: space-between;
+    padding: 15px 30px;
+    z-index: 1000;
 }
 
-/* Section padding fix for fixed navbar */
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+nav a {
+    color: #fff;
+    margin-left: 20px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: red;
+}
+
 .section {
+    padding: 100px 30px;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 6rem 2rem 4rem 2rem; /* top padding adjusted for navbar */
+}
+
+#home {
+    background: linear-gradient(to right, #004aad, #ff0000);
+    color: white;
     text-align: center;
 }
 
-h1, h2, h3 {
-    margin: 0.5rem 0;
+#services {
+    background: #f5f5f5;
 }
 
-/* Services */
-.service-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    max-width: 600px;
-    margin-top: 2rem;
+.service-box {
+    background: white;
+    padding: 20px;
+    margin: 20px 0;
+    border-left: 5px solid blue;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.service {
-    background: #fff;
-    padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
+#contact {
+    background: #000;
+    color: white;
 }
 
-.service:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+.contact-item {
+    margin: 15px 0;
 }
 
-/* Popup */
-.popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left:0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    justify-content: center;
-    align-items: center;
-    z-index: 200;
-}
-
-.popup-content {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 10px;
-    text-align: center;
-    max-width: 400px;
-    position: relative;
-    animation: popupShow 0.4s ease;
-}
-
-.popup-content .close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-@keyframes popupShow {
-    from { transform: scale(0.5); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-/* Buttons */
 button {
-    cursor: pointer;
-    padding: 0.3rem 0.8rem;
+    margin-left: 10px;
+    padding: 6px 12px;
     border: none;
-    background: #00bfff;
-    color: #fff;
-    border-radius: 5px;
-    margin-left: 0.5rem;
+    cursor: pointer;
+    background: red;
+    color: white;
 }
 
 button:hover {
-    background: #009acd;
+    background: blue;
+}
+
+footer {
+    background: black;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Popup Animation */
+.popup {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.6s ease;
+}
+
+.popup.show {
+    opacity: 1;
+    transform: scale(1);
 }
