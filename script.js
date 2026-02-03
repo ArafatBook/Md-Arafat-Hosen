@@ -1,20 +1,13 @@
-function goHome() {
-    document.getElementById("home").scrollIntoView({ behavior: "smooth" });
-}
+function copyToClipboard(elementId) {
+    // টেক্সট এলিমেন্ট খুঁজে বের করা
+    var copyText = document.getElementById(elementId).innerText;
 
-function copyText(text) {
-    navigator.clipboard.writeText(text);
-    alert("Copied: " + text);
-}
-
-// popup animation on scroll
-const popups = document.querySelectorAll(".popup");
-
-window.addEventListener("scroll", () => {
-    popups.forEach(popup => {
-        const rect = popup.getBoundingClientRect();
-        if (rect.top < window.innerHeight - 100) {
-            popup.classList.add("show");
-        }
+    // ক্লিপবোর্ডে কপি করা
+    navigator.clipboard.writeText(copyText).then(function() {
+        // সফল হলে এলার্ট দেখানো
+        alert("Copied: " + copyText);
+    }, function(err) {
+        // এরর হলে কনসোলে দেখানো
+        console.error('Could not copy text: ', err);
     });
-});
+}
