@@ -3,7 +3,7 @@ backend:
   repo: Mdarafathosentop/Md-Arafat-Hosen
   branch: main
   auth_type: implicit
-  app_id: "YOUR_CLIENT_ID_HERE"
+  app_id: "Ov23liMABKaHgRxp4Mvp"
   site_domain: "https://mdarafathosentop.github.io/Md-Arafat-Hosen"
 
 media_folder: "images"
