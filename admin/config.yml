@@ -1,0 +1,20 @@
+backend:
+  name: github
+  repo: Mdarafathosentop/Md-Arafat-Hosen
+  branch: main
+  auth_type: implicit
+  app_id: "Ov23liMABKaHgRxp4Mvp"
+  site_domain: "https://mdarafathosentop.github.io/Md-Arafat-Hosen"
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "posts"
+    label: "Posts"
+    folder: "posts"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
