@@ -1,15 +1,15 @@
-// Copy to Clipboard Function
-function copyToClipboard(elementId) {
-    var copyText = document.getElementById(elementId).innerText;
-    navigator.clipboard.writeText(copyText).then(function() {
-        alert("Copied: " + copyText);
-    }, function(err) {
-        console.error('Could not copy text: ', err);
-    });
-}
-
-// Mobile Menu Toggle Function
+// Function for Mobile Sidebar
 function toggleMenu() {
     const navLinks = document.getElementById("navLinks");
     navLinks.classList.toggle("active");
+}
+
+// Function for Copying Number & Email
+function copyToClipboard(id) {
+    const text = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        alert("Copied to clipboard: " + text);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
 }
