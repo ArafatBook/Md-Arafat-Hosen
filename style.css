@@ -1,3 +1,4 @@
+/* --- Variables & Reset --- */
 :root {
     --primary-blue: #3b82f6;
     --dark-bg: #0f172a;
@@ -16,7 +17,7 @@
 body { background-color: #f8fafc; overflow-x: hidden; }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-/* --- Header --- */
+/* --- Header & Navigation --- */
 header {
     background-color: var(--dark-bg);
     padding: 15px 0;
@@ -27,18 +28,25 @@ header {
 .nav-container { display: flex; justify-content: space-between; align-items: center; }
 .logo { color: var(--white); font-size: 1.5rem; font-weight: bold; text-decoration: none; }
 
-.nav-links { display: flex; list-style: none; }
-.nav-links li { margin-left: 25px; }
+.nav-links { display: flex; list-style: none; align-items: center; }
+.nav-links li { margin-left: 15px; }
 
+/* টপ মেনু বাটন অ্যানিমেশন (Home, Service, Contact) */
 .nav-links a {
-    color: var(--white); text-decoration: none; font-weight: 500;
+    color: var(--white); 
+    text-decoration: none; 
+    font-weight: 500;
     transition: var(--transition);
     display: inline-block;
+    padding: 8px 18px; /* বাটনের মতো প্যাডিং */
+    border-radius: 50px; /* রাউন্ডেড বাটন */
 }
 
 .nav-links a:hover {
-    color: var(--primary-blue);
-    transform: translateY(-3px);
+    color: var(--white) !important; /* টেক্সট সাদা থাকবে */
+    background-color: var(--primary-blue); /* মাউস নিলে ব্যাকগ্রাউন্ড নীল হবে */
+    transform: translateY(-3px) scale(1.05); /* পপআপ অ্যানিমেশন */
+    box-shadow: 0 5px 15px rgba(59,130,246,0.4);
 }
 
 .menu-icon, .close-icon { display: none; color: var(--white); cursor: pointer; }
@@ -60,10 +68,10 @@ header {
     text-decoration: none; font-weight: bold;
     transition: var(--transition);
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    background: var(--primary-blue); color: white;
 }
 
-.btn-primary { background: var(--primary-blue); color: white; }
-.btn-primary:hover {
+.btn:hover {
     transform: translateY(-5px) scale(1.05);
     box-shadow: 0 15px 30px rgba(59,130,246,0.4);
 }
@@ -109,59 +117,14 @@ header {
     color: white;
 }
 
-/* --- Footer (White Text) --- */
+/* --- Footer (LinkedIn & Social Icons Support) --- */
 footer { 
     background: var(--footer-bg); 
     padding: 40px 0; 
     text-align: center; 
-    color: var(--white); /* টেক্সট সাদা হবে */
+    color: var(--white); 
 }
 
-.social-links { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
-.social-links a {
-    color: white; font-size: 1.1rem; transition: var(--transition);
-    display: inline-flex; align-items: center; justify-content: center;
-    background: rgba(255,255,255,0.08); width: 38px; height: 38px;
-    border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1);
-}
-.social-links a:hover { transform: translateY(-3px) scale(1.1); background: var(--primary-blue); }
-
-/* --- Mobile View Adjustments --- */
-@media (max-width: 768px) {
-    .menu-icon { 
-        display: block; 
-        font-size: 2.2rem; 
-        position: absolute;
-        right: 20px; 
-        top: 15px;
-    }
-
-    .logo { font-size: 1.3rem; }
-
-    .nav-links {
-        position: fixed; right: -100%; top: 0; height: 100vh; width: 260px;
-        background-color: var(--dark-bg); flex-direction: column; 
-        align-items: center; padding-top: 100px; 
-        transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: -10px 0 20px rgba(0,0,0,0.5);
-    }
-
-    .nav-links.active { right: 0; }
-    .nav-links li { margin: 20px 0; width: 100%; text-align: center; }
-    .nav-links a { font-size: 1.4rem; display: block; width: 100%; }
-
-    .close-icon { 
-        display: block; 
-        position: absolute; 
-        top: 25px; 
-        right: 25px; 
-        font-size: 2.2rem;
-    }
-
-    .hero h1 { font-size: 2.4rem; }
-    .hero-content { margin-top: -30px; }
-}
-/* সোশ্যাল লিংকের সাধারণ ডিজাইন */
 .social-links { 
     margin-top: 20px; 
     display: flex; 
@@ -184,14 +147,43 @@ footer {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* সব লিংকের জন্য সাধারণ হোভার */
 .social-links a:hover { 
     transform: translateY(-3px) scale(1.1); 
     background: var(--primary-blue); 
     box-shadow: 0 5px 15px rgba(37,99,235,0.3);
 }
 
-/* শুধুমাত্র LinkedIn আইকনের হোভার কালার (Optional) */
+/* LinkedIn Specific Color Hover */
 .social-links a[title="LinkedIn"]:hover {
-    background: #0077b5; /* লিঙ্কডইন ব্র্যান্ড কালার */
+    background: #0077b5;
+}
+
+/* --- Mobile View Adjustments --- */
+@media (max-width: 768px) {
+    .menu-icon { 
+        display: block !important; 
+        font-size: 2.2rem; 
+        position: absolute;
+        right: 20px; top: 15px;
+    }
+
+    .nav-links {
+        position: fixed; right: -100%; top: 0; height: 100vh; width: 260px;
+        background-color: var(--dark-bg); flex-direction: column; 
+        align-items: center; padding-top: 100px; 
+        transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -10px 0 20px rgba(0,0,0,0.5);
+    }
+
+    .nav-links.active { right: 0; }
+    .nav-links li { margin: 15px 0; width: 100%; text-align: center; }
+    .nav-links a { font-size: 1.3rem; padding: 10px 30px; }
+
+    .close-icon { 
+        display: block !important; 
+        position: absolute; top: 25px; right: 25px; 
+        font-size: 2.2rem;
+    }
+
+    .hero h1 { font-size: 2.4rem; }
 }
