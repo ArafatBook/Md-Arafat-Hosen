@@ -12,11 +12,17 @@
     <header>
         <div class="container nav-container">
             <a href="#home" class="logo">Md Arafat hosen</a>
+            
+            <div class="menu-icon" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+
             <nav>
-                <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#services">Service</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                <ul class="nav-links" id="navLinks">
+                    <i class="fas fa-times close-icon" onclick="toggleMenu()"></i>
+                    <li><a href="#home" onclick="toggleMenu()">Home</a></li>
+                    <li><a href="#services" onclick="toggleMenu()">Service</a></li>
+                    <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -24,9 +30,9 @@
 
     <section id="home" class="hero">
         <div class="container hero-content">
-            <h1>Expert Digital Solutions</h1>
-            <p>Empowering your business with professional editing and marketing strategies.</p>
-            <a href="#services" class="btn btn-red">Explore Services</a>
+            <h1>Professional Digital Services</h1>
+            <p>Elevate your brand with high-end Video Editing, Thumbnail Design & Marketing.</p>
+            <a href="#services" class="btn btn-primary">View Services</a>
         </div>
     </section>
 
@@ -36,21 +42,27 @@
             <div class="services-grid">
                 
                 <div class="service-card">
-                    <i class="fas fa-video service-icon"></i>
+                    <div class="icon-box">
+                        <i class="fas fa-video"></i>
+                    </div>
                     <h3>YouTube Video Editing</h3>
-                    <p>Transforming raw footage into engaging stories. High-retention editing that keeps your audience hooked from start to finish. 100% Client Satisfaction guaranteed.</p>
+                    <p>Engaging storytelling tailored for high retention. I transform raw clips into professional content that keeps viewers watching.</p>
                 </div>
 
                 <div class="service-card">
-                    <i class="fas fa-image service-icon"></i>
-                    <h3>YouTube Thumbnail Design</h3>
-                    <p>Eye-catching visuals designed to skyrocket your Click-Through Rate (CTR). Stand out in the search results with professional designs.</p>
+                    <div class="icon-box">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h3>Thumbnail Design</h3>
+                    <p>Boost your CTR with clickable, high-quality thumbnails. Designed psychologically to grab attention instantly.</p>
                 </div>
 
                 <div class="service-card">
-                    <i class="fas fa-envelope-open-text service-icon"></i>
+                    <div class="icon-box">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
                     <h3>Email Marketing</h3>
-                    <p>Strategic campaigns that convert leads into loyal customers. Personalized copywriting that speaks directly to your audience's needs.</p>
+                    <p>Strategic email campaigns that drive sales. Persuasive copywriting designed to convert leads into loyal clients.</p>
                 </div>
 
             </div>
@@ -59,27 +71,27 @@
 
     <section id="contact" class="contact-section">
         <div class="container">
-            <h2 class="section-title">Contact Me</h2>
+            <h2 class="section-title">Get In Touch</h2>
             <div class="contact-wrapper">
                 
-                <div class="contact-card">
-                    <i class="fab fa-whatsapp contact-icon icon-green"></i>
+                <div class="contact-card whatsapp-card">
+                    <i class="fab fa-whatsapp contact-icon"></i>
                     <h3>WhatsApp</h3>
                     <div class="copy-box">
                         <span id="wa-number">+8801792854381</span>
                         <button onclick="copyToClipboard('wa-number')" class="copy-btn">
-                            <i class="fas fa-copy"></i> Copy
+                            <i class="fas fa-copy"></i>
                         </button>
                     </div>
                 </div>
 
-                <div class="contact-card">
-                    <i class="fas fa-envelope contact-icon icon-red"></i>
+                <div class="contact-card email-card">
+                    <i class="fas fa-envelope contact-icon"></i>
                     <h3>Email</h3>
                     <div class="copy-box">
                         <span id="email-address">businessarafat15@gmail.com</span>
                         <button onclick="copyToClipboard('email-address')" class="copy-btn">
-                            <i class="fas fa-copy"></i> Copy
+                            <i class="fas fa-copy"></i>
                         </button>
                     </div>
                 </div>
@@ -90,6 +102,11 @@
 
     <footer>
         <p>&copy; 2024 Md Arafat hosen. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
     </footer>
 
     <script src="script.js"></script>
