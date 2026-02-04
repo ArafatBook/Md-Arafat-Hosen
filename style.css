@@ -1,12 +1,9 @@
 :root {
-    /* কালার ভেরিয়েবল */
     --primary-blue: #3b82f6;
     --dark-bg: #0f172a;
     --footer-bg: #1e293b;
     --white: #ffffff;
-    /* স্মুথ অ্যানিমেশনের জন্য ট্রানজিশন */
     --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    /* পপআপ ইফেক্ট শ্যাডো */
     --popup-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
@@ -27,7 +24,12 @@ header {
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-.nav-container { display: flex; justify-content: space-between; align-items: center; }
+.nav-container { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
 .logo { color: var(--white); font-size: 1.5rem; font-weight: bold; text-decoration: none; }
 
 .nav-links { display: flex; list-style: none; }
@@ -36,16 +38,16 @@ header {
 .nav-links a {
     color: var(--white); text-decoration: none; font-weight: 500;
     transition: var(--transition);
-    display: inline-block; /* অ্যানিমেশনের জন্য জরুরি */
+    display: inline-block;
 }
 
-/* মেনু লিংকে মাউস নিলে সামান্য পপআপ হবে */
 .nav-links a:hover {
     color: var(--primary-blue);
-    transform: translateY(-3px); /* উপরে উঠবে */
+    transform: translateY(-3px);
 }
 
-.menu-icon, .close-icon { display: none; color: var(--white); font-size: 1.8rem; cursor: pointer; }
+/* পিসিতে মেনু আইকন হাইড থাকবে */
+.menu-icon, .close-icon { display: none; color: var(--white); cursor: pointer; }
 
 /* --- Hero Section --- */
 .hero {
@@ -59,43 +61,36 @@ header {
 .hero h1 { font-size: 3.5rem; margin-bottom: 15px; font-weight: 800; }
 .hero-desc { font-size: 1.2rem; margin-bottom: 30px; max-width: 700px; margin-left: auto; margin-right: auto; opacity: 0.95; }
 
-/* মেইন বাটন ডিজাইন */
 .btn {
     display: inline-block; padding: 14px 35px; border-radius: 50px;
     text-decoration: none; font-weight: bold;
-    transition: var(--transition); /* স্মুথনেস */
+    transition: var(--transition);
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .btn-primary { background: var(--primary-blue); color: white; }
-
-/* --- বাটন পপআপ অ্যানিমেশন (Hero Button) --- */
 .btn-primary:hover {
-    transform: translateY(-5px) scale(1.05); /* উপরে উঠবে এবং ৫% বড় হবে */
-    box-shadow: 0 15px 30px rgba(59,130,246,0.4); /* গাঢ় ছায়া */
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(59,130,246,0.4);
 }
 
-/* --- Services Section --- */
+/* --- Services --- */
 .services-section { padding: 80px 0; text-align: center; }
 .section-title { font-size: 2.2rem; margin-bottom: 50px; position: relative; display: inline-block; }
 .section-title::after { content: ''; width: 50%; height: 3px; background: var(--primary-blue); position: absolute; bottom: -10px; left: 25%; }
 
 .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-
 .service-card {
     background: white; padding: 40px; border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    transition: var(--transition); /* কার্ডের অ্যানিমেশন */
+    transition: var(--transition);
     border: 1px solid #eee;
 }
-
-/* সার্ভিস কার্ড পপআপ */
 .service-card:hover {
     transform: translateY(-10px) scale(1.02);
     box-shadow: var(--popup-shadow);
     border-color: var(--primary-blue);
 }
-
 .icon-box { font-size: 2.5rem; color: var(--primary-blue); margin-bottom: 15px; }
 
 /* --- Contact Section --- */
@@ -108,77 +103,64 @@ header {
 .contact-card:hover { transform: translateY(-5px); box-shadow: var(--popup-shadow); }
 
 .copy-box { background: rgba(255,255,255,0.25); padding: 8px 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
-
-/* কপি বাটন ডিজাইন */
 .copy-btn {
     background: white; color: var(--dark-bg); border: none;
     padding: 8px 12px; border-radius: 6px; cursor: pointer;
-    transition: var(--transition); /* স্মুথনেস */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    display: flex; align-items: center; justify-content: center;
-}
-
-/* --- কপি বাটন পপআপ অ্যানিমেশন --- */
-.copy-btn:hover {
-    transform: translateY(-3px) scale(1.1); /* লাফিয়ে উঠবে এবং ১০% বড় হবে */
-    background-color: var(--primary-blue); /* ব্যাকগ্রাউন্ড নীল হবে */
-    color: white; /* আইকনের রং সাদা হবে */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-/* --- Footer Updates (Small & Beautiful Round Icons) --- */
-footer {
-    background: var(--footer-bg);
-    color: rgba(255,255,255,0.8);
-    padding: 40px 0;
-    text-align: center;
-}
-
-.social-links {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 15px; /* আইকনগুলোর মাঝখানের দূরত্ব */
-}
-
-.social-links a {
-    color: white;
-    font-size: 1.1rem; /* আইকন ছোট করা হয়েছে */
     transition: var(--transition);
-    display: inline-flex; /* আইকন সেন্টারে রাখার জন্য */
-    align-items: center;
-    justify-content: center;
-    background: rgba(255,255,255,0.08); /* হালকা ব্যাকগ্রাউন্ড */
-    width: 38px; /* নির্দিষ্ট প্রস্থ */
-    height: 38px; /* নির্দিষ্ট উচ্চতা */
-    border-radius: 50%; /* পারফেক্ট গোল শেপ */
-    border: 1px solid rgba(255, 255, 255, 0.1); /* সুন্দর চিকন বর্ডার */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.copy-btn:hover {
+    transform: translateY(-3px) scale(1.1);
+    background-color: var(--primary-blue);
+    color: white;
 }
 
-/* সোশ্যাল আইকন পপআপ এবং হোভার */
-.social-links a:hover {
-    transform: translateY(-3px) scale(1.1); /* সামান্য পপআপ */
-    background: var(--primary-blue);
-    border-color: var(--primary-blue);
-    box-shadow: 0 5px 15px rgba(37,99,235,0.3);
+/* --- Footer (Small & Round) --- */
+footer { background: var(--footer-bg); padding: 40px 0; text-align: center; }
+.social-links { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
+.social-links a {
+    color: white; font-size: 1.1rem; transition: var(--transition);
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.08); width: 38px; height: 38px;
+    border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1);
 }
+.social-links a:hover { transform: translateY(-3px) scale(1.1); background: var(--primary-blue); }
 
-/* --- Mobile Menu (Right Sidebar) --- */
+/* --- Only for Mobile (Adjustment) --- */
 @media (max-width: 768px) {
-    .hero h1 { font-size: 2.5rem; }
-    .menu-icon { display: block; }
+    /* হ্যামবার্গার মেনু আইকন সেটিং */
+    .menu-icon { 
+        display: block; 
+        font-size: 2.2rem; /* সাইজ বড় করা হয়েছে */
+        position: absolute;
+        right: 20px; /* ডান কর্নারে সেট */
+        top: 15px;
+    }
 
+    .logo { font-size: 1.3rem; }
+
+    /* সাইডবার মেনু */
     .nav-links {
-        position: fixed; right: -100%; top: 0; height: 100vh; width: 250px;
-        background-color: var(--dark-bg); flex-direction: column; align-items: center;
-        padding-top: 100px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+        position: fixed; right: -100%; top: 0; height: 100vh; width: 260px;
+        background-color: var(--dark-bg); flex-direction: column; 
+        align-items: center; padding-top: 100px; 
+        transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -10px 0 20px rgba(0,0,0,0.5);
     }
 
     .nav-links.active { right: 0; }
     .nav-links li { margin: 20px 0; width: 100%; text-align: center; }
-    .nav-links a { font-size: 1.3rem; display: block; width: 100%; }
-    .nav-links a:hover { transform: none; background: rgba(255,255,255,0.1); } /* মোবাইলে পপআপ বন্ধ, শুধু ব্যাকগ্রাউন্ড কালার */
+    .nav-links a { font-size: 1.4rem; display: block; width: 100%; }
 
-    .close-icon { display: block; position: absolute; top: 25px; right: 25px; }
+    /* মেনু বন্ধ করার ক্রস আইকন */
+    .close-icon { 
+        display: block; 
+        position: absolute; 
+        top: 25px; 
+        right: 25px; 
+        font-size: 2.2rem;
+    }
+
+    .hero h1 { font-size: 2.4rem; }
+    .hero-content { margin-top: -30px; }
 }
