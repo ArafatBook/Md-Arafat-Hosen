@@ -130,13 +130,16 @@ header {
 footer { background: var(--footer-bg); color: rgba(255,255,255,0.8); padding: 40px 0; text-align: center; }
 .social-links { margin-top: 20px; }
 
-/* এই অংশটি সব আইকনকে গোল করছে */
+/* এই অংশটি আপডেট করা হয়েছে আইকন ছোট করার জন্য */
 .social-links a {
-    color: white; font-size: 1.4rem; margin: 0 12px;
-    transition: var(--transition); display: inline-block;
+    color: white;
+    font-size: 1.1rem; /* আগে ছিল 1.4rem, এখন ছোট করা হয়েছে */
+    margin: 0 10px;
+    transition: var(--transition);
+    display: inline-block;
     background: rgba(255,255,255,0.1);
-    padding: 10px;
-    border-radius: 50%; /* <-- এই লাইনের কারণে সব আইকন গোল হবে */
+    padding: 9px; /* আগে ছিল 10px, সামান্য কমানো হয়েছে ব্যালেন্সের জন্য */
+    border-radius: 50%; /* গোল আকার */
 }
 
 /* সোশ্যাল আইকন পপআপ */
