@@ -126,27 +126,41 @@ header {
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-/* --- Footer --- */
-footer { background: var(--footer-bg); color: rgba(255,255,255,0.8); padding: 40px 0; text-align: center; }
-.social-links { margin-top: 20px; }
-
-/* এই অংশটি আপডেট করা হয়েছে আইকন ছোট করার জন্য */
-.social-links a {
-    color: white;
-    font-size: 1.1rem; /* আগে ছিল 1.4rem, এখন ছোট করা হয়েছে */
-    margin: 0 10px;
-    transition: var(--transition);
-    display: inline-block;
-    background: rgba(255,255,255,0.1);
-    padding: 9px; /* আগে ছিল 10px, সামান্য কমানো হয়েছে ব্যালেন্সের জন্য */
-    border-radius: 50%; /* গোল আকার */
+/* --- Footer Updates (Small & Beautiful Round Icons) --- */
+footer {
+    background: var(--footer-bg);
+    color: rgba(255,255,255,0.8);
+    padding: 40px 0;
+    text-align: center;
 }
 
-/* সোশ্যাল আইকন পপআপ */
+.social-links {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* আইকনগুলোর মাঝখানের দূরত্ব */
+}
+
+.social-links a {
+    color: white;
+    font-size: 1.1rem; /* আইকন ছোট করা হয়েছে */
+    transition: var(--transition);
+    display: inline-flex; /* আইকন সেন্টারে রাখার জন্য */
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.08); /* হালকা ব্যাকগ্রাউন্ড */
+    width: 38px; /* নির্দিষ্ট প্রস্থ */
+    height: 38px; /* নির্দিষ্ট উচ্চতা */
+    border-radius: 50%; /* পারফেক্ট গোল শেপ */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* সুন্দর চিকন বর্ডার */
+}
+
+/* সোশ্যাল আইকন পপআপ এবং হোভার */
 .social-links a:hover {
-    transform: translateY(-5px) scale(1.1);
+    transform: translateY(-3px) scale(1.1); /* সামান্য পপআপ */
     background: var(--primary-blue);
-    box-shadow: 0 5px 15px rgba(37,99,235,0.4);
+    border-color: var(--primary-blue);
+    box-shadow: 0 5px 15px rgba(37,99,235,0.3);
 }
 
 /* --- Mobile Menu (Right Sidebar) --- */
