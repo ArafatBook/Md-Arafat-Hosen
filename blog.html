@@ -12,43 +12,68 @@
     <header>
         <div class="container nav-container">
             <a href="index.html" class="logo">Md Arafat Hosen</a>
+            
+            <div class="menu-icon" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+
             <nav>
-                <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="blog.html" class="btn-blog">Blog</a></li>
+                <ul class="nav-links" id="navLinks">
+                    <i class="fas fa-times close-icon" onclick="toggleMenu()"></i>
+                    <li><a href="index.html#home" onclick="toggleMenu()">Home</a></li>
+                    <li><a href="index.html#services" onclick="toggleMenu()">Service</a></li>
+                    <li><a href="index.html#contact" onclick="toggleMenu()">Contact</a></li>
+                    <li><a href="blog.html" class="btn-blog" onclick="toggleMenu()">Blog</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <section class="services-section container" style="min-height: 80vh; padding-top: 120px;">
-        <h2 class="section-title">My Recent Blog Posts</h2>
-        <div id="blog-posts-container" class="services-grid"></div>
+    <section class="services-section container" style="min-height: 85vh; padding-top: 120px;">
+        <h2 class="section-title">Latest Blog Posts</h2>
+        <div id="blog-posts-container" class="services-grid">
+            <p style="grid-column: 1/-1; text-align: center;">Loading posts...</p>
+        </div>
     </section>
 
     <footer>
         <div class="container">
             <p>© 2026 Md Arafat Hosen. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/MdArafatHosen0" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/mdarafathosen900" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/md-arafat-yasine" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.youtube.com/@MdArafatHosen0" target="_blank"><i class="fab fa-youtube"></i></a>
+            </div>
         </div>
     </footer>
 
+    <script src="script.js"></script>
+
     <script>
-        async function loadBlogs() {
-            const response = await fetch('blogs.json');
-            const posts = await response.json();
-            const container = document.getElementById('blog-posts-container');
-            
-            container.innerHTML = posts.map(post => `
-                <div class="service-card">
-                    <div class="icon-box"><i class="${post.icon}"></i></div>
-                    <h3>${post.title}</h3>
-                    <p>${post.desc}</p>
-                    <br>
-                    <a href="${post.link}" class="btn">Read More</a>
-                </div>
-            `).join('');
+        async function fetchBlogs() {
+            try {
+                const response = await fetch('blogs.json');
+                const data = await response.json();
+                const container = document.getElementById('blog-posts-container');
+                container.innerHTML = ''; 
+
+                data.forEach(post => {
+                    container.innerHTML += `
+                        <div class="service-card">
+                            <div class="icon-box"><i class="${post.icon}"></i></div>
+                            <h3>${post.title}</h3>
+                            <p>${post.desc}</p>
+                            <br>
+                            <a href="${post.link}" class="btn">Read More</a>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error loading posts");
+            }
         }
-        window.onload = loadBlogs;
+        window.onload = fetchBlogs;
     </script>
 </body>
 </html>
