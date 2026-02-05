@@ -16,5 +16,11 @@
     "desc": "বেশি ক্লিক পেতে হলে আপনার থাম্বনেইল কেমন হওয়া উচিত...",
     "icon": "fas fa-pen-nib",
     "link": "posts/post3.html"
+  },
+  {
+    "title": "New Post Test",
+    "desc": "বেশি ক্লিক পেতে হলে আপনার থাম্বনেইল কেমন হওয়া উচিত...",
+    "icon": "fas fa-pen-nib",
+    "link": "posts/post4.html"
   }
 ]
