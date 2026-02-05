@@ -187,3 +187,9 @@ footer {
 
     .hero h1 { font-size: 2.4rem; }
 }
+.blog-content p {
+    margin-bottom: 20px;
+    text-align: justify;
+    line-height: 1.8; /* অতিরিক্ত টিপস: এটি লাইনের মাঝখানের গ্যাপ বাড়াবে */
+    color: #334155;    /* চোখের আরামের জন্য হালকা গাঢ় ধূসর রঙ */
+}
