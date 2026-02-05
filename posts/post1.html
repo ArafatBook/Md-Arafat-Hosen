@@ -12,36 +12,41 @@
     <header>
         <div class="container nav-container">
             <a href="../index.html" class="logo">Md Arafat Hosen</a>
+            
+            <div class="menu-icon" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+
             <nav>
-                <ul class="nav-links">
-                    <li><a href="../index.html">Home</a></li>
-                    <li><a href="../blog.html" class="btn-blog">Back to Blog</a></li>
+                <ul class="nav-links" id="navLinks">
+                    <i class="fas fa-times close-icon" onclick="toggleMenu()"></i>
+                    <li><a href="../index.html#home" onclick="toggleMenu()">Home</a></li>
+                    <li><a href="../blog.html" class="btn-blog" onclick="toggleMenu()">Back to Blog</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <article class="container" style="padding: 120px 20px; max-width: 800px; margin: 0 auto; line-height: 1.8;">
-        <h1 style="font-size: 2.5rem; color: #1e293b; margin-bottom: 20px;">Youtube Thumbnail Design Expert</h1>
+    <article class="container" style="padding: 140px 20px 80px; max-width: 900px; margin: 0 auto;">
+        <h1 style="font-size: 2.5rem; color: #1e293b; margin-bottom: 20px; line-height: 1.2;">
+            এখানে আপনার ব্লগের শিরোনামটি লিখুন
+        </h1>
         
-        <div style="display: flex; gap: 15px; color: #64748b; margin-bottom: 30px; font-size: 0.9rem;">
-            <span><i class="far fa-calendar-alt"></i> ৫ ফেব্রুয়ারি, ২০২৬</span>
-            <span><i class="far fa-user"></i> By Md Arafat Hosen</span>
+        <div style="color: #64748b; margin-bottom: 40px; font-size: 0.9rem; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+            <span><i class="far fa-calendar-alt"></i> ৫ ফেব্রুয়ারি, ২০২৬</span> 
+            <span style="margin-left: 20px;"><i class="far fa-user"></i> Md Arafat Hosen</span>
         </div>
 
-        <div class="blog-content" style="font-size: 1.1rem; color: #334155;">
-            <p>আপনার বিস্তারিত আর্টিকেল বা লেখা এখানে শুরু করুন। আপনি ভিডিও এডিটিং বা মার্কেটিং নিয়ে যা যা শেয়ার করতে চান তা এখানে সুন্দরভাবে প্যারাগ্রাফ আকারে লিখতে পারবেন।</p>
+        <div class="blog-content" style="font-size: 1.15rem; color: #334155; line-height: 1.8;">
+            <p>আপনার ব্লগের বিস্তারিত তথ্য এখানে লিখুন। আপনি আপনার ভিডিও এডিটিং বা মার্কেটিং কাজের অভিজ্ঞতা এখানে শেয়ার করতে পারেন।</p>
             
-            <p>প্রয়োজন হলে আপনি এখানে <strong>Bold Text</strong>, <a href="#" style="color: var(--primary-blue);">Links</a>, অথবা বুলেট পয়েন্ট ব্যবহার করতে পারেন:</p>
-            <ul>
-                <li>প্রথম টিপস</li>
-                <li>দ্বিতীয় টিপস</li>
-            </ul>
+            <p>নতুন প্যারাগ্রাফ শুরু করতে চাইলে শুধু &lt;p&gt; ট্যাগ ব্যবহার করুন। কোনো বিষয় হাইলাইট করতে <strong>বোল্ড টেক্সট</strong> ব্যবহার করতে পারেন।</p>
         </div>
 
-        <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
-            <a href="../blog.html" class="btn" style="background: #64748b;">All Posts</a>
-            <a href="post2.html" class="btn">Next Post <i class="fas fa-arrow-right"></i></a>
+        <div style="margin-top: 80px; padding-top: 30px; border-top: 2px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+            <a href="../blog.html" class="btn" style="background: #64748b; color: white;">All Blogs</a>
+            
+            <a href="post2.html" class="btn">Next Post</a>
         </div>
     </article>
 
@@ -51,5 +56,11 @@
         </div>
     </footer>
 
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById("navLinks");
+            navLinks.classList.toggle("active");
+        }
+    </script>
 </body>
 </html>
