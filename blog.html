@@ -30,22 +30,17 @@
         </div>
     </header>
 
-    <section class="services-section container" style="min-height: 85vh; padding-top: 120px;">
+    <section class="services-section container" style="min-height: 80vh; padding-top: 120px;">
         <h2 class="section-title">Latest Blog Posts</h2>
+        
         <div id="blog-posts-container" class="services-grid">
-            <p style="grid-column: 1/-1; text-align: center;">Loading posts...</p>
+            <p style="text-align: center; grid-column: 1/-1;">Loading...</p>
         </div>
     </section>
 
     <footer>
         <div class="container">
             <p>© 2026 Md Arafat Hosen. All rights reserved.</p>
-            <div class="social-links">
-                <a href="https://www.facebook.com/MdArafatHosen0" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/mdarafathosen900" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.linkedin.com/in/md-arafat-yasine" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://www.youtube.com/@MdArafatHosen0" target="_blank"><i class="fab fa-youtube"></i></a>
-            </div>
         </div>
     </footer>
 
@@ -60,9 +55,9 @@
                 container.innerHTML = ''; 
 
                 data.forEach(post => {
+                    // এখানে আইকন রিমুভ করে শুধুমাত্র টেক্সট রাখা হয়েছে
                     container.innerHTML += `
                         <div class="service-card">
-                            <div class="icon-box"><i class="${post.icon}"></i></div>
                             <h3>${post.title}</h3>
                             <p>${post.desc}</p>
                             <br>
