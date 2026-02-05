@@ -22,10 +22,8 @@
     </header>
 
     <section class="services-section container" style="min-height: 80vh; padding-top: 120px;">
-        <h2 class="section-title">My Blog Posts</h2>
-        
-        <div id="blog-posts-container" class="services-grid">
-            </div>
+        <h2 class="section-title">My Recent Blog Posts</h2>
+        <div id="blog-posts-container" class="services-grid"></div>
     </section>
 
     <footer>
@@ -35,31 +33,22 @@
     </footer>
 
     <script>
-        async function fetchBlogs() {
-            try {
-                const response = await fetch('blogs.json');
-                const data = await response.json();
-                const container = document.getElementById('blog-posts-container');
-                
-                container.innerHTML = ''; 
-
-                data.forEach(post => {
-                    // এখানে `+=` ব্যবহার করতে হবে যাতে আগের কোড মুছে না যায়
-                    container.innerHTML += `
-                        <div class="service-card">
-                            <div class="icon-box"><i class="${post.icon}"></i></div>
-                            <h3>${post.title}</h3>
-                            <p>${post.desc}</p>
-                            <br>
-                            <a href="${post.link}" class="btn">বিস্তারিত পড়ুন</a>
-                        </div>
-                    `;
-                });
-            } catch (error) {
-                console.error("Error:", error);
-            }
+        async function loadBlogs() {
+            const response = await fetch('blogs.json');
+            const posts = await response.json();
+            const container = document.getElementById('blog-posts-container');
+            
+            container.innerHTML = posts.map(post => `
+                <div class="service-card">
+                    <div class="icon-box"><i class="${post.icon}"></i></div>
+                    <h3>${post.title}</h3>
+                    <p>${post.desc}</p>
+                    <br>
+                    <a href="${post.link}" class="btn">Read More</a>
+                </div>
+            `).join('');
         }
-        window.onload = fetchBlogs;
+        window.onload = loadBlogs;
     </script>
 </body>
 </html>
