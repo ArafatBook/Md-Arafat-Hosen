@@ -6,44 +6,68 @@
     <title>Blog Post | Md Arafat Hosen</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
+    <style>
+        /* বাটনগুলোর পজিশন ঠিক করার জন্য কাস্টম স্টাইল */
+        .post-navigation {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between; /* অল পোস্ট একপাশে, বাকিরা অন্যপাশে */
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .nav-group {
+            display: flex;
+            gap: 10px; /* Previous এবং Next এর মাঝের গ্যাপ */
+        }
+        .blog-container {
+            padding: 120px 20px 60px;
+            max-width: 850px;
+            margin: 0 auto;
+            min-height: 70vh;
+        }
+    </style>
 </head>
 <body>
 
     <header>
         <div class="container nav-container">
             <a href="../index.html" class="logo">Md Arafat Hosen</a>
+            
+            <div class="menu-icon" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+
             <nav>
-                <ul class="nav-links">
-                    <li><a href="../index.html">Home</a></li>
-                    <li><a href="../blog.html" class="btn-blog">Back to Blog</a></li>
+                <ul class="nav-links" id="navLinks">
+                    <i class="fas fa-times close-icon" onclick="toggleMenu()"></i>
+                    <li><a href="../index.html#home" onclick="toggleMenu()">Home</a></li>
+                    <li><a href="../index.html#services" onclick="toggleMenu()">Service</a></li>
+                    <li><a href="../index.html#contact" onclick="toggleMenu()">Contact</a></li>
+                    <li><a href="../blog.html" onclick="toggleMenu()">Blog</a></li>
+                    <li><a href="../blog.html" class="btn-blog" onclick="toggleMenu()">Back to Blog</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <article class="container" style="padding: 120px 20px; max-width: 800px; margin: 0 auto; line-height: 1.8;">
-        <h1 style="font-size: 2.5rem; color: #1e293b; margin-bottom: 20px;">Youtube Video Editing Expert</h1>
-        
-        <div style="display: flex; gap: 15px; color: #64748b; margin-bottom: 30px; font-size: 0.9rem;">
-            <span><i class="far fa-calendar-alt"></i> ৫ ফেব্রুয়ারি, ২০২৬</span>
-            <span><i class="far fa-user"></i> By Md Arafat Hosen</span>
+    <main class="container blog-container">
+        <h1 style="color: #1e293b; margin-bottom: 20px;">My Post 2 Blog</h1>
+        <div style="font-size: 1.1rem; color: #475569; line-height: 1.8;">
+            <p>Im a Arafat 2no post.</p>
         </div>
 
-        <div class="blog-content" style="font-size: 1.1rem; color: #334155;">
-            <p>আপনার বিস্তারিত আর্টিকেল বা লেখা এখানে শুরু করুন। আপনি ভিডিও এডিটিং বা মার্কেটিং নিয়ে যা যা শেয়ার করতে চান তা এখানে সুন্দরভাবে প্যারাগ্রাফ আকারে লিখতে পারবেন।</p>
-            
-            <p>প্রয়োজন হলে আপনি এখানে <strong>Bold Text</strong>, <a href="#" style="color: var(--primary-blue);">Links</a>, অথবা বুলেট পয়েন্ট ব্যবহার করতে পারেন:</p>
-            <ul>
-                <li>প্রথম টিপস</li>
-                <li>দ্বিতীয় টিপস</li>
-            </ul>
-        </div>
+        <div class="post-navigation">
+            <a href="../blog.html" class="btn" style="background: #64748b; color: white;">All Post</a>
 
-        <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between;">
-            <a href="../blog.html" class="btn" style="background: #64748b;">All Posts</a>
-            <a href="post2.html" class="btn">Next Post <i class="fas fa-arrow-right"></i></a>
+            <div class="nav-group">
+                <a href="post1.html" class="btn" style="background: #3b82f6; color: white;">Previous</a>
+                <a href="post2.html" class="btn" style="background: #3b82f6; color: white;">Next</a>
+            </div>
         </div>
-    </article>
+    </main>
 
     <footer>
         <div class="container">
@@ -51,5 +75,11 @@
         </div>
     </footer>
 
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById("navLinks");
+            navLinks.classList.toggle("active");
+        }
+    </script>
 </body>
 </html>
