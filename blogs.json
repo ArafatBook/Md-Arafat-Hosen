@@ -1,26 +1,20 @@
 [
   {
-    "title": "Youtube Video Editing",
-    "desc": "i am Youtube video editing expert",
+    "title": "ইউটিউব এসইও গাইড",
+    "desc": "কিভাবে আপনার ভিডিও র‍্যাঙ্ক করাবেন তার বিস্তারিত...",
     "icon": "fas fa-video",
     "link": "posts/post1.html"
   },
   {
-    "title": "Email Marketing",
-    "desc": "i am email marketing expert",
+    "title": "ইমেইল মার্কেটিং টিপস",
+    "desc": "ক্লিক রেট বাড়ানোর গোপন কিছু কৌশল...",
     "icon": "fas fa-envelope",
     "link": "posts/post2.html"
   },
   {
-    "title": "Website Design & Developer",
-    "desc": "i am professional website design and developer expert",
-    "icon": "fas fa-edit",
-    "link": "posts/post3.html"
-  },
-  {
-    "title": "Thumbnail Design",
-    "desc": "i am professional thumbnail design expert",
+    "title": "থাম্বনেইল ডিজাইনের নিয়ম",
+    "desc": "অডিয়েন্সকে আকর্ষণ করার জন্য সেরা ডিজাইন পদ্ধতি...",
     "icon": "fas fa-image",
-    "link": "posts/post4.html"
+    "link": "posts/post3.html"
   }
 ]
