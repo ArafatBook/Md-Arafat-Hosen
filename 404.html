@@ -1,16 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <title>404 - Page Not Found</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পেজটি খুঁজে পাওয়া যায়নি | 404 Error</title>
     <style>
-        body { text-align: center; padding: 50px; font-family: sans-serif; }
-        h1 { font-size: 50px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #333;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .error-code {
+            font-size: 150px;
+            font-weight: 900;
+            color: #2c3e50;
+            position: relative;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* ভাসমান এনিমেশন */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .error-message {
+            font-size: 24px;
+            margin-top: -20px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .description {
+            font-size: 16px;
+            color: #777;
+            margin-bottom: 30px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* হোম বাটন ডিজাইন */
+        .home-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .home-btn:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+        }
+
+        /* ছোট বৃত্তাকার ডেকোরেশন */
+        .circle {
+            position: absolute;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 50%;
+            z-index: -1;
+        }
     </style>
 </head>
 <body>
-    <h1>404</h1>
-    <p>Oops! We couldn't find the page you were looking for.</p>
-    <a href="/">Go back to the homepage</a>
+
+    <div class="circle" style="width: 200px; height: 200px; top: 10%; left: 10%;"></div>
+    <div class="circle" style="width: 300px; height: 300px; bottom: 10%; right: 10%;"></div>
+
+    <div class="container">
+        <div class="error-code">404</div>
+        <h1 class="error-message">ওহ! পেজটি হারিয়ে গেছে।</h1>
+        <p class="description">
+            আপনি যে পেজটি খুঁজছেন তা সম্ভবত মুছে ফেলা হয়েছে অথবা লিঙ্কটি ভুল ছিল। নিচের বাটনে ক্লিক করে মূল পাতায় ফিরে যান।
+        </p>
+        <a href="/" class="home-btn">হোমপেজে ফিরে যান</a>
+    </div>
+
 </body>
 </html>
