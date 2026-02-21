@@ -2,103 +2,104 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 - Page Not Found</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins', sans-serif;
         }
 
-        body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #f8fafc;
-            overflow: hidden;
+        body{
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+            color:#fff;
+            text-align:center;
+            overflow:hidden;
         }
 
-        .container {
-            text-align: center;
-            padding: 2rem;
-            max-width: 600px;
+        .container{
+            max-width:600px;
+            padding:40px;
+            animation:fadeIn 1.5s ease-in-out;
         }
 
-        /* Animated 404 Text */
-        .error-code {
-            font-size: 10rem;
-            font-weight: 700;
-            line-height: 1;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, #38bdf8, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: float 6s ease-in-out infinite;
+        h1{
+            font-size:120px;
+            font-weight:800;
+            background:linear-gradient(45deg,#00f2fe,#4facfe);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        h2{
+            font-size:28px;
+            margin-bottom:15px;
+            font-weight:600;
         }
 
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
+        p{
+            font-size:16px;
+            margin-bottom:30px;
+            opacity:0.8;
         }
 
-        p {
-            color: #94a3b8;
-            margin-bottom: 2.5rem;
-            line-height: 1.6;
+        .btn{
+            text-decoration:none;
+            padding:12px 30px;
+            border-radius:30px;
+            background:#00f2fe;
+            color:#000;
+            font-weight:600;
+            transition:0.3s ease;
         }
 
-        /* Stylish Button */
-        .home-btn {
-            text-decoration: none;
-            color: #fff;
-            background: #3b82f6;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+        .btn:hover{
+            background:#4facfe;
+            transform:scale(1.05);
         }
 
-        .home-btn:hover {
-            background: #2563eb;
-            transform: scale(1.05);
-            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4);
+        /* Floating animation */
+        @keyframes fadeIn{
+            from{
+                opacity:0;
+                transform:translateY(20px);
+            }
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
         }
 
-        /* Decorative Circles */
-        .circle {
-            position: absolute;
-            z-index: -1;
-            border-radius: 50%;
-            background: rgba(59, 130, 246, 0.1);
-            filter: blur(50px);
+        @media(max-width:600px){
+            h1{
+                font-size:80px;
+            }
+            h2{
+                font-size:22px;
+            }
         }
 
-        .c1 { width: 300px; height: 300px; top: -100px; left: -100px; }
-        .c2 { width: 400px; height: 400px; bottom: -150px; right: -150px; }
     </style>
 </head>
 <body>
 
-    <div class="circle c1"></div>
-    <div class="circle c2"></div>
-
     <div class="container">
-        <div class="error-code">404</div>
-        <h1>Lost in Space?</h1>
-        <p>The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. Let's get you back on track.</p>
-        
-        <a href="/" class="home-btn">Return Home</a>
+        <h1>404</h1>
+        <h2>Oops! Page Not Found</h2>
+        <p>The page you are looking for might have been removed, 
+           had its name changed, or is temporarily unavailable.</p>
+
+        <a href="/" class="btn">Go Back Home</a>
     </div>
 
 </body>
