@@ -3,101 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page not found. | 404 Error</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f4f7f6;
+    <title>Page Not Found | Md Arafat Hosen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css"> <style>
+        /* Specific 404 Styles */
+        .error-body {
+            background: #0f0f0f; /* Dark background to match video editing vibes */
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            color: #333;
+            text-align: center;
+            color: white;
             overflow: hidden;
         }
 
-        .container {
-            text-align: center;
-        }
-
-        .error-code {
-            font-size: 150px;
-            font-weight: 900;
-            color: #2c3e50;
+        .error-container h1 {
+            font-size: 10rem;
+            margin: 0;
             position: relative;
-            display: inline-block;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        /* ভাসমান এনিমেশন */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .error-message {
-            font-size: 24px;
-            margin-top: -20px;
-            margin-bottom: 20px;
-            color: #555;
-        }
-
-        .description {
-            font-size: 16px;
-            color: #777;
-            margin-bottom: 30px;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.6;
-        }
-
-        /* হোম বাটন ডিজাইন */
-        .home-btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background-color: #3498db;
             color: #fff;
+            text-shadow: 0.05em 0 0 rgba(255,0,0,.75),
+                        -0.025em -0.05em 0 rgba(0,255,0,.75),
+                        0.025em 0.05em 0 rgba(0,0,255,.75);
+            animation: glitch 500ms infinite;
+        }
+
+        .error-container h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+
+        .error-container p {
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+
+        .btn-back {
+            padding: 12px 30px;
+            background: #ff0000; /* YouTube Red style */
+            color: white;
             text-decoration: none;
-            border-radius: 30px;
+            border-radius: 50px;
             font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            transition: 0.3s;
+            display: inline-block;
         }
 
-        .home-btn:hover {
-            background-color: #2980b9;
+        .btn-back:hover {
             transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
         }
 
-        /* ছোট বৃত্তাকার ডেকোরেশন */
-        .circle {
-            position: absolute;
-            background: rgba(52, 152, 219, 0.1);
-            border-radius: 50%;
-            z-index: -1;
+        /* Glitch Animation */
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.05em -0.025em 0 rgba(0,255,0,.75), -0.025em 0.05em 0 rgba(0,0,255,.75); }
+            14% { text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.05em -0.025em 0 rgba(0,255,0,.75), -0.025em 0.05em 0 rgba(0,0,255,.75); }
+            15% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75), 0.025em 0.025em 0 rgba(0,255,0,.75), -0.05em -0.05em 0 rgba(0,0,255,.75); }
+            49% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75), 0.025em 0.025em 0 rgba(0,255,0,.75), -0.05em -0.05em 0 rgba(0,0,255,.75); }
+            50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,.75), 0.05em 0 0 rgba(0,255,0,.75), 0 -0.05em 0 rgba(0,0,255,.75); }
+            99% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,.75), 0.05em 0 0 rgba(0,255,0,.75), 0 -0.05em 0 rgba(0,0,255,.75); }
+            100% { text-shadow: -0.025em 0 0 rgba(255,0,0,.75), -0.025em -0.025em 0 rgba(0,255,0,.75), -0.025em -0.05em 0 rgba(0,0,255,.75); }
+        }
+
+        @media (max-width: 600px) {
+            .error-container h1 { font-size: 6rem; }
         }
     </style>
 </head>
-<body>
+<body class="error-body">
 
-    <div class="circle" style="width: 200px; height: 200px; top: 10%; left: 10%;"></div>
-    <div class="circle" style="width: 300px; height: 300px; bottom: 10%; right: 10%;"></div>
-
-    <div class="container">
-        <div class="error-code">404</div>
-        <h1 class="error-message">The page is lost.</h1>
-        <p class="description">
-            The page you are looking for has probably been deleted or the link was incorrect. Click the button below to return to the main page.
-        </p>
-        <a href="/" class="home-btn">Go back to the home page.</a>
+    <div class="error-container">
+        <h1>404</h1>
+        <h2>Oops! Frame Dropped.</h2>
+        <p>The page you are looking for was edited out of the final cut.</p>
+        <a href="index.html" class="btn-back">
+            <i class="fas fa-home"></i> Back to Home
+        </a>
     </div>
 
 </body>
