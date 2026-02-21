@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Specific Styles for 404 Page */
-        .error-container {
+        /* 404 Specific Styles to match your theme */
+        .error-section {
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 80vh;
@@ -18,37 +17,56 @@
             padding: 20px;
         }
 
-        .error-code {
-            font-size: 120px;
-            font-weight: 800;
-            color: var(--primary-color, #3498db); /* Matches your primary theme color */
+        .error-content h1 {
+            font-size: 8rem;
             margin: 0;
+            color: var(--primary-color, #007bff); /* Uses your theme color or blue */
             line-height: 1;
         }
 
-        .error-message {
-            font-size: 24px;
-            margin: 20px 0;
+        .error-content h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
             color: #333;
         }
 
-        .error-desc {
-            max-width: 500px;
-            margin-bottom: 30px;
+        .error-content p {
+            font-size: 1.1rem;
             color: #666;
-        }
-
-        .back-home-btn {
-            padding: 12px 30px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: 0.3s;
+            margin-bottom: 30px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .error-icon {
-            font-size: 60px;
-            margin-bottom: 10px;
+            font-size: 4rem;
             color: #e74c3c;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .btn-back-home {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary-color, #007bff);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-back-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background-color: #0056b3;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .error-content h1 { font-size: 5rem; }
+            .error-content h2 { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -57,27 +75,34 @@
     <header>
         <div class="container nav-container">
             <a href="index.html#home" class="logo">Md Arafat Hosen</a>
+            <div class="menu-icon" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
             <nav>
-                <ul class="nav-links">
+                <ul class="nav-links" id="navLinks">
+                    <i class="fas fa-times close-icon" onclick="toggleMenu()"></i>
                     <li><a href="index.html#home">Home</a></li>
                     <li><a href="index.html#services">Service</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
                     <li><a href="blog.html" class="btn-blog">Blog</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <main class="error-container">
-        <div class="error-icon">
-            <i class="fas fa-exclamation-triangle"></i>
+    <section class="error-section">
+        <div class="container">
+            <div class="error-content">
+                <i class="fas fa-exclamation-triangle error-icon"></i>
+                <h1>404</h1>
+                <h2>Oops! Page Not Found</h2>
+                <p>The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+                <a href="index.html" class="btn-back-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
         </div>
-        <h1 class="error-code">404</h1>
-        <h2 class="error-message">Oops! Page Not Found</h2>
-        <p class="error-desc">
-            The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
-        </p>
-        <a href="index.html" class="btn btn-primary back-home-btn">Return to Home</a>
-    </main>
+    </section>
 
     <footer>
         <div class="container">
