@@ -3,119 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found | Md Arafat Hosen</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <title>404 - Page Not Found</title>
     <style>
-        /* 404 Specific Styles to match your theme */
-        .error-section {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 80vh;
+            height: 100vh;
             text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
             padding: 20px;
         }
 
-        .error-content h1 {
+        h1 {
             font-size: 8rem;
-            margin: 0;
-            color: var(--primary-color, #007bff); /* Uses your theme color or blue */
+            font-weight: 900;
+            color: #ff6b6b;
             line-height: 1;
+            margin-bottom: 10px;
         }
 
-        .error-content h2 {
+        h2 {
             font-size: 2rem;
             margin-bottom: 20px;
-            color: #333;
+            color: #2c3e50;
         }
 
-        .error-content p {
+        p {
             font-size: 1.1rem;
-            color: #666;
             margin-bottom: 30px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
+            color: #7f8c8d;
         }
 
-        .error-icon {
-            font-size: 4rem;
-            color: #e74c3c;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .btn-back-home {
+        .btn {
             display: inline-block;
             padding: 12px 30px;
-            background-color: var(--primary-color, #007bff);
-            color: white;
+            background-color: #3498db;
+            color: #fff;
             text-decoration: none;
             border-radius: 50px;
-            transition: 0.3s;
+            transition: background-color 0.3s ease;
             font-weight: bold;
         }
 
-        .btn-back-home:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            background-color: #0056b3;
-            color: #fff;
+        .btn:hover {
+            background-color: #2980b9;
         }
 
-        @media (max-width: 768px) {
-            .error-content h1 { font-size: 5rem; }
-            .error-content h2 { font-size: 1.5rem; }
+        /* Subtle animation */
+        .container {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="container nav-container">
-            <a href="index.html#home" class="logo">Md Arafat Hosen</a>
-            <div class="menu-icon" onclick="toggleMenu()">
-                <i class="fas fa-bars"></i>
-            </div>
-            <nav>
-                <ul class="nav-links" id="navLinks">
-                    <i class="fas fa-times close-icon" onclick="toggleMenu()"></i>
-                    <li><a href="index.html#home">Home</a></li>
-                    <li><a href="index.html#services">Service</a></li>
-                    <li><a href="index.html#contact">Contact</a></li>
-                    <li><a href="blog.html" class="btn-blog">Blog</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <div class="container">
+        <h1>404</h1>
+        <h2>Oops! Page Not Found</h2>
+        <p>The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+        <a href="/" class="btn">Back to Homepage</a>
+    </div>
 
-    <section class="error-section">
-        <div class="container">
-            <div class="error-content">
-                <i class="fas fa-exclamation-triangle error-icon"></i>
-                <h1>404</h1>
-                <h2>Oops! Page Not Found</h2>
-                <p>The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
-                <a href="index.html" class="btn-back-home">
-                    <i class="fas fa-home"></i> Back to Home
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>© 2026 Md Arafat Hosen. All rights reserved.</p>
-            <div class="social-links">
-                <a href="https://www.facebook.com/MdArafatHosen0" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/mdarafathosen900" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.linkedin.com/in/md-arafat-yasine" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://www.youtube.com/@MdArafatHosen0" target="_blank"><i class="fab fa-youtube"></i></a>
-            </div>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
