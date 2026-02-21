@@ -126,7 +126,7 @@ p{
 
     <!-- Logo + Brand -->
     <div class="logo">
-        <img src="https://lh3.googleusercontent.com/u/0/d/1oSezMeeMzuX0q9EPG3dYFhrdr0yhADMx" alt="Logo" width="50" height="50">
+        <img src="https://lh3.googleusercontent.com/u/0/d/1oSezMeeMzuX0q9EPG3dYFhrdr0yhADMx" alt="Logo">
         <div class="brand">Md Arafat Hosen</div>
     </div>
 
@@ -135,7 +135,7 @@ p{
 
     <!-- Search -->
     <div class="search-box">
-        <input type="text" placeholder="Search...">
+        <input type="text" placeholder="Search the site...">
         <button onclick="searchPage()">Search</button>
     </div>
 
@@ -161,12 +161,11 @@ let interval = setInterval(function(){
     }
 },1000);
 
-// Search Function
+// Search Function – Google site search for mdarafathosen.top
 function searchPage(){
     let query = document.querySelector(".search-box input").value;
     if(query.trim() !== ""){
-        // Customize your search URL here
-        window.location.href = "/search?q=" + encodeURIComponent(query);
+        window.location.href = "https://www.google.com/search?q=site:mdarafathosen.top " + encodeURIComponent(query);
     }
 }
 </script>
