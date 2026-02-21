@@ -4,82 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 - Page Not Found</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            text-align: center;
+            color: #f8fafc;
+            overflow: hidden;
         }
 
         .container {
+            text-align: center;
+            padding: 2rem;
             max-width: 600px;
-            padding: 20px;
+        }
+
+        /* Animated 404 Text */
+        .error-code {
+            font-size: 10rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
         h1 {
-            font-size: 8rem;
-            font-weight: 900;
-            color: #ff6b6b;
-            line-height: 1;
-            margin-bottom: 10px;
-        }
-
-        h2 {
             font-size: 2rem;
-            margin-bottom: 20px;
-            color: #2c3e50;
+            margin-bottom: 1rem;
         }
 
         p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            color: #7f8c8d;
+            color: #94a3b8;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background-color: #3498db;
-            color: #fff;
+        /* Stylish Button */
+        .home-btn {
             text-decoration: none;
-            border-radius: 50px;
-            transition: background-color 0.3s ease;
-            font-weight: bold;
+            color: #fff;
+            background: #3b82f6;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
         }
 
-        .btn:hover {
-            background-color: #2980b9;
+        .home-btn:hover {
+            background: #2563eb;
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4);
         }
 
-        /* Subtle animation */
-        .container {
-            animation: fadeIn 0.8s ease-in-out;
+        /* Decorative Circles */
+        .circle {
+            position: absolute;
+            z-index: -1;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.1);
+            filter: blur(50px);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .c1 { width: 300px; height: 300px; top: -100px; left: -100px; }
+        .c2 { width: 400px; height: 400px; bottom: -150px; right: -150px; }
     </style>
 </head>
 <body>
 
+    <div class="circle c1"></div>
+    <div class="circle c2"></div>
+
     <div class="container">
-        <h1>404</h1>
-        <h2>Oops! Page Not Found</h2>
-        <p>The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
-        <a href="/" class="btn">Back to Homepage</a>
+        <div class="error-code">404</div>
+        <h1>Lost in Space?</h1>
+        <p>The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. Let's get you back on track.</p>
+        
+        <a href="/" class="home-btn">Return Home</a>
     </div>
 
 </body>
