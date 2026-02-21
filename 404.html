@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>404 - Page Not Found</title>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
 <style>
 body{
 margin:0;
@@ -11,38 +12,41 @@ height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-background:#000;
+background:#0f2027;
 color:#fff;
-font-family:sans-serif;
 text-align:center;
+font-family:sans-serif;
 }
-h1{
-font-size:120px;
-background:linear-gradient(90deg,#ff00cc,#3333ff,#00ffcc);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-animation:glow 2s infinite alternate;
-}
-@keyframes glow{
-from{text-shadow:0 0 10px #ff00cc;}
-to{text-shadow:0 0 30px #00ffcc;}
-}
+.content{position:relative;z-index:1;}
+h1{font-size:120px;margin:0;}
 a{
 display:inline-block;
 margin-top:20px;
-padding:12px 30px;
-border-radius:30px;
-background:linear-gradient(90deg,#ff00cc,#3333ff);
-color:#fff;
+padding:10px 25px;
+background:#00c6ff;
+color:#000;
 text-decoration:none;
+border-radius:25px;
 }
 </style>
 </head>
 <body>
-<div>
+<div id="tsparticles"></div>
+<div class="content">
 <h1>404</h1>
-<h2>Page Not Found</h2>
-<a href="/">Go Back</a>
+<h2>Lost in Space?</h2>
+<a href="/">Return Home</a>
 </div>
+<script>
+tsParticles.load("tsparticles",{
+particles:{
+number:{value:80},
+size:{value:3},
+move:{enable:true,speed:2},
+links:{enable:true,color:"#ffffff"},
+color:{value:"#ffffff"}
+}
+});
+</script>
 </body>
 </html>
