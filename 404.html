@@ -66,34 +66,6 @@ p{
     opacity:0.8;
 }
 
-.search-box{
-    display:flex;
-    margin-bottom:20px;
-}
-
-.search-box input{
-    flex:1;
-    padding:10px;
-    border:none;
-    border-radius:25px 0 0 25px;
-    outline:none;
-}
-
-.search-box button{
-    padding:10px 20px;
-    border:none;
-    border-radius:0 25px 25px 0;
-    background:#fff;
-    cursor:pointer;
-    font-weight:500;
-    transition:0.3s;
-}
-
-.search-box button:hover{
-    background:#4facfe;
-    color:#fff;
-}
-
 .btn{
     display:inline-block;
     padding:10px 25px;
@@ -133,12 +105,6 @@ p{
     <h1>404</h1>
     <p>Oops! The page you're looking for doesn’t exist.</p>
 
-    <!-- Search -->
-    <div class="search-box">
-        <input type="text" placeholder="Search mdarafathosen.top...">
-        <button onclick="searchPage()">Search</button>
-    </div>
-
     <a href="/" class="btn">Go Home</a>
 
     <div class="timer">
@@ -160,15 +126,6 @@ let interval = setInterval(function(){
         window.location.href = "/";
     }
 },1000);
-
-// Search Function for your domain
-function searchPage(){
-    let query = document.querySelector(".search-box input").value;
-    if(query.trim() !== ""){
-        // Google site search for mdarafathosen.top
-        window.location.href = "https://www.google.com/search?q=site:mdarafathosen.top " + encodeURIComponent(query);
-    }
-}
 </script>
 
 </body>
