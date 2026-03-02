@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/x-icon" href="https://lh3.googleusercontent.com/u/0/d/1oSezMeeMzuX0q9EPG3dYFhrdr0yhADMx">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog | Md Arafat Hosen</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .blog-thumb { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+        .post-tag { font-size: 10px; color: #6366f1; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 5px; }
+    </style>
 </head>
 <body>
 
     <header>
         <div class="container nav-container">
             <a href="index.html" class="logo">Md Arafat Hosen</a>
-            
-            <div class="menu-icon" onclick="toggleMenu()">
-                <i class="fas fa-bars"></i>
-            </div>
-
+            <div class="menu-icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
             <nav>
                 <ul class="nav-links" id="navLinks">
                     <i class="fas fa-times close-icon" onclick="toggleMenu()"></i>
-                    <li><a href="index.html#home" onclick="toggleMenu()">Home</a></li>
-                    <li><a href="index.html#services" onclick="toggleMenu()">Service</a></li>
-                    <li><a href="index.html#contact" onclick="toggleMenu()">Contact</a></li>
-                    <li><a href="blog.html" class="btn-blog" onclick="toggleMenu()">Blog</a></li>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#services">Service</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                    <li><a href="blog.html" class="active">Blog</a></li>
                 </ul>
             </nav>
         </div>
@@ -32,44 +31,99 @@
 
     <section class="services-section container" style="min-height: 80vh; padding-top: 120px;">
         <h2 class="section-title">Latest Blog Posts</h2>
-        
         <div id="blog-posts-container" class="services-grid">
-            <p style="text-align: center; grid-column: 1/-1;">Loading...</p>
+            <p style="text-align: center; grid-column: 1/-1;">Loading all stories...</p>
         </div>
     </section>
 
     <footer>
-        <div class="container">
+        <div class="container text-center">
             <p>© 2026 Md Arafat Hosen. All rights reserved.</p>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    <script>
-        async function fetchBlogs() {
+        const firebaseConfig = {
+            apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U",
+            authDomain: "md-arafat-hosen.firebaseapp.com",
+            projectId: "md-arafat-hosen",
+            storageBucket: "md-arafat-hosen.firebasestorage.app",
+            appId: "1:170687583576:web:ebffeccc9f6ead20cd412d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function loadAllPosts() {
+            const container = document.getElementById('blog-posts-container');
+            let allPosts = [];
+
             try {
-                const response = await fetch('blogs.json');
-                const data = await response.json();
-                const container = document.getElementById('blog-posts-container');
-                container.innerHTML = ''; 
+                // ১. Firebase থেকে ডেটা আনা
+                const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
+                const querySnapshot = await getDocs(q);
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    allPosts.push({
+                        title: data.title,
+                        category: data.category || "General",
+                        image: data.image || "https://via.placeholder.com/300",
+                        link: `posts/${data.slug}.html`,
+                        source: 'firebase'
+                    });
+                });
 
-                data.forEach(post => {
-                    // এখানে আইকন রিমুভ করে শুধুমাত্র টেক্সট রাখা হয়েছে
+                // ২. blogs.json থেকে ডেটা আনা
+                try {
+                    const jsonRes = await fetch('blogs.json');
+                    if(jsonRes.ok) {
+                        const jsonData = await jsonRes.json();
+                        // JSON এর ডেটাকেও লিস্টে যোগ করা
+                        jsonData.forEach(item => {
+                            allPosts.push({
+                                title: item.title,
+                                category: item.category || "Archive",
+                                image: item.image || item.thumb || "https://via.placeholder.com/300",
+                                link: item.link,
+                                source: 'json'
+                            });
+                        });
+                    }
+                } catch (e) { console.log("JSON file not found or empty"); }
+
+                // ৩. স্ক্রিনে দেখানো
+                if (allPosts.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">No posts found anywhere.</p>';
+                    return;
+                }
+
+                container.innerHTML = ''; 
+                allPosts.forEach(post => {
                     container.innerHTML += `
-                        <div class="service-card">
-                            <h3>${post.title}</h3>
-                            <p>${post.desc}</p>
+                        <div class="service-card" style="text-align: left;">
+                            <img src="${post.image}" class="blog-thumb" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+                            <span class="post-tag">${post.category}</span>
+                            <h3 style="margin-top: 5px;">${post.title}</h3>
                             <br>
                             <a href="${post.link}" class="btn">Read More</a>
                         </div>
                     `;
                 });
+
             } catch (error) {
-                console.error("Error loading posts");
+                console.error("Error:", error);
+                container.innerHTML = '<p style="text-align: center; color: red;">Failed to sync posts.</p>';
             }
         }
-        window.onload = fetchBlogs;
+
+        window.onload = loadAllPosts;
+    </script>
+
+    <script>
+        function toggleMenu() { document.getElementById("navLinks").classList.toggle("active"); }
     </script>
 </body>
 </html>
