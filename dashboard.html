@@ -8,100 +8,104 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
-        :root { --accent: #8b5cf6; --bg-dark: #020617; }
-        body { font-family: 'Outfit', sans-serif; background-color: var(--bg-dark); color: #f8fafc; display: none; }
-        .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        #editor { height: 500px; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.1) !important; color: white; border-radius: 0 0 12px 12px; font-size: 16px; }
-        .ql-toolbar { background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.1) !important; border-radius: 12px 12px 0 0; }
-        .ql-snow .ql-stroke { stroke: #cbd5e1 !important; }
-        .ql-snow .ql-fill { fill: #cbd5e1 !important; }
-        .ql-snow .ql-picker { color: #cbd5e1 !important; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        :root { --accent: #6366f1; --bg-dark: #050505; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: #f8fafc; display: none; overflow-x: hidden; }
         
-        /* New Thumbnail Box Design */
-        .upload-area { border: 2px dashed rgba(139, 92, 246, 0.3); transition: 0.3s; position: relative; overflow: hidden; min-height: 200px; }
-        .upload-area:hover { border-color: #8b5cf6; background: rgba(139, 92, 246, 0.05); }
-        #imagePreview { width: 100%; height: 200px; object-fit: cover; display: none; border-radius: 12px; }
-        .remove-img { position: absolute; top: 10px; right: 10px; background: rgba(239, 68, 68, 0.9); width: 30px; height: 30px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
+        .glass-panel { background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        
+        /* Banner Style Header */
+        .cover-wrapper { width: 100%; height: 350px; background: #111; position: relative; overflow: hidden; border-radius: 0 0 40px 40px; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
+        #coverImagePreview { width: 100%; height: 100%; object-fit: cover; display: none; transition: 0.5s ease; }
+        .cover-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); opacity: 0; transition: 0.3s; }
+        .cover-wrapper:hover .cover-overlay { opacity: 1; }
+        .cover-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed rgba(255,255,255,0.05); }
+
+        /* Professional Editor Fixes */
+        #editor { height: auto; min-height: 600px; border: none !important; color: #cbd5e1; font-size: 1.2rem; line-height: 1.8; }
+        .ql-toolbar.ql-snow { border: none !important; background: transparent; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.05) !important; position: sticky; top: 0; z-index: 40; backdrop-filter: blur(10px); }
+        .ql-container.ql-snow { border: none !important; }
+        .ql-editor.ql-blank::before { color: #475569 !important; font-style: normal; }
+
+        .btn-primary { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.5); }
+        
+        input::placeholder, textarea::placeholder { color: #334155; }
     </style>
 </head>
 <body class="min-h-screen">
 
-    <aside class="fixed w-72 h-screen glass-panel border-r border-slate-800 hidden lg:flex flex-col z-50">
-        <div class="p-8"><h1 class="text-2xl font-bold text-indigo-400 italic">Arafat CMS</h1></div>
-        <nav class="flex-1 px-4 space-y-2">
-            <a href="#" class="flex items-center p-4 rounded-xl text-indigo-400 bg-indigo-500/5"><i class="fas fa-edit mr-3"></i> Write Post</a>
-            <a href="#" onclick="localStorage.removeItem('my_gh_token'); location.reload();" class="flex items-center p-4 rounded-xl text-slate-400 hover:text-yellow-400 transition"><i class="fas fa-key mr-3"></i> Update Token</a>
-        </nav>
-        <div class="p-6">
-            <button id="logoutBtn" class="w-full p-4 rounded-2xl bg-red-500/10 text-red-400 font-bold hover:bg-red-500 hover:text-white transition">Logout Account</button>
+    <div class="cover-wrapper" id="coverTrigger">
+        <input type="file" id="fileInput" class="hidden" accept="image/*">
+        <img id="coverImagePreview" src="">
+        <div class="cover-placeholder" id="placeholderUI">
+            <div class="w-14 h-14 bg-white/5 rounded-full flex items-center justify-center mb-4 border border-white/10">
+                <i class="fas fa-camera text-slate-400"></i>
+            </div>
+            <p class="text-slate-500 font-medium">Add Cover Illustration</p>
         </div>
-    </aside>
+        <div class="cover-overlay">
+            <button class="px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-sm font-bold">Change Cover</button>
+        </div>
+    </div>
 
-    <main class="lg:ml-72 p-6 md:p-12">
-        <header class="mb-10 flex justify-between items-end">
-            <div>
-                <h2 class="text-3xl font-bold">New Publication</h2>
-                <p class="text-slate-400 italic">Status: <span class="text-green-400">● Smart-Nav Sync Enabled</span></p>
-            </div>
-            <div class="text-right">
-                <span class="text-xs text-slate-500 block">Est. Read Time</span>
-                <span id="readTime" class="text-indigo-400 font-bold">0 min read</span>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
-            <div class="xl:col-span-3 space-y-6">
-                <div class="glass-panel p-8 rounded-[32px]">
-                    <input type="text" id="postTitle" placeholder="Enter Catchy Title..." class="w-full bg-transparent text-4xl font-bold outline-none border-none placeholder-slate-700">
-                    <div class="flex items-center mt-4 border-t border-slate-800 pt-4">
-                        <span class="text-slate-500 text-sm font-mono mr-2">url/posts/</span>
-                        <input type="text" id="postSlug" placeholder="automatic-slug" class="bg-transparent text-indigo-400 outline-none flex-1 font-mono text-sm">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+        <div class="flex flex-col lg:flex-row gap-12 mt-12">
+            
+            <div class="flex-1 space-y-8">
+                <div class="space-y-4">
+                    <input type="text" id="postTitle" placeholder="Untitled Post" class="w-full bg-transparent text-5xl lg:text-6xl font-extrabold outline-none border-none placeholder-slate-800 tracking-tight">
+                    
+                    <div class="flex items-center space-x-4">
+                        <span class="px-3 py-1 bg-indigo-500/10 text-indigo-400 rounded-lg text-xs font-mono">/posts/</span>
+                        <input type="text" id="postSlug" placeholder="automatic-slug" class="bg-transparent text-slate-500 outline-none font-mono text-sm w-full">
                     </div>
+
+                    <textarea id="metaDesc" placeholder="Write a brief teaser for this story..." class="w-full bg-transparent outline-none text-slate-400 resize-none h-16 text-lg border-l-2 border-slate-800 pl-4 mt-4 focus:border-indigo-500 transition-colors"></textarea>
                 </div>
 
-                <div class="glass-panel p-6 rounded-[24px]">
-                    <label class="text-xs font-bold text-slate-500 uppercase block mb-2">Meta Description (SEO)</label>
-                    <textarea id="metaDesc" placeholder="Write a brief summary for Google search results..." class="w-full bg-transparent outline-none text-slate-300 resize-none h-20 text-sm"></textarea>
-                </div>
-
-                <div class="editor-wrapper shadow-2xl">
+                <div class="editor-container mt-10">
                     <div id="editor"></div>
                 </div>
             </div>
 
-            <div class="xl:col-span-1 space-y-6">
-                <div class="glass-panel p-6 rounded-[32px] sticky top-6">
-                    <label class="text-xs font-bold text-slate-500 uppercase block mb-2">Featured Thumbnail</label>
-                    <div id="dropZone" class="upload-area rounded-2xl flex flex-col items-center justify-center text-center mb-4 cursor-pointer">
-                        <input type="file" id="fileInput" class="hidden" accept="image/*">
-                        <div id="removeImg" class="remove-img"><i class="fas fa-times text-white"></i></div>
-                        <img id="imagePreview" src="">
-                        <div id="uploadPlaceholder" class="p-4">
-                            <div class="w-16 h-16 bg-indigo-500/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                                <i class="fas fa-image text-2xl text-indigo-400"></i>
-                            </div>
-                            <p class="text-xs text-slate-400 px-4">Drag & Drop or <span class="text-indigo-400 font-bold">Browse</span></p>
-                            <p class="text-[10px] text-slate-600 mt-1">Recommended: 1200x630px</p>
-                        </div>
-                    </div>
-                    
-                    <label class="text-xs font-bold text-slate-500 uppercase block mb-2">Category Select</label>
-                    <div class="relative mb-6">
-                        <input type="text" id="categoryInput" list="categoryList" placeholder="Select or Type..." class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl text-sm outline-none focus:border-indigo-500 transition">
-                        <datalist id="categoryList">
-                            <option value="Gadget"><option value="My Blog"><option value="Mobile Phone"><option value="Video Editing">
-                            <option value="Thumbnail Design"><option value="Email Marketing"><option value="Web Development">
-                        </datalist>
+            <aside class="w-full lg:w-80 space-y-6">
+                <div class="glass-panel p-8 rounded-[32px] sticky top-12 border border-white/5">
+                    <div class="flex justify-between items-center mb-8">
+                        <h3 class="font-bold text-slate-200">Publishing</h3>
+                        <div id="readTime" class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">0 min read</div>
                     </div>
 
-                    <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-5 rounded-2xl shadow-lg transition transform active:scale-95 flex items-center justify-center">
-                        <i class="fas fa-globe mr-2"></i> PUBLISH LIVE
-                    </button>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-3">Category</label>
+                            <input type="text" id="categoryInput" list="categoryList" placeholder="Tag this post..." class="w-full bg-white/5 border border-white/5 p-4 rounded-2xl text-sm outline-none focus:border-indigo-500 transition shadow-inner">
+                            <datalist id="categoryList">
+                                <option value="Web Development"><option value="Gadget Review"><option value="Video Editing">
+                                <option value="Marketing Strategy"><option value="Personal Blog">
+                            </datalist>
+                        </div>
+
+                        <div class="pt-4 space-y-3">
+                            <button id="publishBtn" class="w-full btn-primary text-white font-bold py-5 rounded-2xl shadow-xl flex items-center justify-center space-x-2">
+                                <i class="fas fa-paper-plane text-sm"></i>
+                                <span>PUBLISH LIVE</span>
+                            </button>
+                            
+                            <button onclick="location.reload()" class="w-full bg-white/5 hover:bg-white/10 text-slate-400 py-4 rounded-2xl text-sm font-medium transition">
+                                Save Draft
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-8 border-t border-white/5 flex flex-col items-center">
+                        <button onclick="localStorage.removeItem('my_gh_token'); location.reload();" class="text-[10px] font-bold text-slate-600 hover:text-indigo-400 transition uppercase tracking-tighter">Update Github Token</button>
+                        <button id="logoutBtn" class="mt-4 text-[10px] font-bold text-red-900/50 hover:text-red-500 transition uppercase">Sign Out</button>
+                    </div>
                 </div>
-            </div>
+            </aside>
         </div>
-    </main>
+    </div>
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
@@ -130,60 +134,47 @@
             else window.location.href = "login.html"; 
         });
 
+        // Cover Image Handling
+        const coverTrigger = document.getElementById('coverTrigger');
         const fileInput = document.getElementById('fileInput');
-        const imagePreview = document.getElementById('imagePreview');
-        const uploadPlaceholder = document.getElementById('uploadPlaceholder');
-        const dropZone = document.getElementById('dropZone');
-        const removeImg = document.getElementById('removeImg');
+        const coverImagePreview = document.getElementById('coverImagePreview');
+        const placeholderUI = document.getElementById('placeholderUI');
         let selectedFile = null;
 
-        // Image Handling Logic
-        function handleFile(file) {
-            if (file && file.type.startsWith('image/')) {
+        coverTrigger.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
                 selectedFile = file;
                 const reader = new FileReader();
                 reader.onload = (re) => {
-                    imagePreview.src = re.target.result;
-                    imagePreview.style.display = 'block';
-                    removeImg.style.display = 'flex';
-                    uploadPlaceholder.style.display = 'none';
+                    coverImagePreview.src = re.target.result;
+                    coverImagePreview.style.display = 'block';
+                    placeholderUI.style.display = 'none';
                 }
                 reader.readAsDataURL(file);
             }
-        }
-
-        dropZone.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
-
-        // Drag and Drop
-        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = "#8b5cf6"; });
-        dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = "rgba(139, 92, 246, 0.3)"; });
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            handleFile(e.dataTransfer.files[0]);
         });
 
-        removeImg.addEventListener('click', (e) => {
-            e.stopPropagation();
-            selectedFile = null;
-            imagePreview.src = '';
-            imagePreview.style.display = 'none';
-            removeImg.style.display = 'none';
-            uploadPlaceholder.style.display = 'block';
-            fileInput.value = '';
-        });
-
-        // Slug & Read Time Logic
+        // Slug Logic
         document.getElementById('postTitle').addEventListener('input', (e) => {
             document.getElementById('postSlug').value = e.target.value.toLowerCase().trim().replace(/ /g, '-').replace(/[^\w-]+/g, '');
         });
 
+        // Editor Initialization
         var quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Write something amazing...',
+            placeholder: 'Tell your story...',
             modules: {
                 imageResize: { displaySize: true },
-                toolbar: [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline'], [{ 'color': [] }], [{ 'align': [] }], ['link', 'image', 'video'], ['clean']]
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline', 'blockquote'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                ]
             }
         });
 
@@ -194,7 +185,7 @@
             document.getElementById('readTime').innerText = `${time} min read`;
         });
 
-        // Publish Logic
+        // Publish Live Logic
         document.getElementById('publishBtn').addEventListener('click', async () => {
             const title = document.getElementById('postTitle').value;
             const slug = document.getElementById('postSlug').value;
@@ -202,26 +193,30 @@
             const category = document.getElementById('categoryInput').value || "General";
             const content = quill.root.innerHTML;
 
-            if(!title || !selectedFile) return alert("Title and Image are required!");
+            if(!title || !selectedFile) return alert("Please add a title and cover image.");
 
             let GITHUB_TOKEN = localStorage.getItem('my_gh_token');
             if (!GITHUB_TOKEN) {
-                GITHUB_TOKEN = prompt("Enter GitHub Token:");
+                GITHUB_TOKEN = prompt("Enter GitHub Personal Access Token:");
                 if (GITHUB_TOKEN) localStorage.setItem('my_gh_token', GITHUB_TOKEN); else return;
             }
 
             const btn = document.getElementById('publishBtn');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> DEPLOYING...';
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> <span>DEPLOYING...</span>';
             btn.disabled = true;
 
             try {
-                const storageRef = ref(storage, 'thumbnails/' + Date.now() + "_" + selectedFile.name);
+                // 1. Firebase Storage
+                const storageRef = ref(storage, 'covers/' + Date.now() + "_" + selectedFile.name);
                 const snapshot = await uploadBytes(storageRef, selectedFile);
                 const imageURL = await getDownloadURL(snapshot.ref);
 
+                // 2. Firebase Database
                 await addDoc(collection(db, "blogs"), { title, slug, category, image: imageURL, timestamp: serverTimestamp() });
 
-                const htmlTemplate = `<!DOCTYPE html>
+                // 3. GitHub Deployment
+                const htmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -230,56 +225,21 @@
     <meta name="description" content="\${meta}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
-    <style>
-        .blog-container { padding: 140px 20px 60px; max-width: 850px; margin: 0 auto; min-height: 80vh; }
-        .post-category { color: #6366f1; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 15px; display: block; }
-        .post-title { color: #1e293b; margin-bottom: 25px; font-size: 2.5rem; line-height: 1.2; font-weight: 800; }
-        .featured-img { width: 100%; border-radius: 20px; margin-bottom: 35px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-        article { font-size: 1.15rem; color: #334155; line-height: 1.8; }
-        article img { max-width: 100%; height: auto; border-radius: 12px; margin: 20px 0; }
-        .post-navigation { margin-top: 60px; padding-top: 30px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
-        .btn-nav { background: #3b82f6; color: white !important; padding: 12px 25px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
-    </style>
 </head>
-<body>
+<body class="post-template">
     <header><div class="container nav-container"><a href="../index.html" class="logo">Md Arafat Hosen</a><nav><ul class="nav-links"><li><a href="../index.html">Home</a></li><li><a href="../blog.html">Blog</a></li></ul></nav></div></header>
-    <main class="blog-container">
-        <span class="post-category">\${category}</span>
-        <h1 class="post-title">\${title}</h1>
-        <img src="\${imageURL}" class="featured-img">
+    <div class="post-hero" style="background-image: url('\${imageURL}');"></div>
+    <main class="container post-content">
+        <span class="category-label">\${category}</span>
+        <h1 class="entry-title">\${title}</h1>
         <article>\${content}</article>
-        <div class="post-navigation">
-            <a href="../blog.html" class="btn-nav" style="background: #64748b;"><i class="fas fa-th-large"></i> All</a>
-            <div id="navGroup" style="display:flex; gap:10px;"></div>
-        </div>
     </main>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        const firebaseConfig = { apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U", authDomain: "md-arafat-hosen.firebaseapp.com", projectId: "md-arafat-hosen" };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        async function initNav() {
-            const currentSlug = "\${slug}";
-            const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
-            const querySnapshot = await getDocs(q);
-            const blogs = [];
-            querySnapshot.forEach(doc => blogs.push(doc.data()));
-            const index = blogs.findIndex(b => b.slug === currentSlug);
-            const navGroup = document.getElementById('navGroup');
-            if (index !== -1) {
-                if (index < blogs.length - 1) navGroup.innerHTML += '<a href="' + blogs[index + 1].slug + '.html" class="btn-nav">Previous</a>';
-                if (index > 0) navGroup.innerHTML += '<a href="' + blogs[index - 1].slug + '.html" class="btn-nav">Next</a>';
-            }
-        }
-        initNav();
-    <\/script>
 </body>
 </html>`;
 
-                const finalHTML = htmlTemplate
+                const finalHTML = htmlContent
                     .replace(/\${title}/g, title).replace(/\${category}/g, category).replace(/\${meta}/g, meta)
-                    .replace(/\${imageURL}/g, imageURL).replace(/\${content}/g, content).replace(/\${slug}/g, slug);
+                    .replace(/\${imageURL}/g, imageURL).replace(/\${content}/g, content);
 
                 const encoded = btoa(unescape(encodeURIComponent(finalHTML)));
                 const githubURL = `https://api.github.com/repos/ArafatBook/Md-Arafat-Hosen/contents/posts/${slug}.html`;
@@ -287,14 +247,23 @@
                 const res = await fetch(githubURL, {
                     method: "PUT",
                     headers: { "Authorization": "token " + GITHUB_TOKEN, "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: "CMS Publish: " + title, content: encoded })
+                    body: JSON.stringify({ message: "New Post: " + title, content: encoded })
                 });
 
-                if(res.ok) { alert("🚀 Live!"); location.reload(); }
-                else { alert("GitHub Error"); }
+                if(res.ok) {
+                    alert("✨ Successfully published to your live site!");
+                    location.reload();
+                } else {
+                    const err = await res.json();
+                    alert("GitHub Error: " + err.message);
+                }
 
-            } catch (e) { alert("Error: " + e.message); }
-            finally { btn.innerHTML = '<i class="fas fa-globe mr-2"></i> PUBLISH LIVE'; btn.disabled = false; }
+            } catch (e) {
+                alert("Critical Error: " + e.message);
+            } finally {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }
         });
 
         document.getElementById('logoutBtn').addEventListener('click', () => {
