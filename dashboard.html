@@ -3,35 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arafat | Pro Dashboard</title>
+    <title>Arafat OS | Ultimate CMS Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-        
-        :root {
-            --bg-dark: #05070a;
-            --card-dark: #0f121a;
-            --accent: #6366f1;
-        }
-
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: var(--bg-dark); 
-            color: #e2e8f0; 
-            display: none; /* Security check until login verified */
-        }
-
+        :root { --bg-dark: #05070a; --card-dark: #0f121a; --accent: #6366f1; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: #e2e8f0; display: none; }
         .glass { background: rgba(15, 18, 26, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        
-        /* Quill Editor Dark Theme */
         #editor { height: 400px; background: #161b26; border: 1px solid #2d3748 !important; border-radius: 0 0 12px 12px; color: white; }
         .ql-toolbar { background: #1f2937; border: 1px solid #2d3748 !important; border-radius: 12px 12px 0 0; }
         .ql-stroke { stroke: #cbd5e1 !important; }
-        .ql-snow .ql-picker { color: #cbd5e1 !important; }
-        
         .nav-link:hover { background: rgba(99, 102, 241, 0.1); color: var(--accent); }
         .active-nav { background: rgba(99, 102, 241, 0.15); color: var(--accent); border-right: 3px solid var(--accent); }
     </style>
@@ -40,21 +24,16 @@
 
     <aside class="w-64 border-r border-gray-800 hidden lg:flex flex-col fixed h-full bg-[#080a0f] z-50">
         <div class="p-8">
-            <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent italic tracking-tighter">ARAFAT.PRO</h1>
+            <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent italic">ARAFAT.PRO</h1>
         </div>
-        
         <nav class="flex-1 px-4 space-y-2">
             <a href="#" class="nav-link active-nav flex items-center p-3 rounded-xl transition-all">
-                <i class="fas fa-plus-circle mr-3"></i> New Post
+                <i class="fas fa-plus-circle mr-3"></i> Create Post
             </a>
-            <a href="#" class="nav-link flex items-center p-3 rounded-xl transition-all text-gray-400">
-                <i class="fas fa-layer-group mr-3"></i> All Blogs
-            </a>
-            <a href="#" class="nav-link flex items-center p-3 rounded-xl transition-all text-gray-400">
-                <i class="fas fa-chart-bar mr-3"></i> Analytics
+            <a href="https://github.com/ArafatBook/Md-Arafat-Hosen/tree/main/posts" target="_blank" class="nav-link flex items-center p-3 rounded-xl transition-all text-gray-400">
+                <i class="fas fa-layer-group mr-3"></i> View Posts
             </a>
         </nav>
-
         <div class="p-6 border-t border-gray-800">
             <button id="logoutBtn" class="flex items-center text-red-400 hover:text-red-300 transition w-full">
                 <i class="fas fa-power-off mr-3"></i> Log Out
@@ -63,62 +42,52 @@
     </aside>
 
     <main class="flex-1 lg:ml-64 p-4 md:p-10">
-        
         <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
             <div>
-                <h2 class="text-3xl font-bold text-white tracking-tight">Write Story</h2>
-                <p class="text-gray-500 text-sm">Deploying directly to ArafatBook/Md-Arafat-Hosen</p>
+                <h2 class="text-3xl font-bold text-white tracking-tight">New Content</h2>
+                <p class="text-gray-500">ArafatBook / Md-Arafat-Hosen</p>
             </div>
             <div class="glass px-4 py-2 rounded-lg flex items-center">
                 <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-                <span class="text-xs uppercase font-semibold text-gray-300 tracking-wider">Live Connection</span>
+                <span class="text-xs uppercase font-semibold text-gray-300 tracking-wider">GitHub Connected</span>
             </div>
         </header>
 
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            
             <div class="xl:col-span-2 space-y-6">
-                <div class="glass p-6 rounded-2xl space-y-4 shadow-xl">
-                    <input type="text" id="postTitle" placeholder="Enter post title..." class="w-full bg-transparent text-2xl font-bold border-none outline-none focus:ring-0 placeholder-gray-800">
+                <div class="glass p-6 rounded-2xl space-y-4">
+                    <input type="text" id="postTitle" placeholder="Post Title..." class="w-full bg-transparent text-2xl font-bold border-none outline-none focus:ring-0 placeholder-gray-800">
                     <div class="flex items-center text-xs text-gray-500 border-t border-gray-800 pt-4">
-                        <span class="mr-2 opacity-50 uppercase tracking-widest">Permalink:</span>
-                        <span class="text-indigo-400">mdarafathosen.top/posts/</span>
-                        <input type="text" id="postSlug" placeholder="url-slug" class="bg-transparent border-none outline-none focus:ring-0 text-indigo-400 w-full ml-1">
+                        <span class="mr-2 italic">Path: posts/</span>
+                        <input type="text" id="postSlug" placeholder="url-slug (e.g. my-post)" class="bg-transparent border-none outline-none focus:ring-0 text-indigo-400 w-full">
                     </div>
                 </div>
-
                 <div class="rounded-2xl overflow-hidden shadow-2xl">
                     <div id="editor"></div>
                 </div>
             </div>
 
             <div class="space-y-6">
-                <div class="glass p-6 rounded-2xl shadow-xl">
-                    <h3 class="font-bold mb-4 text-white text-sm uppercase tracking-widest border-b border-gray-800 pb-3">Publish Settings</h3>
-                    
-                    <div class="space-y-5">
+                <div class="glass p-6 rounded-2xl">
+                    <h3 class="font-bold mb-4 text-white text-xs uppercase tracking-widest border-b border-gray-800 pb-3">Settings</h3>
+                    <div class="space-y-4">
                         <div>
-                            <label class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Featured Image URL</label>
-                            <input type="text" id="postImage" placeholder="https://example.com/image.jpg" class="w-full bg-gray-900/50 border border-gray-800 p-3 rounded-xl mt-1 outline-none focus:border-indigo-500 transition text-sm">
+                            <label class="text-[10px] text-gray-500 uppercase font-bold">Featured Image URL</label>
+                            <input type="text" id="postImage" placeholder="https://..." class="w-full bg-gray-900/50 border border-gray-800 p-3 rounded-xl mt-1 text-sm outline-none focus:border-indigo-500">
                         </div>
                         <div>
-                            <label class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Category</label>
-                            <select id="category" class="w-full bg-gray-900/50 border border-gray-800 p-3 rounded-xl mt-1 outline-none text-sm appearance-none cursor-pointer">
+                            <label class="text-[10px] text-gray-500 uppercase font-bold">Category</label>
+                            <select id="category" class="w-full bg-gray-900/50 border border-gray-800 p-3 rounded-xl mt-1 text-sm outline-none">
                                 <option>Video Editing</option>
                                 <option>Web Development</option>
                                 <option>Game Dev</option>
                                 <option>Marketing</option>
                             </select>
                         </div>
-                        <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 transform active:scale-[0.98]">
-                            <i class="fas fa-rocket"></i> PUBLISH TO LIVE
+                        <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane"></i> PUBLISH TO LIVE
                         </button>
                     </div>
-                </div>
-
-                <div class="bg-gradient-to-br from-indigo-900/20 to-indigo-800/10 p-6 rounded-2xl border border-indigo-500/20 shadow-inner">
-                    <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-2">System Status</h4>
-                    <p class="text-[11px] text-gray-500 leading-relaxed">Your content is encrypted before deployment. Ensure the <b>posts</b> folder exists in your GitHub repo.</p>
                 </div>
             </div>
         </div>
@@ -130,14 +99,11 @@
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // 1. Initialize Quill
         var quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Start writing your story...',
             modules: { toolbar: [['bold', 'italic', 'underline'], ['link', 'blockquote', 'code-block'], [{ 'header': 1 }, { 'header': 2 }], [{ 'list': 'ordered'}, { 'list': 'bullet' }]] }
         });
 
-        // 2. Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U",
             authDomain: "md-arafat-hosen.firebaseapp.com",
@@ -150,76 +116,60 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // 3. Auth Check
         onAuthStateChanged(auth, (user) => {
-            if (user) { 
-                document.body.style.display = "flex"; 
-            } else { 
-                window.location.href = "login.html"; 
-            }
+            if (user) { document.body.style.display = "flex"; } 
+            else { window.location.href = "login.html"; }
         });
 
-        // 4. Publish Function
         document.getElementById('publishBtn').addEventListener('click', async () => {
             const title = document.getElementById('postTitle').value;
             const slug = document.getElementById('postSlug').value;
             const category = document.getElementById('category').value;
             const image = document.getElementById('postImage').value;
             const content = quill.root.innerHTML; 
-            
-            const GITHUB_TOKEN = "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";
+
+            // টোকেনটি এখানে বসান (ghp_...)
+            const GITHUB_TOKEN = "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"; 
             const REPO = "ArafatBook/Md-Arafat-Hosen";
 
-            if(!title || !slug || content === "<p><br></p>") {
-                return alert("Title, Slug and Content are required!");
-            }
+            if(!title || !slug || content === "<p><br></p>") return alert("Title and Slug are required!");
 
             const btn = document.getElementById('publishBtn');
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> DEPLOYING...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
             btn.disabled = true;
 
             try {
-                // Step A: Save to Firebase Firestore
+                // Save to Firebase
                 await addDoc(collection(db, "blogs"), {
-                    title, 
-                    slug, 
-                    category, 
-                    image, 
-                    timestamp: serverTimestamp()
+                    title, slug, category, image, timestamp: serverTimestamp()
                 });
 
-                // Step B: Push to GitHub
-                const htmlTemplate = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${title}</title><style>body{font-family:sans-serif;line-height:1.6;padding:40px;max-width:800px;margin:auto;color:#333}img{max-width:100%;border-radius:12px}</style></head><body><img src="${image}"><h1>${title}</h1><hr><article>${content}</article></body></html>`;
+                // Prepare HTML
+                const htmlTemplate = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${title}</title><style>body{font-family:sans-serif;line-height:1.6;padding:40px;max-width:800px;margin:auto}img{max-width:100%;border-radius:12px}</style></head><body><img src="${image}"><h1>${title}</h1><hr><article>${content}</article></body></html>`;
                 const encodedContent = btoa(unescape(encodeURIComponent(htmlTemplate)));
 
+                // GitHub API Call
                 const res = await fetch(`https://api.github.com/repos/${REPO}/contents/posts/${slug}.html`, {
                     method: "PUT",
-                    headers: { 
-                        "Authorization": `token ${GITHUB_TOKEN}`, 
-                        "Content-Type": "application/json" 
-                    },
-                    body: JSON.stringify({ 
-                        message: `CMS Sync: ${title}`, 
-                        content: encodedContent 
-                    })
+                    headers: { "Authorization": `token ${GITHUB_TOKEN}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: `CMS Update: ${title}`, content: encodedContent })
                 });
 
                 if(res.ok) {
-                    alert("✅ Success! Your post is now live on GitHub.");
+                    alert("🚀 Success! Post is live on GitHub.");
                     location.reload();
-                } else { 
-                    const errorMsg = await res.json();
-                    alert("GitHub Error: " + errorMsg.message); 
+                } else {
+                    const errRes = await res.json();
+                    alert("GitHub Error: " + errRes.message);
                 }
-            } catch (err) { 
-                alert("Error: " + err.message); 
-            } finally { 
-                btn.innerHTML = '<i class="fas fa-rocket"></i> PUBLISH TO LIVE'; 
-                btn.disabled = false; 
+            } catch (err) {
+                alert("Error: " + err.message);
+            } finally {
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> PUBLISH TO LIVE';
+                btn.disabled = false;
             }
         });
 
-        // 5. Logout
         document.getElementById('logoutBtn').addEventListener('click', () => {
             signOut(auth).then(() => window.location.href = "login.html");
         });
