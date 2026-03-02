@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arafat OS | Ultra CMS Pro v4.0 Full</title>
+    <title>Arafat OS | Ultra CMS Pro v4.5</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -11,24 +11,11 @@
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
         :root { --accent: #8b5cf6; --bg-dark: #020617; }
         body { font-family: 'Outfit', sans-serif; background-color: var(--bg-dark); color: #f8fafc; display: none; }
-        
-        /* UI Styling */
         .glass-panel { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .sidebar-btn.active { background: rgba(139, 92, 246, 0.15); color: #a78bfa; border-left: 4px solid #8b5cf6; }
-        
-        /* Full Power Quill Editor */
         #editor { height: 500px; background: #0f172a; border: none !important; color: #e2e8f0; font-size: 18px; border-radius: 0 0 24px 24px; padding: 20px; }
         .ql-toolbar { background: #1e293b !important; border: none !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 24px 24px 0 0; padding: 12px !important; }
         .ql-snow .ql-stroke { stroke: #94a3b8 !important; }
-        .ql-snow .ql-fill { fill: #94a3b8 !important; }
-        .ql-snow .ql-picker { color: #94a3b8 !important; }
-
-        /* SEO Preview */
-        .seo-card { background: #fff; padding: 15px; border-radius: 12px; max-width: 600px; font-family: arial, sans-serif; margin-top: 10px; }
-        .seo-title { color: #1a0dab; font-size: 20px; line-height: 1.3; margin-bottom: 3px; display: block; font-weight: 400; }
-        .seo-desc { color: #4d5156; font-size: 14px; line-height: 1.5; }
-
-        /* Preview Modal */
         #previewModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; overflow-y: auto; padding: 40px; }
     </style>
 </head>
@@ -37,16 +24,16 @@
     <aside class="fixed w-64 h-screen glass-panel border-r border-slate-800 hidden lg:flex flex-col z-50">
         <div class="p-8 text-center">
             <h1 class="text-xl font-black text-white tracking-widest uppercase">Arafat<span class="text-indigo-500">.OS</span></h1>
-            <p class="text-[10px] text-slate-500 font-bold mt-1 tracking-tighter">ULTRA CMS PRO v4.0</p>
+            <p class="text-[10px] text-slate-500 font-bold mt-1 tracking-tighter">v4.5 STABLE</p>
         </div>
         <nav class="flex-1 px-4 space-y-2">
-            <button onclick="showTab('editor-tab')" class="sidebar-btn active w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-edit mr-3 text-sm"></i> Write Post</button>
-            <button onclick="showTab('posts-tab')" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-list-ul mr-3 text-sm"></i> Content Manager</button>
-            <button onclick="showTab('media-tab')" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-images mr-3 text-sm"></i> Media Assets</button>
+            <button onclick="showTab('editor-tab')" class="sidebar-btn active w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-edit mr-3"></i> Write Post</button>
+            <button onclick="showTab('posts-tab')" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-list-ul mr-3"></i> Post Manager</button>
+            <button onclick="showTab('media-tab')" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-images mr-3"></i> Media Assets</button>
         </nav>
         <div class="p-6">
-            <div id="autoSaveStatus" class="text-[9px] text-indigo-400 font-bold uppercase text-center mb-3 opacity-0 transition-opacity duration-500">Draft Auto-Saved</div>
-            <button id="logoutBtn" class="w-full p-4 rounded-xl bg-red-500/10 text-red-400 text-xs font-bold hover:bg-red-500 hover:text-white transition">Sign Out</button>
+            <div id="autoSaveStatus" class="text-[9px] text-indigo-400 font-bold uppercase text-center mb-3 opacity-0 transition-opacity duration-500">Saved</div>
+            <button id="logoutBtn" class="w-full p-4 rounded-xl bg-red-500/10 text-red-400 text-xs font-bold hover:bg-red-500 hover:text-white transition">Logout</button>
         </div>
     </aside>
 
@@ -54,10 +41,10 @@
         
         <section id="editor-tab" class="tab-content space-y-8">
             <div class="flex justify-between items-center">
-                <h2 id="editorActionTitle" class="text-3xl font-bold">Create Content</h2>
+                <h2 id="editorActionTitle" class="text-3xl font-bold">Forge Content</h2>
                 <div class="flex gap-3">
                     <button onclick="openPreview()" class="px-5 py-2 bg-slate-800 rounded-xl text-[11px] font-bold hover:bg-slate-700 transition"><i class="fas fa-eye mr-2"></i> PREVIEW</button>
-                    <div id="readTime" class="text-[11px] font-bold text-indigo-400 bg-indigo-500/10 px-4 py-2 rounded-xl">0 min read</div>
+                    <button onclick="clearDraft()" class="px-5 py-2 bg-red-500/10 text-red-400 rounded-xl text-[11px] font-bold hover:bg-red-500 hover:text-white transition">NEW POST</button>
                 </div>
             </div>
 
@@ -65,44 +52,28 @@
                 <div class="xl:col-span-3 space-y-6">
                     <div class="glass-panel p-8 rounded-[32px]">
                         <input type="hidden" id="editDocId">
-                        <input type="text" id="postTitle" placeholder="Enter post title..." class="w-full bg-transparent text-4xl font-bold outline-none border-none placeholder-slate-800">
-                        <div class="flex items-center mt-4 bg-black/30 w-fit px-3 py-1 rounded-lg border border-white/5 font-mono text-[11px]">
-                            <span class="text-slate-600">URL: mdarafathosen.top/</span>
-                            <input type="text" id="postSlug" class="bg-transparent text-indigo-400 outline-none w-48 ml-1">
-                        </div>
+                        <input type="text" id="postTitle" placeholder="Post Title..." class="w-full bg-transparent text-4xl font-bold outline-none border-none placeholder-slate-800">
+                        <input type="text" id="postSlug" placeholder="url-slug-here" class="bg-transparent text-indigo-400 outline-none w-full mt-2 font-mono text-sm border-none">
                     </div>
-
                     <div class="editor-wrapper shadow-2xl rounded-[24px] overflow-hidden"><div id="editor"></div></div>
-
-                    <div class="glass-panel p-8 rounded-[32px] space-y-4 border-t-4 border-indigo-500">
-                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest"><i class="fab fa-google mr-2 text-indigo-500"></i> Google Snippet Preview</h3>
-                        <div class="seo-card shadow-xl">
-                            <span class="text-slate-800 text-xs block mb-1">https://mdarafathosen.top › posts › <span id="seoSlug">...</span></span>
-                            <a href="#" id="seoTitle" class="seo-title">Your Post Title Here</a>
-                            <p id="seoDesc" class="seo-desc">Your meta description will appear here as it would in search engine results.</p>
+                    
+                    <div class="glass-panel p-6 rounded-[24px] border-t-2 border-indigo-500">
+                        <p class="text-[10px] text-slate-500 font-bold uppercase mb-2">Search Preview</p>
+                        <div class="bg-white p-4 rounded-lg">
+                            <h3 id="seoTitle" class="text-blue-700 text-lg font-normal truncate">Title Preview</h3>
+                            <p id="seoDesc" class="text-gray-600 text-sm line-clamp-2">Meta description preview...</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="xl:col-span-1 space-y-6">
                     <div class="glass-panel p-6 rounded-[32px] sticky top-6">
-                        <div class="mb-4">
-                            <label class="text-[10px] font-bold text-slate-500 uppercase mb-2 block">Category</label>
-                            <input type="text" id="categoryInput" list="catList" class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-sm outline-none focus:border-indigo-500">
-                            <datalist id="catList"><option value="Web Development"><option value="Tutorial"><option value="Graphics Design"></datalist>
-                        </div>
-
-                        <div class="mb-6">
-                            <label class="text-[10px] font-bold text-slate-500 uppercase mb-2 block">Meta Description</label>
-                            <textarea id="metaInput" class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-xs outline-none h-32 resize-none"></textarea>
-                        </div>
-
+                        <label class="text-[10px] font-bold text-slate-500 uppercase block mb-2">Metadata</label>
+                        <textarea id="metaInput" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-2xl text-xs outline-none h-32 mb-6"></textarea>
+                        
                         <div class="space-y-3">
-                            <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center">
-                                <i class="fas fa-globe mr-2 text-xs"></i> PUBLISH LIVE
-                            </button>
-                            <button id="draftBtn" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 rounded-xl text-xs transition">SAVE DRAFT</button>
-                            <button id="cancelBtn" onclick="location.reload()" class="hidden w-full bg-red-500/10 text-red-500 font-bold py-2 rounded-xl text-[10px] transition uppercase">Discard Edit</button>
+                            <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-2xl shadow-lg transition">PUBLISH LIVE</button>
+                            <button id="draftBtn" class="w-full bg-slate-800 text-slate-400 font-bold py-3 rounded-2xl text-xs transition">SAVE AS DRAFT</button>
                         </div>
                     </div>
                 </div>
@@ -111,17 +82,16 @@
 
         <section id="posts-tab" class="tab-content hidden space-y-8">
             <div class="flex justify-between items-center">
-                <h2 class="text-3xl font-bold">Content Inventory</h2>
-                <button onclick="bulkDeletePosts()" id="bulkDeleteBtn" class="hidden px-5 py-2 bg-red-500/20 text-red-500 rounded-xl text-[11px] font-bold hover:bg-red-500 hover:text-white transition"><i class="fas fa-trash-alt mr-2"></i> DELETE SELECTED</button>
+                <h2 class="text-3xl font-bold">Management</h2>
+                <button onclick="bulkDelete()" id="bulkBtn" class="hidden bg-red-500 px-6 py-2 rounded-xl text-xs font-bold transition">DELETE SELECTED</button>
             </div>
             <div class="glass-panel rounded-[32px] overflow-hidden">
                 <table class="w-full text-left">
-                    <thead class="bg-slate-900/80 text-slate-500 text-[10px] uppercase font-bold tracking-widest border-b border-white/5">
+                    <thead class="bg-slate-900 text-slate-500 text-[10px] uppercase font-bold border-b border-white/5">
                         <tr>
-                            <th class="p-6 w-10"><input type="checkbox" id="selectAllPosts" class="accent-indigo-500"></th>
-                            <th class="p-6">Content Detail</th>
+                            <th class="p-6 w-10"><input type="checkbox" id="selectAll"></th>
+                            <th class="p-6">Content</th>
                             <th class="p-6">Status</th>
-                            <th class="p-6 text-center">Views</th>
                             <th class="p-6 text-right">Actions</th>
                         </tr>
                     </thead>
@@ -131,21 +101,17 @@
         </section>
 
         <section id="media-tab" class="tab-content hidden space-y-8">
-            <div class="flex justify-between items-center">
-                <h2 class="text-3xl font-bold">Media Library</h2>
-                <input type="file" id="mediaInputFile" class="hidden" accept="image/*">
-                <button onclick="document.getElementById('mediaInputFile').click()" class="bg-indigo-600 px-6 py-3 rounded-xl font-bold text-sm hover:bg-indigo-500 transition shadow-lg"><i class="fas fa-upload mr-2"></i> Upload Asset</button>
-            </div>
-            <div id="mediaGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-5"></div>
+            <h2 class="text-3xl font-bold">Assets</h2>
+            <div id="mediaGrid" class="grid grid-cols-2 md:grid-cols-6 gap-4"></div>
         </section>
 
     </main>
 
     <div id="previewModal">
-        <div class="max-w-4xl mx-auto bg-white text-slate-900 p-10 lg:p-20 rounded-[48px] min-h-screen relative shadow-2xl">
-            <button onclick="closePreview()" class="absolute top-8 right-8 bg-slate-100 hover:bg-red-50 text-slate-400 hover:text-red-500 w-12 h-12 rounded-full flex items-center justify-center transition shadow-sm border border-slate-200"><i class="fas fa-times"></i></button>
-            <h1 id="pvTitle" class="text-5xl font-black mb-8 leading-tight tracking-tight text-black"></h1>
-            <div id="pvContent" class="prose prose-indigo prose-lg max-w-none"></div>
+        <div class="max-w-4xl mx-auto bg-white text-black p-10 lg:p-20 rounded-[40px] relative min-h-screen shadow-2xl">
+            <button onclick="closePreview()" class="absolute top-5 right-5 text-gray-400 text-2xl hover:text-black">&times;</button>
+            <h1 id="pvTitle" class="text-4xl font-bold mb-5"></h1>
+            <div id="pvContent" class="prose max-w-none"></div>
         </div>
     </div>
 
@@ -164,42 +130,18 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
 
-        onAuthStateChanged(auth, (user) => { 
-            if (user) { 
-                document.body.style.display = "flex"; 
-                loadPostsTable(); 
-                loadMediaLibrary(); 
-                startAutoSave(); 
-            } else window.location.href = "login.html"; 
-        });
+        onAuthStateChanged(auth, (user) => { if (user) { document.body.style.display = "flex"; loadPostsTable(); restoreDraft(); startAutoSave(); } else window.location.href = "login.html"; });
 
-        // Tab Switching
-        window.showTab = (id) => {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-            document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
-            const activeBtn = Array.from(document.querySelectorAll('.sidebar-btn')).find(b => b.getAttribute('onclick').includes(id));
-            if(activeBtn) activeBtn.classList.add('active');
-        };
-
-        // --- 1. FULL EDITOR + DIRECT IMAGE UPLOAD ---
+        // Quill Initialization
         var quill = new Quill('#editor', {
             theme: 'snow',
             modules: {
                 imageResize: { displaySize: true },
-                toolbar: [
-                    [{ 'header': [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline', 'strike'], 
-                    [{ 'color': [] }, { 'background': [] }],
-                    [{ 'align': [] }],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['link', 'image', 'video', 'code-block'],
-                    ['clean']
-                ]
+                toolbar: [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline'], [{ 'color': [] }, { 'background': [] }], [{ 'align': [] }], ['link', 'image', 'video'], ['clean']]
             }
         });
 
-        // Direct Image Handler
+        // --- FIXED IMAGE UPLOAD ---
         quill.getModule('toolbar').addHandler('image', () => {
             const input = document.createElement('input');
             input.setAttribute('type', 'file');
@@ -207,216 +149,165 @@
             input.click();
             input.onchange = async () => {
                 const file = input.files[0];
-                const range = quill.getSelection();
-                const btn = document.querySelector('.ql-image');
-                btn.style.opacity = '0.5';
+                if (!file) return;
+
+                const range = quill.getSelection(true);
+                const storageRef = ref(storage, 'cms_images/' + Date.now() + "_" + file.name);
                 
-                const storageRef = ref(storage, 'editor-assets/' + Date.now() + "_" + file.name);
-                const snapshot = await uploadBytes(storageRef, file);
-                const url = await getDownloadURL(snapshot.ref);
-                
-                quill.insertEmbed(range.index, 'image', url);
-                btn.style.opacity = '1';
+                try {
+                    const snapshot = await uploadBytes(storageRef, file);
+                    const url = await getDownloadURL(snapshot.ref);
+                    quill.insertEmbed(range.index, 'image', url);
+                    quill.setSelection(range.index + 1);
+                } catch (e) { alert("Upload failed: " + e.message); }
             };
         });
 
-        // --- 2. AUTO-SAVE LOGIC ---
+        // --- AUTO SAVE (NO POPUP) ---
         function startAutoSave() {
             setInterval(() => {
                 const content = quill.root.innerHTML;
-                const title = document.getElementById('postTitle').value;
-                if(content.length > 50 || title.length > 5) {
-                    const draft = { title, content, meta: document.getElementById('metaInput').value, slug: document.getElementById('postSlug').value };
-                    localStorage.setItem('arafat_cms_draft', JSON.stringify(draft));
-                    const badge = document.getElementById('autoSaveStatus');
-                    badge.style.opacity = '1';
-                    setTimeout(() => badge.style.opacity = '0', 2000);
+                if(content.length > 20 && !document.getElementById('editDocId').value) {
+                    localStorage.setItem('arafat_v4_draft', JSON.stringify({
+                        title: document.getElementById('postTitle').value,
+                        content: content,
+                        meta: document.getElementById('metaInput').value,
+                        slug: document.getElementById('postSlug').value
+                    }));
+                    document.getElementById('autoSaveStatus').style.opacity = '1';
+                    setTimeout(() => document.getElementById('autoSaveStatus').style.opacity = '0', 2000);
                 }
-            }, 30000); // Saves every 30s
+            }, 10000);
         }
 
-        window.addEventListener('load', () => {
-            const saved = localStorage.getItem('arafat_cms_draft');
-            if(saved && confirm("Detected unsaved changes. Restore draft?")) {
+        function restoreDraft() {
+            const saved = localStorage.getItem('arafat_v4_draft');
+            if(saved) {
                 const data = JSON.parse(saved);
-                document.getElementById('postTitle').value = data.title;
-                document.getElementById('postSlug').value = data.slug;
-                document.getElementById('metaInput').value = data.meta;
-                quill.root.innerHTML = data.content;
+                document.getElementById('postTitle').value = data.title || '';
+                document.getElementById('postSlug').value = data.slug || '';
+                document.getElementById('metaInput').value = data.meta || '';
+                quill.root.innerHTML = data.content || '';
             }
-        });
+        }
 
-        // --- 3. BULK DELETE & TABLE LOGIC ---
+        window.clearDraft = () => {
+            if(confirm("Start new post? This will clear current draft.")) {
+                localStorage.removeItem('arafat_v4_draft');
+                location.reload();
+            }
+        };
+
+        // UI Tabs
+        window.showTab = (id) => {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+            const btn = Array.from(document.querySelectorAll('.sidebar-btn')).find(b => b.getAttribute('onclick').includes(id));
+            if(btn) btn.classList.add('active');
+            if(id === 'media-tab') loadMedia();
+        };
+
+        // CMS Actions
+        async function savePost(status) {
+            const id = document.getElementById('editDocId').value;
+            const post = {
+                title: document.getElementById('postTitle').value,
+                slug: document.getElementById('postSlug').value || Date.now().toString(),
+                content: quill.root.innerHTML,
+                meta: document.getElementById('metaInput').value,
+                status: status,
+                timestamp: serverTimestamp()
+            };
+            try {
+                if(id) await updateDoc(doc(db, "blogs", id), post);
+                else await addDoc(collection(db, "blogs"), post);
+                localStorage.removeItem('arafat_v4_draft');
+                alert("Success!");
+                location.reload();
+            } catch(e) { alert(e.message); }
+        }
+
         window.loadPostsTable = async () => {
             const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
             const snap = await getDocs(q);
             const tbody = document.getElementById('postTableBody');
             tbody.innerHTML = '';
-            snap.forEach(doc => {
-                const data = doc.data();
+            snap.forEach(d => {
+                const data = d.data();
                 tbody.innerHTML += `
                     <tr class="hover:bg-white/5 transition">
-                        <td class="p-6"><input type="checkbox" value="${doc.id}" class="post-checkbox accent-indigo-500" onchange="toggleBulkBtn()"></td>
-                        <td class="p-6">
-                            <div class="font-bold text-slate-200">${data.title}</div>
-                            <div class="text-[10px] text-slate-500 font-mono">${data.slug}</div>
-                        </td>
-                        <td class="p-6"><span class="px-2 py-1 rounded-md text-[9px] font-black uppercase ${data.status === 'Draft' ? 'bg-yellow-500/10 text-yellow-500' : 'bg-green-500/10 text-green-500'}">${data.status}</span></td>
-                        <td class="p-6 text-center font-mono font-bold text-indigo-400">${data.views || 0}</td>
-                        <td class="p-6 text-right space-x-3">
-                            <button onclick="editPost('${doc.id}')" class="text-indigo-400 hover:text-indigo-200"><i class="fas fa-edit"></i></button>
-                            <button onclick="deleteSinglePost('${doc.id}')" class="text-slate-600 hover:text-red-500"><i class="fas fa-trash-alt"></i></button>
+                        <td class="p-6"><input type="checkbox" value="${d.id}" class="post-cb accent-indigo-500" onchange="checkBulk()"></td>
+                        <td class="p-6"><div class="font-bold">${data.title}</div><div class="text-[10px] text-slate-500 font-mono">${data.slug}</div></td>
+                        <td class="p-6"><span class="text-[9px] px-2 py-1 rounded bg-indigo-500/10 text-indigo-400 font-black">${data.status}</span></td>
+                        <td class="p-6 text-right space-x-2">
+                            <button onclick="editPost('${d.id}')" class="text-indigo-400"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteSingle('${d.id}')" class="text-slate-600"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>`;
             });
         };
 
-        window.toggleBulkBtn = () => {
-            const checkedCount = document.querySelectorAll('.post-checkbox:checked').length;
-            document.getElementById('bulkDeleteBtn').style.display = checkedCount > 0 ? 'block' : 'none';
-        };
-
-        document.getElementById('selectAllPosts').onchange = (e) => {
-            document.querySelectorAll('.post-checkbox').forEach(cb => cb.checked = e.target.checked);
-            toggleBulkBtn();
-        };
-
-        window.bulkDeletePosts = async () => {
-            const selected = document.querySelectorAll('.post-checkbox:checked');
-            if(confirm(`Permanently delete ${selected.length} posts?`)) {
-                for(let cb of selected) await deleteDoc(doc(db, "blogs", cb.value));
-                loadPostsTable();
-            }
-        };
-
-        window.deleteSinglePost = async (id) => {
-            if(confirm("Delete this post permanently?")) {
-                await deleteDoc(doc(db, "blogs", id));
-                loadPostsTable();
-            }
-        };
-
-        // --- 4. LIVE PREVIEW ---
-        window.openPreview = () => {
-            document.getElementById('pvTitle').innerText = document.getElementById('postTitle').value || "Preview Title";
-            document.getElementById('pvContent').innerHTML = quill.root.innerHTML;
-            document.getElementById('previewModal').style.display = 'block';
-        };
-        window.closePreview = () => document.getElementById('previewModal').style.display = 'none';
-
-        // SEO and Reading Time Logic
-        document.getElementById('postTitle').addEventListener('input', (e) => {
-            const val = e.target.value;
-            const slug = val.toLowerCase().trim().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-            document.getElementById('postSlug').value = slug;
-            document.getElementById('seoTitle').innerText = val || "Your Post Title Here";
-            document.getElementById('seoSlug').innerText = slug;
-        });
-
-        document.getElementById('metaInput').addEventListener('input', (e) => {
-            document.getElementById('seoDesc').innerText = e.target.value || "Description preview...";
-        });
-
-        quill.on('text-change', () => {
-            const words = quill.getText().trim().split(/\s+/).length;
-            document.getElementById('readTime').innerText = `${Math.ceil(words / 200)} min read`;
-        });
-
-        // Edit Mode
         window.editPost = async (id) => {
             const snap = await getDoc(doc(db, "blogs", id));
             const data = snap.data();
             document.getElementById('editDocId').value = id;
             document.getElementById('postTitle').value = data.title;
             document.getElementById('postSlug').value = data.slug;
-            document.getElementById('categoryInput').value = data.category;
             document.getElementById('metaInput').value = data.meta;
             quill.root.innerHTML = data.content;
-            
-            document.getElementById('editorActionTitle').innerText = "Update Post";
-            document.getElementById('cancelBtn').classList.remove('hidden');
             showTab('editor-tab');
         };
 
-        // Final Save/Publish
-        async function finalizePost(finalStatus) {
-            const editId = document.getElementById('editDocId').value;
-            const title = document.getElementById('postTitle').value;
-            const slug = document.getElementById('postSlug').value;
-            if(!title || !slug) return alert("Missing Title or Slug");
+        window.deleteSingle = async (id) => { if(confirm("Delete?")) { await deleteDoc(doc(db, "blogs", id)); loadPostsTable(); } };
 
-            const btn = finalStatus === 'Live' ? document.getElementById('publishBtn') : document.getElementById('draftBtn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = `<i class="fas fa-circle-notch fa-spin mr-2"></i> SAVING...`;
-            btn.disabled = true;
+        window.checkBulk = () => {
+            const selected = document.querySelectorAll('.post-cb:checked').length;
+            document.getElementById('bulkBtn').style.display = selected > 0 ? 'block' : 'none';
+        };
 
-            const postData = {
-                title, slug, category: document.getElementById('categoryInput').value || "Uncategorized",
-                meta: document.getElementById('metaInput').value,
-                content: quill.root.innerHTML,
-                status: finalStatus,
-                timestamp: serverTimestamp()
-            };
+        window.bulkDelete = async () => {
+            const selected = document.querySelectorAll('.post-cb:checked');
+            if(confirm(`Delete ${selected.length} items?`)) {
+                for(let cb of selected) await deleteDoc(doc(db, "blogs", cb.value));
+                loadPostsTable();
+            }
+        };
 
-            try {
-                if(editId) await updateDoc(doc(db, "blogs", editId), postData);
-                else { postData.views = 0; await addDoc(collection(db, "blogs"), postData); }
+        // Preview Logic
+        window.openPreview = () => {
+            document.getElementById('pvTitle').innerText = document.getElementById('postTitle').value || "Untiled";
+            document.getElementById('pvContent').innerHTML = quill.root.innerHTML;
+            document.getElementById('previewModal').style.display = 'block';
+        };
+        window.closePreview = () => document.getElementById('previewModal').style.display = 'none';
 
-                // GitHub Push Logic (Only for Live)
-                if(finalStatus === 'Live') {
-                    const token = localStorage.getItem('my_gh_token') || prompt("GitHub Token Required:");
-                    if(token) {
-                        localStorage.setItem('my_gh_token', token);
-                        const html = `<!DOCTYPE html><html lang="en"><head><title>${title}</title><meta name="description" content="${postData.meta}"></head><body>${postData.content}</body></html>`;
-                        const encoded = btoa(unescape(encodeURIComponent(html)));
-                        await fetch(`https://api.github.com/repos/ArafatBook/Md-Arafat-Hosen/contents/posts/${slug}.html`, {
-                            method: "PUT",
-                            headers: { "Authorization": "token " + token, "Content-Type": "application/json" },
-                            body: JSON.stringify({ message: "CMS Upload: " + title, content: encoded })
-                        });
-                    }
-                }
-                
-                localStorage.removeItem('arafat_cms_draft');
-                alert("Successfully saved!");
-                location.reload();
-            } catch(e) { alert(e.message); btn.innerHTML = originalText; btn.disabled = false; }
-        }
+        // SEO Preview
+        document.getElementById('postTitle').addEventListener('input', (e) => {
+            document.getElementById('seoTitle').innerText = e.target.value || "Title Preview";
+            document.getElementById('postSlug').value = e.target.value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+        });
+        document.getElementById('metaInput').addEventListener('input', (e) => {
+            document.getElementById('seoDesc').innerText = e.target.value || "Meta description preview...";
+        });
 
-        document.getElementById('publishBtn').onclick = () => finalizePost('Live');
-        document.getElementById('draftBtn').onclick = () => finalizePost('Draft');
-
-        // Asset Management
-        async function loadMediaLibrary() {
-            const res = await listAll(ref(storage, 'media/'));
+        async function loadMedia() {
+            const res = await listAll(ref(storage, 'cms_images/'));
             const grid = document.getElementById('mediaGrid');
             grid.innerHTML = '';
             res.items.forEach(async (item) => {
                 const url = await getDownloadURL(item);
-                grid.innerHTML += `
-                    <div class="relative group aspect-square rounded-2xl overflow-hidden glass-panel border border-white/5">
-                        <img src="${url}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-indigo-600/90 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center p-3">
-                            <button onclick="navigator.clipboard.writeText('${url}'); alert('URL Copied!')" class="bg-white text-indigo-600 font-bold text-[10px] px-3 py-2 rounded-lg mb-2">COPY URL</button>
-                            <button onclick="deleteAsset('${item.fullPath}')" class="text-white text-[10px] hover:text-red-300"><i class="fas fa-trash-alt"></i></button>
-                        </div>
-                    </div>`;
+                grid.innerHTML += `<div class="p-2 glass-panel rounded-xl"><img src="${url}" class="w-full aspect-square object-cover rounded-lg mb-2"><button onclick="navigator.clipboard.writeText('${url}')" class="w-full text-[9px] bg-indigo-600 py-1 rounded">URL</button></div>`;
             });
         }
 
-        window.deleteAsset = async (path) => {
-            if(confirm("Delete this asset?")) { await deleteObject(ref(storage, path)); loadMediaLibrary(); }
-        }
-
-        document.getElementById('mediaInputFile').onchange = async (e) => {
-            const file = e.target.files[0];
-            if(file) {
-                await uploadBytes(ref(storage, 'media/' + Date.now() + "_" + file.name), file);
-                loadMediaLibrary();
-            }
-        };
-
+        document.getElementById('publishBtn').onclick = () => savePost('Live');
+        document.getElementById('draftBtn').onclick = () => savePost('Draft');
         document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => location.reload());
+        document.getElementById('selectAll').onchange = (e) => {
+            document.querySelectorAll('.post-cb').forEach(cb => cb.checked = e.target.checked);
+            checkBulk();
+        };
     </script>
 </body>
 </html>
