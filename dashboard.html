@@ -19,15 +19,15 @@
 
         /* Professional Quill Theming */
         #editor { height: 600px; background: #0f172a; border: none !important; color: #e2e8f0; font-size: 18px; line-height: 1.6; padding: 20px; border-radius: 0 0 24px 24px; }
-        .ql-toolbar { background: #1e293b; border: none !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 24px 24px 0 0; padding: 12px !important; }
+        .ql-toolbar { background: #1e293b !important; border: none !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 24px 24px 0 0; padding: 12px !important; }
         .ql-snow .ql-stroke { stroke: #94a3b8 !important; }
+        .ql-snow .ql-fill { fill: #94a3b8 !important; }
         .ql-snow .ql-picker { color: #94a3b8 !important; }
         
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #020617; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #8b5cf6; }
     </style>
 </head>
 <body class="min-h-screen flex">
@@ -35,54 +35,52 @@
     <aside class="fixed w-72 h-screen glass-panel border-r border-slate-800 hidden lg:flex flex-col z-50">
         <div class="p-10">
             <h1 class="text-2xl font-black tracking-tighter text-white">ARAFAT<span class="text-indigo-500">.OS</span></h1>
-            <p class="text-[10px] uppercase tracking-widest text-slate-500 mt-1 font-bold text-center">Engineered for Quality</p>
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 mt-1 font-bold text-center">Ultra CMS v2.0</p>
         </div>
         
         <nav class="flex-1 px-6 space-y-3">
             <a href="#" class="sidebar-link flex items-center p-4 rounded-2xl text-indigo-400 bg-indigo-500/5 font-semibold">
-                <i class="fas fa-feather-alt mr-3"></i> Write Article
+                <i class="fas fa-edit mr-3"></i> Write Post
             </a>
             <a href="#" onclick="localStorage.removeItem('my_gh_token'); location.reload();" class="sidebar-link flex items-center p-4 rounded-2xl text-slate-400 font-medium">
-                <i class="fas fa-shield-alt mr-3"></i> API Security
+                <i class="fas fa-key mr-3"></i> GitHub Token
             </a>
         </nav>
 
         <div class="p-8">
-            <button id="logoutBtn" class="w-full p-4 rounded-2xl bg-red-500/5 text-red-400 text-sm font-bold hover:bg-red-500 hover:text-white transition-all shadow-lg shadow-red-500/10">Sign Out</button>
+            <button id="logoutBtn" class="w-full p-4 rounded-2xl bg-red-500/10 text-red-400 text-sm font-bold hover:bg-red-500 hover:text-white transition-all shadow-lg shadow-red-500/5">Logout</button>
         </div>
     </aside>
 
     <main class="lg:ml-72 flex-1 p-6 lg:p-12 max-w-7xl mx-auto w-full">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
             <div>
-                <h2 class="text-4xl font-extrabold tracking-tight">Post Editor</h2>
-                <div class="flex items-center gap-3 mt-2">
-                    <span class="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
-                    <p class="text-slate-400 text-sm font-medium">GitHub Repository Connected</p>
+                <h2 class="text-3xl font-extrabold tracking-tight">Create Publication</h2>
+                <div class="flex items-center gap-3 mt-1 text-green-400 text-xs font-mono">
+                    <span>● Engine: Hybrid Firebase-GitHub</span>
                 </div>
             </div>
             <div class="glass-panel px-6 py-3 rounded-2xl flex items-center gap-4">
                 <div class="text-right">
-                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Efficiency</p>
-                    <p id="readTime" class="text-indigo-400 font-bold text-lg">0 min read</p>
+                    <span class="text-[10px] font-bold text-slate-500 uppercase block">Estimation</span>
+                    <span id="readTime" class="text-indigo-400 font-bold">0 min read</span>
                 </div>
-                <i class="fas fa-clock text-slate-700 text-xl"></i>
             </div>
         </header>
 
         <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
             <div class="xl:col-span-3 space-y-8">
                 <div class="glass-panel p-10 rounded-[40px] shadow-2xl">
-                    <input type="text" id="postTitle" placeholder="The Art of Modern Web..." class="w-full bg-transparent text-5xl font-bold outline-none border-none placeholder-slate-800 tracking-tight">
-                    <div class="flex items-center mt-6 bg-black/20 w-fit px-4 py-2 rounded-full border border-white/5">
-                        <span class="text-slate-500 text-xs font-mono mr-2 italic">path/</span>
-                        <input type="text" id="postSlug" placeholder="automatic-slug" class="bg-transparent text-indigo-400 outline-none font-mono text-xs w-64">
+                    <input type="text" id="postTitle" placeholder="Post Title Goes Here..." class="w-full bg-transparent text-5xl font-bold outline-none border-none placeholder-slate-800 tracking-tight">
+                    <div class="flex items-center mt-6 bg-black/30 w-fit px-4 py-2 rounded-xl border border-white/5">
+                        <span class="text-slate-600 text-xs font-mono mr-2 italic">permalink/</span>
+                        <input type="text" id="postSlug" placeholder="post-url-slug" class="bg-transparent text-indigo-400 outline-none font-mono text-xs w-64">
                     </div>
                 </div>
 
-                <div class="glass-panel p-8 rounded-[30px]">
-                    <label class="text-xs font-black text-slate-500 uppercase tracking-widest block mb-4">Meta Description (Search Optimization)</label>
-                    <textarea id="metaDesc" placeholder="Enter a high-converting summary for Google..." class="w-full bg-transparent outline-none text-slate-300 resize-none h-16 text-sm font-medium"></textarea>
+                <div class="glass-panel p-6 rounded-[30px]">
+                    <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-3">SEO Meta Description</label>
+                    <textarea id="metaDesc" placeholder="Briefly explain what this post is about for search engines..." class="w-full bg-transparent outline-none text-slate-300 resize-none h-16 text-sm font-medium"></textarea>
                 </div>
 
                 <div class="editor-wrapper shadow-2xl rounded-[24px] overflow-hidden">
@@ -91,19 +89,19 @@
             </div>
 
             <div class="xl:col-span-1 space-y-6">
-                <div class="glass-panel p-8 rounded-[40px] sticky top-8">
+                <div class="glass-panel p-8 rounded-[40px] sticky top-8 border-indigo-500/10">
                     <div class="mb-8">
-                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-4">Categorization</label>
-                        <input type="text" id="categoryInput" list="categoryList" placeholder="Select Genre" class="w-full bg-slate-900/50 border border-slate-800 p-4 rounded-2xl text-sm outline-none focus:border-indigo-500 transition-all font-semibold">
+                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-4">Category</label>
+                        <input type="text" id="categoryInput" list="categoryList" placeholder="Select category..." class="w-full bg-slate-900 border border-slate-800 p-4 rounded-2xl text-sm outline-none focus:border-indigo-500 transition-all font-semibold">
                         <datalist id="categoryList">
-                            <option value="Gadget"><option value="Web Development"><option value="Design"><option value="Marketing">
+                            <option value="Gadget"><option value="Web Development"><option value="Marketing"><option value="Review">
                         </datalist>
                     </div>
 
-                    <div class="space-y-4 pt-4 border-t border-slate-800/50">
-                        <p class="text-[10px] text-slate-500 leading-relaxed font-medium italic">Note: Images should be uploaded directly inside the article editor for best results.</p>
+                    <div class="pt-6 border-t border-slate-800/50">
+                        <p class="text-[10px] text-slate-500 leading-relaxed mb-6 italic">Visual assets should be uploaded directly within the editor using the image tool.</p>
                         <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black py-5 rounded-[24px] shadow-2xl shadow-indigo-500/20 transition-all transform active:scale-95 flex items-center justify-center">
-                            <i class="fas fa-rocket mr-3"></i> PUBLISH
+                            <i class="fas fa-globe-americas mr-3"></i> PUBLISH LIVE
                         </button>
                     </div>
                 </div>
@@ -135,44 +133,42 @@
             else window.location.href = "login.html"; 
         });
 
-        // Auto-slug Generation
         document.getElementById('postTitle').addEventListener('input', (e) => {
             document.getElementById('postSlug').value = e.target.value.toLowerCase().trim().replace(/ /g, '-').replace(/[^\w-]+/g, '');
         });
 
-        // Advanced Quill Initialization
+        // Professional Quill Setup with Alignments
         var quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Start writing your masterpiece...',
+            placeholder: 'Share your story with the world...',
             modules: {
                 imageResize: { displaySize: true },
                 toolbar: [
                     [{ 'header': [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline', 'blockquote'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['bold', 'italic', 'underline', 'strike'],
                     [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }], // Text Alignment Added Back
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['blockquote', 'code-block'],
                     ['link', 'image', 'video'],
                     ['clean']
                 ]
             }
         });
 
-        // Dynamic Read Time Calculation
         quill.on('text-change', () => {
             const words = quill.getText().trim().split(/\s+/).length;
-            const time = Math.ceil(words / 200);
-            document.getElementById('readTime').innerText = `${time} min read`;
+            document.getElementById('readTime').innerText = `${Math.ceil(words / 200)} min read`;
         });
 
-        // Publish to GitHub Logic
         document.getElementById('publishBtn').addEventListener('click', async () => {
             const title = document.getElementById('postTitle').value;
             const slug = document.getElementById('postSlug').value;
             const meta = document.getElementById('metaDesc').value;
-            const category = document.getElementById('categoryInput').value || "Uncategorized";
+            const category = document.getElementById('categoryInput').value || "General";
             const content = quill.root.innerHTML;
 
-            if(!title || !slug) return alert("Please enter at least a Title and Slug!");
+            if(!title || !slug) return alert("Title and Slug are mandatory.");
 
             let GITHUB_TOKEN = localStorage.getItem('my_gh_token');
             if (!GITHUB_TOKEN) {
@@ -181,14 +177,12 @@
             }
 
             const btn = document.getElementById('publishBtn');
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-3"></i> DEPLOYING...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i> DEPLOYING...';
             btn.disabled = true;
 
             try {
-                // Save record to Firestore
                 await addDoc(collection(db, "blogs"), { title, slug, category, timestamp: serverTimestamp() });
 
-                // Template for the Static Page
                 const htmlTemplate = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -205,7 +199,7 @@
         article { font-size: 1.25rem; line-height: 1.8; color: #334155; }
         article img { max-width: 100%; height: auto; border-radius: 24px; margin: 40px 0; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
         .post-nav { margin-top: 80px; display: flex; justify-content: space-between; border-top: 1px solid #e2e8f0; padding-top: 40px; }
-        .nav-link { background: #0f172a; color: white !important; padding: 15px 30px; border-radius: 50px; font-weight: 700; text-decoration: none; transition: 0.3s; }
+        .nav-link { background: #0f172a; color: white !important; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: 700; }
     </style>
 </head>
 <body>
@@ -215,7 +209,7 @@
         <h1 class="post-h">\${title}</h1>
         <article>\${content}</article>
         <div class="post-nav">
-            <a href="../blog.html" class="nav-link" style="background:#64748b">Browse All</a>
+            <a href="../blog.html" class="nav-link" style="background:#64748b">Back to Blog</a>
             <div id="navGroup" style="display:flex; gap:12px;"></div>
         </div>
     </main>
@@ -253,14 +247,14 @@
                 const res = await fetch(githubURL, {
                     method: "PUT",
                     headers: { "Authorization": "token " + GITHUB_TOKEN, "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: "Article Published: " + title, content: encoded })
+                    body: JSON.stringify({ message: "CMS Sync: " + title, content: encoded })
                 });
 
-                if(res.ok) { alert("✨ Your post is now live on GitHub!"); location.reload(); }
-                else { alert("GitHub Deployment Failed."); }
+                if(res.ok) { alert("🚀 Successfully Published to GitHub!"); location.reload(); }
+                else { alert("GitHub API Error."); }
 
             } catch (e) { alert("Error: " + e.message); }
-            finally { btn.innerHTML = '<i class="fas fa-rocket mr-3"></i> PUBLISH'; btn.disabled = false; }
+            finally { btn.innerHTML = '<i class="fas fa-globe-americas mr-3"></i> PUBLISH LIVE'; btn.disabled = false; }
         });
 
         document.getElementById('logoutBtn').addEventListener('click', () => {
