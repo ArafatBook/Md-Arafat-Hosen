@@ -18,8 +18,7 @@
         .ql-snow .ql-fill { fill: #cbd5e1 !important; }
         .ql-snow .ql-picker { color: #cbd5e1 !important; }
         
-        /* Image Preview Box */
-        .upload-box { border: 2px dashed rgba(255,255,255,0.1); transition: 0.3s; cursor: pointer; }
+        .upload-box { border: 2px dashed rgba(255,255,255,0.1); transition: 0.3s; cursor: pointer; min-height: 150px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .upload-box:hover { border-color: #8b5cf6; background: rgba(139, 92, 246, 0.05); }
         #imagePreview { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; display: none; }
     </style>
@@ -63,16 +62,16 @@
             <div class="xl:col-span-1 space-y-6">
                 <div class="glass-panel p-6 rounded-[32px] sticky top-6">
                     <label class="text-xs font-bold text-slate-500 uppercase block mb-2">Featured Thumbnail</label>
-                    <div onclick="document.getElementById('fileInput').click()" class="upload-box rounded-2xl p-4 text-center mb-4">
+                    <div onclick="document.getElementById('fileInput').click()" class="upload-box rounded-2xl p-2 text-center mb-4">
                         <input type="file" id="fileInput" class="hidden" accept="image/*">
                         <img id="imagePreview" src="" alt="Preview">
                         <div id="uploadPlaceholder">
                             <i class="fas fa-cloud-upload-alt text-3xl text-slate-600 mb-2"></i>
-                            <p class="text-xs text-slate-500">Click to Upload Image</p>
+                            <p class="text-xs text-slate-500">Upload Thumbnail</p>
                         </div>
                     </div>
                     
-                    <label class="text-xs font-bold text-slate-500 uppercase block mb-2">Category Select</label>
+                    <label class="text-xs font-bold text-slate-500 uppercase block mb-2">Category</label>
                     <div class="relative mb-6">
                         <input type="text" id="categoryInput" list="categoryList" placeholder="Select or Type..." class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl text-sm outline-none focus:border-indigo-500 transition">
                         <datalist id="categoryList">
@@ -116,7 +115,6 @@
             else window.location.href = "login.html"; 
         });
 
-        // Image Preview Handler
         const fileInput = document.getElementById('fileInput');
         const imagePreview = document.getElementById('imagePreview');
         const uploadPlaceholder = document.getElementById('uploadPlaceholder');
@@ -139,17 +137,18 @@
             document.getElementById('postSlug').value = e.target.value.toLowerCase().trim().replace(/ /g, '-').replace(/[^\w-]+/g, '');
         });
 
-        // Quill with Image Resize
         var quill = new Quill('#editor', {
             theme: 'snow',
             placeholder: 'Write something amazing...',
             modules: {
-                imageResize: { displaySize: true }, // ইমেজ রিসাইজ অপশন
+                imageResize: { displaySize: true },
                 toolbar: [
                     [{ 'header': [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline'],
+                    ['bold', 'italic', 'underline', 'strike'],
                     [{ 'color': [] }, { 'background': [] }],
                     [{ 'align': [] }],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                     ['link', 'image', 'video'],
                     ['clean']
                 ]
@@ -162,7 +161,8 @@
             const category = document.getElementById('categoryInput').value || "General";
             const content = quill.root.innerHTML;
 
-            if(!title || !selectedFile) return alert("Title and Image are required!");
+            if(!title || !slug) return alert("Title and Slug are required!");
+            if(!selectedFile) return alert("Please upload a featured image!");
 
             let GITHUB_TOKEN = localStorage.getItem('my_gh_token');
             if (!GITHUB_TOKEN) {
@@ -171,19 +171,20 @@
             }
 
             const btn = document.getElementById('publishBtn');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> PROCESSING...';
+            const originalBtnText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> DEPLOYING...';
             btn.disabled = true;
 
             try {
-                // 1. Upload Image to Firebase Storage
+                // 1. Upload Image to Storage
                 const storageRef = ref(storage, 'thumbnails/' + Date.now() + "_" + selectedFile.name);
                 const snapshot = await uploadBytes(storageRef, selectedFile);
                 const imageURL = await getDownloadURL(snapshot.ref);
 
-                // 2. Firebase Database Sync
+                // 2. Sync to Firestore
                 await addDoc(collection(db, "blogs"), { title, slug, category, image: imageURL, timestamp: serverTimestamp() });
 
-                // 3. HTML Generation (Auto-Nav Included)
+                // 3. Generate HTML
                 const htmlTemplate = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -197,8 +198,8 @@
         .post-category { color: #6366f1; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 15px; display: block; }
         .post-title { color: #1e293b; margin-bottom: 25px; font-size: 2.5rem; line-height: 1.2; font-weight: 800; }
         .featured-img { width: 100%; border-radius: 20px; margin-bottom: 35px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-        article { font-size: 1.15rem; color: #334155; line-height: 1.8; }
-        article img { max-width: 100%; height: auto; border-radius: 12px; margin: 20px 0; }
+        article { font-size: 1.15rem; color: #334155; line-height: 1.8; overflow-wrap: break-word; }
+        article img { max-width: 100%; height: auto; border-radius: 12px; margin: 25px 0; }
         .post-navigation { margin-top: 60px; padding-top: 30px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
         .btn-nav { background: #3b82f6; color: white !important; padding: 12px 25px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
         .btn-nav:hover { background: #1d4ed8; transform: translateY(-2px); }
@@ -209,10 +210,10 @@
     <main class="blog-container">
         <span class="post-category">\${category}</span>
         <h1 class="post-title">\${title}</h1>
-        <img src="\${imageURL}" class="featured-img">
+        <img src="\${imageURL}" class="featured-img" alt="\${title}">
         <article>\${content}</article>
         <div class="post-navigation">
-            <a href="../blog.html" class="btn-nav" style="background: #64748b;"><i class="fas fa-th-large"></i> All</a>
+            <a href="../blog.html" class="btn-nav" style="background: #64748b;"><i class="fas fa-th-large"></i> All Posts</a>
             <div id="navGroup" style="display:flex; gap:10px;"></div>
         </div>
     </main>
@@ -231,8 +232,8 @@
             const index = blogs.findIndex(b => b.slug === currentSlug);
             const navGroup = document.getElementById('navGroup');
             if (index !== -1) {
-                if (index < blogs.length - 1) navGroup.innerHTML += '<a href="' + blogs[index + 1].slug + '.html" class="btn-nav">Previous</a>';
-                if (index > 0) navGroup.innerHTML += '<a href="' + blogs[index - 1].slug + '.html" class="btn-nav">Next</a>';
+                if (index < blogs.length - 1) navGroup.innerHTML += '<a href="' + blogs[index + 1].slug + '.html" class="btn-nav"><i class="fas fa-arrow-left"></i> Prev</a>';
+                if (index > 0) navGroup.innerHTML += '<a href="' + blogs[index - 1].slug + '.html" class="btn-nav">Next <i class="fas fa-arrow-right"></i></a>';
             }
         }
         initNav();
@@ -250,14 +251,24 @@
                 const res = await fetch(githubURL, {
                     method: "PUT",
                     headers: { "Authorization": "token " + GITHUB_TOKEN, "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: "CMS Upload: " + title, content: encoded })
+                    body: JSON.stringify({ message: "CMS: " + title, content: encoded })
                 });
 
-                if(res.ok) { alert("🚀 Live!"); location.reload(); }
-                else { alert("GitHub Error"); }
+                if(res.ok) {
+                    alert("🚀 SUCCESS! Post is Live.");
+                    location.reload();
+                } else {
+                    const errorMsg = await res.json();
+                    throw new Error("GitHub: " + errorMsg.message);
+                }
 
-            } catch (e) { alert("Error: " + e.message); }
-            finally { btn.innerHTML = '<i class="fas fa-globe mr-2"></i> PUBLISH LIVE'; btn.disabled = false; }
+            } catch (error) {
+                console.error(error);
+                alert("Critical Error: " + error.message);
+            } finally {
+                btn.innerHTML = originalBtnText;
+                btn.disabled = false;
+            }
         });
 
         document.getElementById('logoutBtn').addEventListener('click', () => {
