@@ -3,81 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Blog Manager</title>
+    <title>Md Arafat Hosen | Professional Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: #0f172a; color: white; display: none; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0b0f1a; color: #e2e8f0; display: none; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .sidebar-item:hover { background: rgba(99, 102, 241, 0.1); border-left: 4px solid #6366f1; }
+        .sidebar-active { background: rgba(99, 102, 241, 0.2); border-left: 4px solid #6366f1; color: #818cf8; }
     </style>
 </head>
-<body class="p-6 md:p-12">
-    <div class="max-w-5xl mx-auto">
-        <header class="flex justify-between items-center mb-10 border-b border-gray-800 pb-6">
-            <h1 class="text-2xl font-bold text-indigo-400 tracking-tighter">MD ARAFAT HOSEN <span class="text-white text-sm font-light">| DASHBOARD</span></h1>
-            <button id="logoutBtn" class="bg-red-500/10 text-red-400 px-5 py-2 rounded-lg hover:bg-red-500 hover:text-white transition">Logout</button>
-        </header>
+<body class="min-h-screen">
 
-        <div class="grid grid-cols-1 gap-8">
-            <div class="glass p-8 rounded-2xl shadow-2xl">
-                <h2 class="text-xl font-medium mb-6 flex items-center"><i class="fas fa-pen-nib mr-3 text-indigo-500"></i> Write New Post</h2>
-                
-                <div class="space-y-5">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <input type="text" id="postTitle" placeholder="Post Title" class="w-full bg-gray-900 border border-gray-800 p-3.5 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
-                        <input type="text" id="postSlug" placeholder="Slug (e.g. post1)" class="w-full bg-gray-900 border border-gray-700 p-3.5 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
-                    </div>
+    <div class="flex">
+        <aside class="w-64 min-h-screen glass-card hidden md:block fixed left-0 top-0 overflow-y-auto">
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-white tracking-widest uppercase italic">ARAFAT <span class="text-indigo-500 font-light">OS</span></h2>
+            </div>
+            <nav class="mt-6 space-y-1">
+                <a href="#" class="sidebar-item sidebar-active flex items-center px-6 py-4 transition-all">
+                    <i class="fas fa-th-large mr-4"></i> Dashboard
+                </a>
+                <a href="#" class="sidebar-item flex items-center px-6 py-4 text-gray-400 transition-all hover:text-white">
+                    <i class="fas fa-file-alt mr-4"></i> My Posts
+                </a>
+                <a href="#" class="sidebar-item flex items-center px-6 py-4 text-gray-400 transition-all hover:text-white">
+                    <i class="fas fa-chart-line mr-4"></i> Analytics
+                </a>
+                <a href="#" class="sidebar-item flex items-center px-6 py-4 text-gray-400 transition-all hover:text-white">
+                    <i class="fas fa-cog mr-4"></i> Settings
+                </a>
+            </nav>
+        </aside>
 
-                    <textarea id="postContent" rows="12" placeholder="Write your content here (HTML supported)..." class="w-full bg-gray-900 border border-gray-800 p-5 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none font-mono"></textarea>
-
-                    <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-xl transition transform active:scale-95">
-                        <i class="fas fa-paper-plane mr-2"></i> PUBLISH TO GITHUB
+        <main class="flex-1 md:ml-64 p-4 md:p-10">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-white">Create Post</h1>
+                    <p class="text-gray-400 text-sm mt-1">Publish your ideas to the world.</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button id="logoutBtn" class="bg-red-500/10 text-red-400 border border-red-500/20 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white transition">
+                        <i class="fas fa-sign-out-alt"></i> Logout
                     </button>
                 </div>
             </div>
-        </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="glass-card p-6 rounded-2xl">
+                    <p class="text-gray-400 text-sm uppercase tracking-wider">Total Posts</p>
+                    <h3 class="text-3xl font-bold mt-2">--</h3>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <p class="text-gray-400 text-sm uppercase tracking-wider">Views</p>
+                    <h3 class="text-3xl font-bold mt-2 text-indigo-400">0.0k</h3>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <p class="text-gray-400 text-sm uppercase tracking-wider">Status</p>
+                    <h3 class="text-3xl font-bold mt-2 text-green-400">Live</h3>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6 md:p-8 shadow-2xl">
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm text-gray-400 ml-1">Post Title</label>
+                            <input type="text" id="postTitle" placeholder="The Future of Web Dev" class="w-full bg-slate-900/50 border border-slate-700 p-4 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition shadow-inner">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm text-gray-400 ml-1">URL Slug (URL path)</label>
+                            <input type="text" id="postSlug" placeholder="future-web-dev" class="w-full bg-slate-900/50 border border-slate-700 p-4 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition shadow-inner">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm text-gray-400 ml-1">Post Content (HTML Supported)</label>
+                        <textarea id="postContent" rows="14" placeholder="<p>Start writing your story...</p>" class="w-full bg-slate-900/50 border border-slate-700 p-6 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition font-mono shadow-inner"></textarea>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row gap-4 items-center justify-between pt-4">
+                        <p class="text-xs text-slate-500 italic"><i class="fas fa-info-circle mr-1"></i> Tip: Use &lt;img&gt; tags to add images to your content.</p>
+                        <button id="publishBtn" class="w-full md:w-auto px-10 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/30 transition transform active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane"></i> PUBLISH POST
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = { /* আপনার FIREBASE CONFIG এখানে */ };
+        // --- Firebase Config ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U",
+            authDomain: "md-arafat-hosen.firebaseapp.com",
+            projectId: "md-arafat-hosen",
+            storageBucket: "md-arafat-hosen.firebasestorage.app",
+            appId: "1:170687583576:web:ebffeccc9f6ead20cd412d"
+        };
+
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        // Security Check
-        onAuthStateChanged(auth, (user) => { if (user) { document.body.style.display = "block"; } else { window.location.href = "login.html"; } });
+        // Security Check: Only Admin can enter
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.body.style.display = "block";
+            } else {
+                window.location.href = "login.html";
+            }
+        });
 
+        // Publish Event
         document.getElementById('publishBtn').addEventListener('click', async () => {
             const title = document.getElementById('postTitle').value;
             const slug = document.getElementById('postSlug').value;
             const content = document.getElementById('postContent').value;
             
-            const GITHUB_TOKEN = "YOUR_GITHUB_TOKEN"; 
+            const GITHUB_TOKEN = "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"; 
             const REPO = "Md-Arafat-Hosen/My-blog"; 
 
-            if(!title || !slug || !content) return alert("Fill all fields!");
+            if(!title || !slug || !content) return alert("All fields are required!");
+
             const btn = document.getElementById('publishBtn');
-            btn.innerText = "Publishing..."; btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> PUBLISHING...';
+            btn.disabled = true;
 
             try {
-                const htmlTemplate = `<!DOCTYPE html><html><head><title>${title}</title></head><body><h1>${title}</h1><div>${content}</div></body></html>`;
+                // 1. Firebase Firestore Save
+                await addDoc(collection(db, "blogs"), {
+                    title: title,
+                    slug: slug,
+                    timestamp: serverTimestamp()
+                });
+
+                // 2. GitHub Upload
+                const htmlTemplate = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${title}</title><style>body{font-family:sans-serif;line-height:1.6;padding:20px;max-width:800px;margin:auto;}</style></head><body><h1>${title}</h1><article>${content}</article></body></html>`;
                 const encodedContent = btoa(unescape(encodeURIComponent(htmlTemplate)));
 
                 const res = await fetch(`https://api.github.com/repos/${REPO}/contents/posts/${slug}.html`, {
                     method: "PUT",
                     headers: { "Authorization": `token ${GITHUB_TOKEN}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: `New Post: ${title}`, content: encodedContent })
+                    body: JSON.stringify({ message: `New Blog: ${title}`, content: encodedContent })
                 });
 
-                if(res.ok) { alert("Success! Live on your site."); location.reload(); }
-                else { alert("GitHub Error!"); }
-            } catch (err) { alert(err.message); } 
-            finally { btn.innerText = "PUBLISH TO GITHUB"; btn.disabled = false; }
+                if(res.ok) {
+                    alert("🚀 Post published successfully on Database & GitHub!");
+                    location.reload();
+                } else {
+                    alert("❌ GitHub Error! Check your settings.");
+                }
+            } catch (err) {
+                alert("Error: " + err.message);
+            } finally {
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> PUBLISH POST';
+                btn.disabled = false;
+            }
         });
 
-        document.getElementById('logoutBtn').addEventListener('click', () => { signOut(auth).then(() => window.location.href = "login.html"); });
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            signOut(auth).then(() => window.location.href = "login.html");
+        });
     </script>
 </body>
 </html>
