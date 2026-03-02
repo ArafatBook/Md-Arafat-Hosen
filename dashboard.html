@@ -10,15 +10,21 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
         :root { --accent: #8b5cf6; --bg-dark: #020617; }
-        body { font-family: 'Outfit', sans-serif; background-color: var(--bg-dark); color: #f8fafc; display: none; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg-dark); color: #f8fafc; display: none; overflow-x: hidden; }
+        
         .glass-panel { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        #editor { height: 450px; background: #0f172a; border: none !important; color: #e2e8f0; font-size: 17px; padding: 20px; border-radius: 0 0 24px 24px; }
+        .sidebar-btn.active { background: rgba(139, 92, 246, 0.15); color: #a78bfa; border-left: 4px solid #8b5cf6; }
+        
+        #editor { height: 500px; background: #0f172a; border: none !important; color: #e2e8f0; font-size: 17px; border-radius: 0 0 24px 24px; }
         .ql-toolbar { background: #1e293b !important; border: none !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 24px 24px 0 0; }
         .ql-snow .ql-stroke { stroke: #94a3b8 !important; }
         .ql-snow .ql-fill { fill: #94a3b8 !important; }
-        .ql-snow .ql-picker { color: #94a3b8 !important; }
-        .tab-btn.active { background: rgba(139, 92, 246, 0.2); color: #a78bfa; border-color: #8b5cf6; }
-        .media-card:hover .media-overlay { opacity: 1; }
+
+        /* SEO Preview Styling */
+        .seo-preview-box { background: #fff; color: #1a0dab; padding: 15px; border-radius: 8px; max-width: 600px; }
+        .seo-url { color: #202124; font-size: 14px; margin-bottom: 2px; }
+        .seo-title { font-size: 20px; text-decoration: none; margin-bottom: 4px; display: block; }
+        .seo-desc { color: #4d5156; font-size: 14px; line-height: 1.5; }
     </style>
 </head>
 <body class="min-h-screen flex">
@@ -26,70 +32,85 @@
     <aside class="fixed w-64 h-screen glass-panel border-r border-slate-800 hidden lg:flex flex-col z-50">
         <div class="p-8"><h1 class="text-xl font-black text-white">ARAFAT<span class="text-indigo-500">.OS</span></h1></div>
         <nav class="flex-1 px-4 space-y-2">
-            <button onclick="switchTab('editor-section')" class="tab-btn active w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition border border-transparent"><i class="fas fa-pen-nib mr-3"></i> Editor</button>
-            <button onclick="switchTab('manage-section')" class="tab-btn w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition border border-transparent"><i class="fas fa-tasks mr-3"></i> Management</button>
-            <button onclick="switchTab('media-section')" class="tab-btn w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition border border-transparent"><i class="fas fa-images mr-3"></i> Media Library</button>
+            <button onclick="showTab('editor-tab')" class="sidebar-btn active w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition"><i class="fas fa-plus-circle mr-3"></i> Create New</button>
+            <button onclick="showTab('posts-tab')" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition"><i class="fas fa-layer-group mr-3"></i> All Posts</button>
+            <button onclick="showTab('media-tab')" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition"><i class="fas fa-photo-video mr-3"></i> Media Library</button>
         </nav>
-        <div class="p-6"><button id="logoutBtn" class="w-full p-4 rounded-xl bg-red-500/10 text-red-400 text-xs font-bold hover:bg-red-500 hover:text-white transition">Sign Out</button></div>
+        <div class="p-6"><button id="logoutBtn" class="w-full p-4 rounded-xl bg-red-500/10 text-red-400 text-xs font-bold hover:bg-red-500 transition">Logout</button></div>
     </aside>
 
     <main class="lg:ml-64 flex-1 p-6 lg:p-10 w-full overflow-y-auto">
         
-        <section id="editor-section" class="tab-content space-y-8">
-            <header class="flex justify-between items-center mb-8">
+        <section id="editor-tab" class="tab-content space-y-8">
+            <div class="flex justify-between items-end">
                 <h2 class="text-3xl font-bold">New Publication</h2>
-                <div class="glass-panel px-4 py-2 rounded-xl text-indigo-400 font-bold text-sm" id="readTime">0 min read</div>
-            </header>
+                <div class="text-right text-xs text-slate-500">Read Time: <span id="readTime" class="text-indigo-400 font-bold">0 min</span></div>
+            </div>
 
             <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
                 <div class="xl:col-span-3 space-y-6">
                     <div class="glass-panel p-8 rounded-[32px]">
-                        <input type="text" id="postTitle" placeholder="Catchy Title..." class="w-full bg-transparent text-4xl font-bold outline-none border-none placeholder-slate-800">
-                        <div class="flex items-center mt-4 bg-black/20 w-fit px-3 py-1 rounded-lg border border-white/5">
-                            <span class="text-slate-600 text-[10px] font-mono mr-2">SLUG:</span>
-                            <input type="text" id="postSlug" class="bg-transparent text-indigo-400 outline-none font-mono text-[10px] w-48">
+                        <input type="text" id="postTitle" placeholder="Post Title..." class="w-full bg-transparent text-4xl font-bold outline-none border-none placeholder-slate-800 tracking-tight">
+                        <div class="flex items-center mt-4 bg-black/20 w-fit px-3 py-1 rounded-lg border border-white/5 font-mono text-[10px]">
+                            <span class="text-slate-600 italic">URL: mdarafathosen.top/posts/</span>
+                            <input type="text" id="postSlug" class="bg-transparent text-indigo-400 outline-none w-48 ml-1">
                         </div>
                     </div>
-                    <div class="editor-wrapper rounded-[24px] overflow-hidden"><div id="editor"></div></div>
+                    
+                    <div class="editor-wrapper shadow-2xl rounded-[24px] overflow-hidden"><div id="editor"></div></div>
+
+                    <div class="glass-panel p-8 rounded-[32px] space-y-4">
+                        <h3 class="text-sm font-bold text-slate-500 uppercase tracking-widest">Google Search Preview</h3>
+                        <div class="seo-preview-box shadow-lg">
+                            <div class="seo-url">https://mdarafathosen.top › posts</div>
+                            <a href="#" id="seoPrevTitle" class="seo-title">Post Title Preview...</a>
+                            <p id="seoPrevDesc" class="seo-desc">Your meta description will appear here. Make it catchy to get more clicks from search engines!</p>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="xl:col-span-1 space-y-6">
                     <div class="glass-panel p-6 rounded-[32px] sticky top-6">
-                        <label class="text-[10px] font-bold text-slate-500 uppercase block mb-4">Post Category</label>
-                        <input type="text" id="categoryInput" list="categoryList" placeholder="Select..." class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-sm outline-none focus:border-indigo-500 mb-6">
-                        <datalist id="categoryList"><option value="Web Dev"><option value="Tech"><option value="Marketing"></datalist>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase block mb-3">Settings</label>
+                        <input type="text" id="categoryInput" list="categoryList" placeholder="Category" class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-sm outline-none focus:border-indigo-500 mb-4">
+                        <datalist id="categoryList"><option value="Web Dev"><option value="Video Editing"><option value="SEO"></datalist>
                         
-                        <label class="text-[10px] font-bold text-slate-500 uppercase block mb-2">Meta Desc</label>
-                        <textarea id="metaDesc" class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-xs outline-none h-20 mb-6"></textarea>
+                        <textarea id="metaDesc" placeholder="Meta Description..." class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-xs outline-none h-24 mb-6"></textarea>
 
-                        <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl shadow-lg transition transform active:scale-95"><i class="fas fa-rocket mr-2"></i> PUBLISH</button>
+                        <div class="space-y-3">
+                            <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl transition shadow-lg shadow-indigo-500/20">PUBLISH LIVE</button>
+                            <button id="saveDraftBtn" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 rounded-xl text-sm transition">SAVE DRAFT</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="manage-section" class="tab-content hidden space-y-8">
-            <h2 class="text-3xl font-bold mb-8">Manage Publications</h2>
-            <div class="glass-panel rounded-[32px] overflow-hidden">
-                <table class="w-full text-left border-collapse">
-                    <thead class="bg-slate-900/50 text-slate-500 text-[10px] uppercase tracking-widest">
+        <section id="posts-tab" class="tab-content hidden space-y-8">
+            <h2 class="text-3xl font-bold">Manage Content</h2>
+            <div class="glass-panel rounded-[32px] overflow-hidden border border-white/5">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-900/80 text-slate-500 text-[10px] uppercase font-bold tracking-widest">
                         <tr>
                             <th class="p-6">Title</th>
-                            <th class="p-6">Category</th>
+                            <th class="p-6">Status</th>
                             <th class="p-6 text-center">Views</th>
                             <th class="p-6 text-right">Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="postTableBody" class="text-sm">
+                    <tbody id="postTableBody" class="text-sm divide-y divide-white/5">
                         </tbody>
                 </table>
             </div>
         </section>
 
-        <section id="media-section" class="tab-content hidden space-y-8">
+        <section id="media-tab" class="tab-content hidden space-y-8">
             <div class="flex justify-between items-center">
                 <h2 class="text-3xl font-bold">Media Library</h2>
-                <input type="file" id="mediaUpload" class="hidden" accept="image/*">
-                <button onclick="document.getElementById('mediaUpload').click()" class="bg-indigo-600 p-3 px-6 rounded-xl font-bold text-sm hover:bg-indigo-500 transition"><i class="fas fa-plus mr-2"></i> Upload New</button>
+                <div>
+                    <input type="file" id="mediaUpload" class="hidden" accept="image/*">
+                    <button onclick="document.getElementById('mediaUpload').click()" class="bg-indigo-600 p-3 px-6 rounded-xl font-bold text-sm hover:bg-indigo-500 shadow-lg shadow-indigo-500/20 transition"><i class="fas fa-upload mr-2"></i> Upload Asset</button>
+                </div>
             </div>
             <div id="mediaGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 </div>
@@ -103,7 +124,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
         const firebaseConfig = { apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U", authDomain: "md-arafat-hosen.firebaseapp.com", projectId: "md-arafat-hosen", storageBucket: "md-arafat-hosen.firebasestorage.app" };
@@ -112,63 +133,75 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
 
-        onAuthStateChanged(auth, (user) => { if (user) { document.body.style.display = "flex"; loadPosts(); loadMedia(); } else window.location.href = "login.html"; });
+        onAuthStateChanged(auth, (user) => { if (user) { document.body.style.display = "flex"; loadAllPosts(); loadMediaGallery(); } else window.location.href = "login.html"; });
 
-        // Navigation Logic
-        window.switchTab = (tabId) => {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+        // Tabs Logic
+        window.showTab = (tabId) => {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
             document.getElementById(tabId).classList.remove('hidden');
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
             event.currentTarget.classList.add('active');
         };
 
-        // Editor Logic
-        var quill = new Quill('#editor', { theme: 'snow', modules: { imageResize: { displaySize: true }, toolbar: [[{ 'header': [1, 2, false] }], ['bold', 'italic', 'underline'], [{ 'align': [] }], ['link', 'image', 'video'], ['clean']] } });
-        document.getElementById('postTitle').addEventListener('input', (e) => { document.getElementById('postSlug').value = e.target.value.toLowerCase().trim().replace(/ /g, '-').replace(/[^\w-]+/g, ''); });
+        // Quill Setup
+        var quill = new Quill('#editor', { theme: 'snow', modules: { imageResize: { displaySize: true }, toolbar: [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ 'align': [] }], [{ 'color': [] }], ['link', 'image', 'video'], ['clean']] } });
 
-        // Load Posts Table
-        async function loadPosts() {
+        // SEO Real-time Preview Logic
+        document.getElementById('postTitle').addEventListener('input', (e) => {
+            const val = e.target.value;
+            document.getElementById('postSlug').value = val.toLowerCase().trim().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+            document.getElementById('seoPrevTitle').innerText = val || "Post Title Preview...";
+        });
+        document.getElementById('metaDesc').addEventListener('input', (e) => {
+            document.getElementById('seoPrevDesc').innerText = e.target.value || "Your meta description preview...";
+        });
+
+        // MANAGEMENT: Load Posts Table
+        async function loadAllPosts() {
             const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
             const snap = await getDocs(q);
             const tbody = document.getElementById('postTableBody');
             tbody.innerHTML = '';
-            snap.forEach(blogDoc => {
-                const data = blogDoc.data();
+            snap.forEach(bDoc => {
+                const data = bDoc.data();
                 tbody.innerHTML += `
-                    <tr class="border-t border-slate-800/50 hover:bg-white/5 transition">
+                    <tr class="hover:bg-white/5 transition">
                         <td class="p-6 font-semibold">${data.title}</td>
-                        <td class="p-6 text-slate-400">${data.category}</td>
-                        <td class="p-6 text-center font-mono text-indigo-400">${data.views || 0}</td>
-                        <td class="p-6 text-right space-x-3">
-                            <button onclick="window.deletePost('${blogDoc.id}', '${data.slug}')" class="text-red-500 hover:text-red-400"><i class="fas fa-trash"></i></button>
+                        <td class="p-6"><span class="px-3 py-1 rounded-full text-[10px] font-bold ${data.status === 'Draft' ? 'bg-yellow-500/10 text-yellow-500' : 'bg-green-500/10 text-green-500'}">${data.status || 'Live'}</span></td>
+                        <td class="p-6 text-center font-mono text-indigo-400 font-bold">${data.views || 0}</td>
+                        <td class="p-6 text-right space-x-2">
+                            <button onclick="window.deleteContent('${bDoc.id}')" class="text-slate-600 hover:text-red-500 transition"><i class="fas fa-trash-alt"></i></button>
                         </td>
                     </tr>`;
             });
         }
 
-        // Delete Logic
-        window.deletePost = async (id, slug) => {
-            if(!confirm("Are you sure? This will remove it from Database (GitHub file must be deleted manually).")) return;
-            await deleteDoc(doc(db, "blogs", id));
-            loadPosts();
+        window.deleteContent = async (id) => {
+            if(confirm("Confirm deletion? Record will be removed from DB.")) {
+                await deleteDoc(doc(db, "blogs", id));
+                loadAllPosts();
+            }
         };
 
-        // Media Library Logic
-        async function loadMedia() {
+        // MEDIA LIBRARY: Logic
+        async function loadMediaGallery() {
             const listRef = ref(storage, 'media/');
-            const res = await listAll(listRef);
             const grid = document.getElementById('mediaGrid');
-            grid.innerHTML = '';
-            res.items.forEach(async (itemRef) => {
-                const url = await getDownloadURL(itemRef);
-                grid.innerHTML += `
-                    <div class="relative group aspect-square rounded-xl overflow-hidden glass-panel border border-white/10">
-                        <img src="${url}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-indigo-600/80 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center p-2 text-center">
-                            <button onclick="navigator.clipboard.writeText('${url}'); alert('URL Copied!')" class="bg-white text-indigo-600 px-3 py-1 rounded-lg text-[10px] font-bold mb-2">COPY URL</button>
-                        </div>
-                    </div>`;
-            });
+            grid.innerHTML = '<p class="text-xs text-slate-600">Loading library...</p>';
+            try {
+                const res = await listAll(listRef);
+                grid.innerHTML = '';
+                res.items.forEach(async (item) => {
+                    const url = await getDownloadURL(item);
+                    grid.innerHTML += `
+                        <div class="relative group aspect-square rounded-xl overflow-hidden glass-panel">
+                            <img src="${url}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-indigo-600/90 opacity-0 group-hover:opacity-100 transition flex items-center justify-center p-4">
+                                <button onclick="navigator.clipboard.writeText('${url}'); alert('Link Copied!')" class="bg-white text-indigo-600 font-bold text-[10px] px-3 py-2 rounded-lg">COPY LINK</button>
+                            </div>
+                        </div>`;
+                });
+            } catch(e) { grid.innerHTML = 'No media found.'; }
         }
 
         document.getElementById('mediaUpload').addEventListener('change', async (e) => {
@@ -176,44 +209,52 @@
             if(!file) return;
             const sRef = ref(storage, 'media/' + Date.now() + "_" + file.name);
             await uploadBytes(sRef, file);
-            loadMedia();
+            loadMediaGallery();
         });
 
-        // Publish Logic (Same as before but linked to loadPosts)
-        document.getElementById('publishBtn').addEventListener('click', async () => {
+        // PUBLISH & DRAFT LOGIC
+        async function saveData(status) {
             const title = document.getElementById('postTitle').value;
             const slug = document.getElementById('postSlug').value;
             const content = quill.root.innerHTML;
-            const category = document.getElementById('categoryInput').value || "General";
+            const meta = document.getElementById('metaDesc').value;
+            const category = document.getElementById('categoryInput').value || "Uncategorized";
 
-            if(!title || !slug) return alert("Fill all fields");
+            if(!title || !slug) return alert("Title and Slug required!");
 
-            let token = localStorage.getItem('my_gh_token') || prompt("GitHub Token:");
-            if(token) localStorage.setItem('my_gh_token', token); else return;
-
-            const btn = document.getElementById('publishBtn');
-            btn.innerText = "DEPLOYING...";
-            btn.disabled = true;
+            const btn = (status === 'Live') ? document.getElementById('publishBtn') : document.getElementById('saveDraftBtn');
+            const originalText = btn.innerText;
+            btn.innerText = "Processing..."; btn.disabled = true;
 
             try {
-                // 1. Save to Firebase with 0 initial views
-                await addDoc(collection(db, "blogs"), { title, slug, category, views: 0, timestamp: serverTimestamp() });
+                // Save to Firestore
+                await addDoc(collection(db, "blogs"), { title, slug, category, meta, status, views: 0, timestamp: serverTimestamp() });
                 
-                // 2. GitHub Push (Using the template from previous code)
-                const finalHTML = `<!DOCTYPE html><html><head><title>${title}</title><link rel="stylesheet" href="../style.css"></head><body><article>${content}</article></body></html>`;
-                const encoded = btoa(unescape(encodeURIComponent(finalHTML)));
-                await fetch(`https://api.github.com/repos/ArafatBook/Md-Arafat-Hosen/contents/posts/${slug}.html`, {
-                    method: "PUT",
-                    headers: { "Authorization": "token " + token, "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: "CMS: " + title, content: encoded })
-                });
+                // If Live, Push to GitHub
+                if(status === 'Live') {
+                    let token = localStorage.getItem('my_gh_token') || prompt("Enter GitHub Token:");
+                    if(!token) throw new Error("No Token provided");
+                    localStorage.setItem('my_gh_token', token);
 
-                alert("🚀 Published!");
+                    const finalHTML = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>${title}</title><meta name="description" content="${meta}"><link rel="stylesheet" href="../style.css"></head><body><article>${content}</article></body></html>`;
+                    const encoded = btoa(unescape(encodeURIComponent(finalHTML)));
+                    
+                    const res = await fetch(`https://api.github.com/repos/ArafatBook/Md-Arafat-Hosen/contents/posts/${slug}.html`, {
+                        method: "PUT",
+                        headers: { "Authorization": "token " + token, "Content-Type": "application/json" },
+                        body: JSON.stringify({ message: "CMS Publish: " + title, content: encoded })
+                    });
+                    if(!res.ok) throw new Error("GitHub sync failed.");
+                }
+
+                alert(`Post saved as ${status}!`);
                 location.reload();
-            } catch (e) { alert(e.message); }
-            finally { btn.innerText = "PUBLISH"; btn.disabled = false; }
-        });
+            } catch (e) { alert("Error: " + e.message); }
+            finally { btn.innerText = originalText; btn.disabled = false; }
+        }
 
+        document.getElementById('publishBtn').addEventListener('click', () => saveData('Live'));
+        document.getElementById('saveDraftBtn').addEventListener('click', () => saveData('Draft'));
         document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth).then(() => window.location.href = "login.html"));
     </script>
 </body>
