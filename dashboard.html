@@ -3,152 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arafat OS | Ultra CMS v5.5</title>
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFyYWZhdCBPUyBDTVMiLAogICJzaG9ydF9uYW1lIjogIkFyYWZhdENNUyIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDIwNjE3IiwKICAidGhlbWVfY29sb3IiOiAiIzhiNWNmNiIsCiAgImljb25zIjogW3sgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi8yOTkxLzI5OTEyNDUucG5nIiwgInR5cGUiOiAiaW1hZ2UvcG5nIiwgInNpemVzIjogIjUxMng1MTIiIH1dCn0=">
+    <title>Arafat OS | Ultra CMS v6.0</title>
+    
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFyYWZhdCBPUyBDTVMiLAogICJzaG9ydF9uYW1lIjogIkFyYWZhdENNUyIsCiAgInN0YXJ0X3VybCI6ICIvZGFzaGJvYXJkLmh0bWwiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIzAyMDYxNyIsCiAgInRoZW1lX2NvbG9yIjogIzhiNWNmNiwKICAiaWNvbnMiOiBbeyAic3JjIjogImh0dHBzOi8vY2RuLWljb25zLXBuZy5mbGF0aWNvbi5jb20vNTEyLzI5OTEvMjk5MTI0NS5wbmciLCAidHlwZSI6ICJpbWFnZS9wbmciLCAic2l6ZXMiOiAiNTEyeDUxMiIgfV0KfQ==">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
         :root { --accent: #8b5cf6; --bg-dark: #020617; }
         body { font-family: 'Outfit', sans-serif; background-color: var(--bg-dark); color: #f8fafc; display: none; overflow-x: hidden; }
         
-        .glass-panel { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .sidebar-btn.active { background: rgba(139, 92, 246, 0.15); color: #a78bfa; border-left: 4px solid #8b5cf6; }
         
-        /* Mobile Sidebar Overlay */
-        #mobileSidebar { transform: translateX(-100%); transition: transform 0.3s ease-in-out; }
-        #mobileSidebar.open { transform: translateX(0); }
+        /* Sidebar Mobile Animation */
+        #mainSidebar { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; }
+        .sidebar-closed { transform: translateX(-100%); }
+        .sidebar-open { transform: translateX(0); }
 
-        #editor { min-height: 400px; background: #0f172a; border: none !important; color: #e2e8f0; font-size: 16px; border-radius: 0 0 24px 24px; }
+        #editor { min-height: 450px; background: #0f172a; border: none !important; color: #e2e8f0; font-size: 16px; border-radius: 0 0 24px 24px; }
         .ql-toolbar { background: #1e293b !important; border: none !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 24px 24px 0 0; }
 
-        /* Install Prompt Toast */
-        #installToast { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; }
+        /* SEO Preview */
+        .seo-box { background: white; color: #4d5156; padding: 15px; border-radius: 12px; font-family: arial; border: 1px solid #dfe1e5; }
+        
+        /* Install Popup */
+        #installPopup { display: none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 9999; width: 90%; max-width: 350px; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col lg:flex-row">
 
-    <header class="lg:hidden flex items-center justify-between p-4 glass-panel sticky top-0 z-[60]">
-        <button onclick="toggleMobileMenu()" class="text-2xl text-slate-400 p-2"><i class="fas fa-ellipsis-v"></i></button>
-        <h1 class="text-lg font-black tracking-tighter uppercase">Arafat<span class="text-indigo-500">.OS</span></h1>
-        <div class="w-10"></div> </header>
+    <header class="lg:hidden flex items-center justify-between p-5 glass-panel sticky top-0 z-[110]">
+        <button id="menuBtn" class="text-2xl text-slate-300 w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10">
+            <i class="fas fa-bars"></i>
+        </button>
+        <h1 class="text-xl font-black uppercase tracking-tighter">Arafat<span class="text-indigo-500">.OS</span></h1>
+        <div class="w-10"></div>
+    </header>
 
-    <aside id="mobileSidebar" class="fixed inset-y-0 left-0 w-64 glass-panel border-r border-slate-800 flex flex-col z-[100] lg:translate-x-0 lg:static">
-        <div class="p-8 text-center hidden lg:block">
-            <h1 class="text-xl font-black text-white tracking-widest uppercase">Arafat<span class="text-indigo-500">.OS</span></h1>
-            <p class="text-[9px] text-slate-500 font-bold mt-1 uppercase">v5.5 Stable</p>
-        </div>
-        
-        <div class="lg:hidden p-6 flex justify-end">
-            <button onclick="toggleMobileMenu()" class="text-slate-500 text-xl">&times;</button>
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/60 z-[900] hidden lg:hidden"></div>
+
+    <aside id="mainSidebar" class="fixed lg:static inset-y-0 left-0 w-72 glass-panel border-r border-slate-800 flex flex-col sidebar-closed lg:sidebar-open">
+        <div class="p-10 text-center hidden lg:block">
+            <h1 class="text-2xl font-black text-white tracking-widest uppercase">Arafat<span class="text-indigo-500">.OS</span></h1>
+            <p class="text-[10px] text-slate-500 font-bold mt-2 tracking-[0.2em]">CMS v6.0 ULTIMATE</p>
         </div>
 
-        <nav class="flex-1 px-4 space-y-2">
-            <button onclick="switchTab('editor-tab')" id="btn-editor-tab" class="sidebar-btn active w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-edit mr-3"></i> Write</button>
-            <button onclick="switchTab('posts-tab')" id="btn-posts-tab" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-folder mr-3"></i> Content</button>
-            <button onclick="switchTab('media-tab')" id="btn-media-tab" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-images mr-3"></i> Assets</button>
-            <button onclick="switchTab('github-tab')" id="btn-github-tab" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fab fa-github mr-3"></i> Sync</button>
+        <nav class="flex-1 px-5 space-y-2 mt-5 lg:mt-0">
+            <button onclick="tabNav('editor-tab')" id="tab-editor-tab" class="sidebar-btn active w-full flex items-center p-4 rounded-2xl text-slate-400 transition"><i class="fas fa-feather mr-4"></i> Create Post</button>
+            <button onclick="tabNav('posts-tab')" id="tab-posts-tab" class="sidebar-btn w-full flex items-center p-4 rounded-2xl text-slate-400 transition"><i class="fas fa-layer-group mr-4"></i> Manager</button>
+            <button onclick="tabNav('media-tab')" id="tab-media-tab" class="sidebar-btn w-full flex items-center p-4 rounded-2xl text-slate-400 transition"><i class="fas fa-photo-film mr-4"></i> Media Library</button>
+            <button onclick="tabNav('github-tab')" id="tab-github-tab" class="sidebar-btn w-full flex items-center p-4 rounded-2xl text-slate-400 transition"><i class="fab fa-github mr-4"></i> Cloud Sync</button>
         </nav>
 
-        <div class="p-6">
-            <button id="logoutBtn" class="w-full p-4 rounded-xl bg-red-500/10 text-red-400 text-xs font-bold hover:bg-red-500 hover:text-white transition">Sign Out</button>
+        <div class="p-8 space-y-4">
+            <div id="saveStatus" class="text-[10px] text-indigo-400 font-bold text-center uppercase opacity-0 transition">Draft Saved</div>
+            <button id="signOutBtn" class="w-full p-4 rounded-2xl bg-red-500/10 text-red-500 text-xs font-bold hover:bg-red-500 hover:text-white transition">Sign Out</button>
         </div>
     </aside>
 
-    <main class="flex-1 p-4 lg:p-10 w-full overflow-y-auto">
+    <main class="flex-1 p-5 lg:p-12 w-full overflow-y-auto">
         
-        <section id="editor-tab" class="tab-content space-y-6">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <h2 class="text-2xl font-bold" id="mainHeader">Forge Content</h2>
-                <div class="flex gap-2">
-                    <button onclick="openPreview()" class="flex-1 md:flex-none bg-slate-800 py-2 px-6 rounded-xl text-xs font-bold">PREVIEW</button>
-                    <button onclick="clearEditor()" class="flex-1 md:flex-none bg-red-500/10 text-red-500 py-2 px-6 rounded-xl text-xs font-bold">NEW</button>
+        <section id="editor-tab" class="tab-view space-y-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <h2 class="text-3xl font-bold" id="actionLabel">New Content</h2>
+                <div class="flex gap-3">
+                    <button onclick="viewPreview()" class="flex-1 md:flex-none bg-slate-800 py-3 px-8 rounded-2xl text-xs font-bold hover:bg-slate-700 transition uppercase tracking-wider">Preview</button>
+                    <button onclick="createNew()" class="flex-1 md:flex-none bg-red-500/10 text-red-500 py-3 px-8 rounded-2xl text-xs font-bold hover:bg-red-500 hover:text-white transition uppercase tracking-wider">New Post</button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
                 <div class="xl:col-span-3 space-y-6">
-                    <div class="glass-panel p-6 rounded-[32px]">
-                        <input type="hidden" id="editDocId">
-                        <input type="text" id="postTitle" placeholder="Post Title..." class="w-full bg-transparent text-3xl font-bold outline-none border-none placeholder-slate-800">
-                        <input type="text" id="postSlug" placeholder="url-slug-here" class="bg-transparent text-indigo-400 text-xs font-mono border-none outline-none mt-2 w-full">
+                    <div class="glass-panel p-8 rounded-[40px]">
+                        <input type="hidden" id="editId">
+                        <input type="text" id="pTitle" placeholder="Enter post title..." class="w-full bg-transparent text-4xl font-bold outline-none border-none placeholder-slate-800">
+                        <div class="flex items-center gap-2 mt-4 text-xs font-mono text-indigo-400">
+                            <span class="text-slate-600">URL:</span>
+                            <input type="text" id="pSlug" placeholder="url-slug" class="bg-transparent border-none outline-none w-full">
+                        </div>
                     </div>
-                    <div class="shadow-2xl rounded-3xl overflow-hidden"><div id="editor"></div></div>
+                    <div class="shadow-2xl rounded-[32px] overflow-hidden"><div id="editor"></div></div>
+                    
+                    <div class="glass-panel p-8 rounded-[32px] border-l-8 border-indigo-500">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase mb-4 tracking-widest">Google Preview</h4>
+                        <div class="seo-box">
+                            <div class="text-[14px] text-[#202124] mb-1">mdarafathosen.top › <span id="seoSlug">slug</span></div>
+                            <div class="text-[20px] text-[#1a0dab] hover:underline cursor-pointer" id="seoTitle">Post Title Preview</div>
+                            <div class="text-[14px] leading-relaxed mt-1" id="seoDesc">Enter a description in the meta box to see your snippet here.</div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="xl:col-span-1 space-y-6">
-                    <div class="glass-panel p-6 rounded-[32px] space-y-6">
+                    <div class="glass-panel p-8 rounded-[40px] sticky top-10 space-y-8">
                         <div>
-                            <label class="text-[10px] text-slate-500 font-bold uppercase block mb-2">Meta Description</label>
-                            <textarea id="metaInput" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-2xl text-xs outline-none h-32 resize-none"></textarea>
+                            <label class="text-[10px] text-slate-500 font-bold uppercase block mb-3 tracking-widest">SEO Meta Description</label>
+                            <textarea id="pMeta" class="w-full bg-slate-900 border border-slate-800 p-5 rounded-3xl text-xs outline-none h-40 resize-none focus:border-indigo-500 transition"></textarea>
                         </div>
-                        <div class="space-y-3">
-                            <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 font-bold py-4 rounded-2xl transition shadow-xl flex items-center justify-center gap-2">
-                                <i class="fas fa-rocket text-xs"></i> PUBLISH LIVE
+                        <div class="space-y-4">
+                            <button id="pubBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 font-bold py-5 rounded-3xl shadow-2xl transition flex items-center justify-center gap-3">
+                                <i class="fas fa-paper-plane text-xs"></i> PUBLISH LIVE
                             </button>
-                            <button id="draftBtn" class="w-full bg-slate-800 text-slate-400 font-bold py-3 rounded-2xl text-xs">SAVE AS DRAFT</button>
+                            <button id="draftBtn" class="w-full bg-slate-800 text-slate-400 font-bold py-4 rounded-3xl text-xs hover:bg-slate-700 transition">SAVE DRAFT</button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="posts-tab" class="tab-content hidden space-y-6">
+        <section id="posts-tab" class="tab-view hidden space-y-8">
             <div class="flex justify-between items-center">
-                <h2 class="text-2xl font-bold">Inventory</h2>
-                <button onclick="bulkDel()" id="bulkBtn" class="hidden bg-red-600 px-6 py-2 rounded-xl text-xs font-bold">DELETE SELECTED</button>
+                <h2 class="text-3xl font-bold">Content Manager</h2>
+                <button onclick="bulkDelete()" id="bulkDel" class="hidden bg-red-600 px-8 py-3 rounded-2xl text-xs font-bold shadow-lg">DELETE SELECTED</button>
             </div>
-            <div class="glass-panel rounded-[32px] overflow-x-auto">
+            <div class="glass-panel rounded-[40px] overflow-hidden">
                 <table class="w-full text-left">
                     <thead class="bg-slate-900 text-slate-500 text-[10px] font-bold uppercase border-b border-white/5">
                         <tr>
-                            <th class="p-6 w-10"><input type="checkbox" id="masterCheck"></th>
-                            <th class="p-6">Content</th>
-                            <th class="p-6">Status</th>
-                            <th class="p-6 text-right">Actions</th>
+                            <th class="p-8 w-10"><input type="checkbox" id="checkAll"></th>
+                            <th class="p-8">Post Information</th>
+                            <th class="p-8">Status</th>
+                            <th class="p-8 text-right">Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="postTable" class="text-sm divide-y divide-white/5"></tbody>
+                    <tbody id="postBody" class="text-sm divide-y divide-white/5"></tbody>
                 </table>
             </div>
         </section>
 
-        <section id="media-tab" class="tab-content hidden space-y-6">
-            <h2 class="text-2xl font-bold">Media Library</h2>
-            <div id="mediaGrid" class="grid grid-cols-2 md:grid-cols-6 gap-4"></div>
+        <section id="media-tab" class="tab-view hidden space-y-8">
+            <h2 class="text-3xl font-bold">Media Library</h2>
+            <div id="mediaWall" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6"></div>
         </section>
 
-        <section id="github-tab" class="tab-content hidden space-y-6">
-            <h2 class="text-2xl font-bold">Cloud Sync</h2>
-            <div class="glass-panel p-8 rounded-[32px] max-w-xl">
-                <div class="space-y-4">
-                    <input type="password" id="ghToken" placeholder="GitHub Access Token" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-2xl outline-none">
-                    <input type="text" id="ghRepo" placeholder="Username/RepoName" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-2xl outline-none">
-                    <button onclick="saveCloud()" class="bg-indigo-600 px-8 py-3 rounded-2xl font-bold">Save Sync Config</button>
+        <section id="github-tab" class="tab-view hidden space-y-8">
+            <h2 class="text-3xl font-bold">GitHub Configuration</h2>
+            <div class="glass-panel p-10 rounded-[40px] max-w-2xl">
+                <div class="space-y-6">
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-500 uppercase ml-2">Personal Access Token</label>
+                        <input type="password" id="ghKey" class="w-full bg-slate-900 border border-slate-800 p-5 rounded-3xl outline-none focus:border-indigo-500">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-500 uppercase ml-2">Repository (User/Repo)</label>
+                        <input type="text" id="ghPath" class="w-full bg-slate-900 border border-slate-800 p-5 rounded-3xl outline-none focus:border-indigo-500">
+                    </div>
+                    <button onclick="saveCloud()" class="bg-indigo-600 px-10 py-4 rounded-3xl font-bold hover:bg-indigo-500 transition shadow-xl">SAVE CONFIGURATION</button>
                 </div>
             </div>
         </section>
     </main>
 
-    <div id="installToast" class="w-80 glass-panel p-5 rounded-3xl shadow-2xl border-indigo-500/50 flex flex-col items-center text-center">
-        <div class="bg-indigo-500 w-12 h-12 rounded-2xl flex items-center justify-center mb-3 shadow-lg shadow-indigo-500/40">
-            <i class="fas fa-mobile-alt text-2xl"></i>
+    <div id="installPopup" class="glass-panel p-6 rounded-[32px] border-indigo-500/30 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+        <div class="bg-gradient-to-br from-indigo-500 to-purple-600 w-16 h-16 rounded-3xl flex items-center justify-center mb-4 shadow-xl shadow-indigo-500/20">
+            <i class="fas fa-cloud-arrow-down text-2xl text-white"></i>
         </div>
-        <h3 class="font-bold text-sm">Install Arafat OS?</h3>
-        <p class="text-[10px] text-slate-400 my-2">Add this CMS to your home screen for a faster app-like experience.</p>
-        <div class="flex gap-2 w-full mt-2">
-            <button id="btnInstall" class="flex-1 bg-indigo-600 py-2 rounded-xl text-[10px] font-bold">INSTALL NOW</button>
-            <button onclick="closeToast()" class="flex-1 bg-slate-800 py-2 rounded-xl text-[10px] font-bold">LATER</button>
+        <h3 class="font-bold text-lg">Arafat OS CMS</h3>
+        <p class="text-[11px] text-slate-400 mt-2 mb-5">ইন্সটল করুন এবং ফুল স্ক্রিন অ্যাপের মতো ব্যবহার করুন।</p>
+        <div class="flex gap-3 w-full">
+            <button id="installAppBtn" class="flex-1 bg-indigo-600 py-3 rounded-2xl text-[11px] font-bold hover:bg-indigo-500 transition">INSTALL NOW</button>
+            <button onclick="closeInstall()" class="flex-1 bg-slate-800 py-3 rounded-2xl text-[11px] font-bold hover:bg-slate-700 transition">LATER</button>
         </div>
     </div>
 
-    <div id="previewModal" class="hidden">
-        <div class="max-w-4xl mx-auto bg-white text-black p-8 lg:p-16 rounded-[48px] relative">
-            <button onclick="closePreview()" class="absolute top-6 right-6 text-slate-400 text-2xl">&times;</button>
-            <h1 id="pvTitle" class="text-4xl font-black mb-6"></h1>
-            <div id="pvContent" class="prose prose-indigo max-w-none"></div>
+    <div id="prevModal" class="fixed inset-0 bg-black/95 z-[2000] hidden overflow-y-auto p-5">
+        <div class="max-w-4xl mx-auto bg-white text-black p-10 lg:p-20 rounded-[50px] relative shadow-2xl">
+            <button onclick="closePreview()" class="absolute top-8 right-8 text-slate-300 text-3xl hover:text-red-500 transition">&times;</button>
+            <h1 id="pvTitle" class="text-5xl font-black mb-10 text-slate-900"></h1>
+            <div id="pvContent" class="prose prose-indigo prose-lg max-w-none"></div>
         </div>
     </div>
 
@@ -163,7 +189,7 @@
 
         const firebaseConfig = { 
             apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U", 
-            authDomain: "md-arafat-hosen.firebaseapp.com", 
+            authDomain: "md-arafat-hosen.firebaseapp.app", 
             projectId: "md-arafat-hosen", 
             storageBucket: "md-arafat-hosen.firebasestorage.app" 
         };
@@ -173,78 +199,90 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
 
+        // --- AUTH CHECK ---
         onAuthStateChanged(auth, (user) => { 
             if (user) { 
                 document.body.style.display = "flex"; 
-                initCMS();
+                startCMS();
             } else { window.location.href = "login.html"; }
         });
 
-        // --- PWA INSTALL LOGIC (Notification for 1st time) ---
-        let deferredPrompt;
-        const installToast = document.getElementById('installToast');
+        // --- 3-DOT MENU & SIDEBAR LOGIC ---
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('mainSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
 
+        function toggleSidebar() {
+            sidebar.classList.toggle('sidebar-closed');
+            sidebar.classList.toggle('sidebar-open');
+            overlay.classList.toggle('hidden');
+        }
+
+        menuBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        // --- PWA INSTALL (One time per user) ---
+        let pwaPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
-            deferredPrompt = e;
-            // Check if user has seen this before in this session
-            if (!sessionStorage.getItem('installShown')) {
-                installToast.style.display = 'block';
-                sessionStorage.setItem('installShown', 'true');
+            pwaPrompt = e;
+            // Check localStorage to show only once
+            if (!localStorage.getItem('pwa_shown')) {
+                document.getElementById('installPopup').style.display = 'block';
             }
         });
 
-        document.getElementById('btnInstall').addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                deferredPrompt = null;
-                installToast.style.display = 'none';
+        document.getElementById('installAppBtn').addEventListener('click', async () => {
+            if (pwaPrompt) {
+                pwaPrompt.prompt();
+                await pwaPrompt.userChoice;
+                pwaPrompt = null;
+                localStorage.setItem('pwa_shown', 'true');
+                document.getElementById('installPopup').style.display = 'none';
             }
         });
 
-        window.closeToast = () => installToast.style.display = 'none';
-
-        // --- MOBILE MENU ---
-        window.toggleMobileMenu = () => {
-            document.getElementById('mobileSidebar').classList.toggle('open');
+        window.closeInstall = () => {
+            localStorage.setItem('pwa_shown', 'true');
+            document.getElementById('installPopup').style.display = 'none';
         };
 
-        // --- TAB SYSTEM ---
-        window.switchTab = (id) => {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+        // --- TAB NAVIGATION ---
+        window.tabNav = (id) => {
+            document.querySelectorAll('.tab-view').forEach(t => t.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
             document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + id).classList.add('active');
-            if(window.innerWidth < 1024) toggleMobileMenu();
+            document.getElementById('tab-' + id).classList.add('active');
+            if(window.innerWidth < 1024) toggleSidebar();
             if(id === 'media-tab') loadMedia();
         };
 
-        // --- QUILL CMS SETUP ---
+        // --- QUILL EDITOR ---
         var quill = new Quill('#editor', {
             theme: 'snow',
             modules: {
                 imageResize: { displaySize: true },
                 toolbar: [
                     [{ 'header': [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline'],
-                    [{'align': []}, {'color': []}],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{'color': []}, {'background': []}],
+                    [{'align': []}],
                     ['link', 'image', 'video'],
                     ['clean']
                 ]
             }
         });
 
-        // Image Upload Logic
+        // Image upload to Firebase
         quill.getModule('toolbar').addHandler('image', () => {
-            const fileInput = document.createElement('input');
-            fileInput.setAttribute('type', 'file');
-            fileInput.setAttribute('accept', 'image/*');
-            fileInput.click();
-            fileInput.onchange = async () => {
-                const file = fileInput.files[0];
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.click();
+            input.onchange = async () => {
+                const file = input.files[0];
                 const range = quill.getSelection(true);
-                const sRef = ref(storage, 'v5_assets/' + Date.now() + "_" + file.name);
+                const sRef = ref(storage, 'v6_content/' + Date.now() + "_" + file.name);
                 try {
                     const snap = await uploadBytes(sRef, file);
                     const url = await getDownloadURL(snap.ref);
@@ -253,110 +291,155 @@
             };
         });
 
-        // --- CORE FUNCTIONS ---
-        async function initCMS() {
+        // --- CORE CMS FUNCTIONS ---
+        async function startCMS() {
             loadPosts();
             restoreDraft();
-            setInterval(autoSave, 20000);
+            setInterval(autoDraft, 15000);
         }
 
-        async function savePost(status) {
-            const id = document.getElementById('editDocId').value;
-            const data = {
-                title: document.getElementById('postTitle').value,
-                slug: document.getElementById('postSlug').value || Date.now().toString(),
+        async function saveContent(status) {
+            const editId = document.getElementById('editId').value;
+            const docData = {
+                title: document.getElementById('pTitle').value,
+                slug: document.getElementById('pSlug').value || Date.now().toString(),
                 content: quill.root.innerHTML,
-                meta: document.getElementById('metaInput').value,
+                meta: document.getElementById('pMeta').value,
                 status: status,
-                timestamp: serverTimestamp()
+                updated: serverTimestamp()
             };
+
             try {
-                if(id) await updateDoc(doc(db, "blogs", id), data);
-                else await addDoc(collection(db, "blogs"), data);
-                localStorage.removeItem('arafat_v55_draft');
-                alert("Saved!");
+                if(editId) await updateDoc(doc(db, "blogs", editId), docData);
+                else await addDoc(collection(db, "blogs"), docData);
+                
+                localStorage.removeItem('arafat_v6_draft');
+                alert("Successfully Processed!");
                 location.reload();
             } catch(e) { alert(e.message); }
         }
 
         async function loadPosts() {
-            const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
+            const q = query(collection(db, "blogs"), orderBy("updated", "desc"));
             const snap = await getDocs(q);
-            const table = document.getElementById('postTable');
-            table.innerHTML = '';
+            const tbody = document.getElementById('postBody');
+            tbody.innerHTML = '';
             snap.forEach(d => {
-                const p = d.data();
-                table.innerHTML += `
+                const data = d.data();
+                tbody.innerHTML += `
                     <tr class="hover:bg-white/5 transition">
-                        <td class="p-6"><input type="checkbox" value="${d.id}" class="post-cb accent-indigo-500" onchange="checkBulk()"></td>
-                        <td class="p-6"><div class="font-bold text-slate-200">${p.title}</div><div class="text-[10px] text-slate-500 font-mono">${p.slug}</div></td>
-                        <td class="p-6"><span class="px-2 py-1 rounded text-[8px] font-black uppercase bg-indigo-500/10 text-indigo-400">${p.status}</span></td>
-                        <td class="p-6 text-right space-x-3">
-                            <button onclick="editPost('${d.id}')" class="text-indigo-400"><i class="fas fa-edit"></i></button>
-                            <button onclick="delSingle('${d.id}')" class="text-slate-600"><i class="fas fa-trash"></i></button>
+                        <td class="p-8"><input type="checkbox" value="${d.id}" class="row-cb accent-indigo-500" onchange="checkBulkState()"></td>
+                        <td class="p-8"><div class="font-bold text-slate-100">${data.title}</div><div class="text-[10px] text-slate-600 font-mono mt-1">${data.slug}</div></td>
+                        <td class="p-8"><span class="px-3 py-1 rounded-full text-[9px] font-black uppercase ${data.status === 'Live' ? 'bg-indigo-500/10 text-indigo-400' : 'bg-slate-800 text-slate-500'}">${data.status}</span></td>
+                        <td class="p-8 text-right space-x-4">
+                            <button onclick="editDoc('${d.id}')" class="text-indigo-400 hover:text-white transition"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteDocSingle('${d.id}')" class="text-slate-600 hover:text-red-500 transition"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>`;
             });
         }
 
-        window.editPost = async (id) => {
+        window.editDoc = async (id) => {
             const snap = await getDoc(doc(db, "blogs", id));
-            const p = snap.data();
-            document.getElementById('editDocId').value = id;
-            document.getElementById('postTitle').value = p.title;
-            document.getElementById('postSlug').value = p.slug;
-            document.getElementById('metaInput').value = p.meta;
-            quill.root.innerHTML = p.content;
-            document.getElementById('mainHeader').innerText = "Update Content";
-            switchTab('editor-tab');
+            const data = snap.data();
+            document.getElementById('editId').value = id;
+            document.getElementById('pTitle').value = data.title;
+            document.getElementById('pSlug').value = data.slug;
+            document.getElementById('pMeta').value = data.meta;
+            quill.root.innerHTML = data.content;
+            document.getElementById('actionLabel').innerText = "Update Content";
+            tabNav('editor-tab');
         };
 
-        window.delSingle = async (id) => { if(confirm("Delete?")) { await deleteDoc(doc(db, "blogs", id)); loadPosts(); } };
+        window.deleteDocSingle = async (id) => { if(confirm("Confirm Delete?")) { await deleteDoc(doc(db, "blogs", id)); loadPosts(); } };
 
-        function autoSave() {
-            if(!document.getElementById('editDocId').value) {
+        function autoDraft() {
+            if(!document.getElementById('editId').value) {
                 const draft = {
-                    title: document.getElementById('postTitle').value,
-                    slug: document.getElementById('postSlug').value,
+                    title: document.getElementById('pTitle').value,
+                    slug: document.getElementById('pSlug').value,
                     content: quill.root.innerHTML,
-                    meta: document.getElementById('metaInput').value
+                    meta: document.getElementById('pMeta').value
                 };
-                localStorage.setItem('arafat_v55_draft', JSON.stringify(draft));
+                localStorage.setItem('arafat_v6_draft', JSON.stringify(draft));
+                const stat = document.getElementById('saveStatus');
+                stat.style.opacity = '1';
+                setTimeout(() => stat.style.opacity = '0', 2000);
             }
         }
 
         function restoreDraft() {
-            const saved = localStorage.getItem('arafat_v55_draft');
-            if(saved && !document.getElementById('editDocId').value) {
+            const saved = localStorage.getItem('arafat_v6_draft');
+            if(saved && !document.getElementById('editId').value) {
                 const d = JSON.parse(saved);
-                document.getElementById('postTitle').value = d.title || "";
-                document.getElementById('postSlug').value = d.slug || "";
-                document.getElementById('metaInput').value = d.meta || "";
-                quill.root.innerHTML = d.content || "";
+                document.getElementById('pTitle').value = d.title;
+                document.getElementById('pSlug').value = d.slug;
+                document.getElementById('pMeta').value = d.meta;
+                quill.root.innerHTML = d.content;
             }
         }
 
-        window.clearEditor = () => {
-            if(confirm("New Post?")) { localStorage.removeItem('arafat_v55_draft'); location.reload(); }
-        };
+        window.createNew = () => { if(confirm("Start New?")) { localStorage.removeItem('arafat_v6_draft'); location.reload(); } };
 
-        // UI Helpers
-        window.openPreview = () => {
-            document.getElementById('pvTitle').innerText = document.getElementById('postTitle').value;
+        window.viewPreview = () => {
+            document.getElementById('pvTitle').innerText = document.getElementById('pTitle').value || "Untiled";
             document.getElementById('pvContent').innerHTML = quill.root.innerHTML;
-            document.getElementById('previewModal').classList.remove('hidden');
+            document.getElementById('prevModal').classList.remove('hidden');
         };
-        window.closePreview = () => document.getElementById('previewModal').classList.add('hidden');
+        window.closePreview = () => document.getElementById('prevModal').classList.add('hidden');
 
-        document.getElementById('postTitle').oninput = (e) => {
-            document.getElementById('postSlug').value = e.target.value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+        // SEO Linkage
+        document.getElementById('pTitle').oninput = (e) => {
+            document.getElementById('seoTitle').innerText = e.target.value || "Post Title Preview";
+            document.getElementById('pSlug').value = e.target.value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+            document.getElementById('seoSlug').innerText = document.getElementById('pSlug').value;
+        };
+        document.getElementById('pMeta').oninput = (e) => {
+            document.getElementById('seoDesc').innerText = e.target.value || "Description preview...";
         };
 
-        window.checkBulk = () => {
-            const count = document.querySelectorAll('.post-cb:checked').length;
-            document.getElementById('bulkBtn').style.display = count > 0 ? 'block' : 'none';
+        window.checkBulkState = () => {
+            const len = document.querySelectorAll('.row-cb:checked').length;
+            document.getElementById('bulkDel').style.display = len > 0 ? 'block' : 'none';
         };
 
-        window.bulkDel = async () => {
-            const selected = document.querySelectorAll('.post-cb:checked');
-            if(confirm(`Delete ${selected.l
+        window.bulkDelete = async () => {
+            const items = document.querySelectorAll('.row-cb:checked');
+            if(confirm(`Delete ${items.length} posts?`)) {
+                for(let i of items) await deleteDoc(doc(db, "blogs", i.value));
+                loadPosts();
+            }
+        };
+
+        async function loadMedia() {
+            const res = await listAll(ref(storage, 'v6_content/'));
+            const wall = document.getElementById('mediaWall');
+            wall.innerHTML = '';
+            res.items.forEach(async (item) => {
+                const url = await getDownloadURL(item);
+                wall.innerHTML += `<div class="p-3 glass-panel rounded-3xl group relative"><img src="${url}" class="w-full aspect-square object-cover rounded-2xl"><button onclick="navigator.clipboard.writeText('${url}');alert('Copied')" class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition rounded-2xl flex items-center justify-center text-[10px] font-bold uppercase">Copy URL</button></div>`;
+            });
+        }
+
+        window.saveCloud = () => {
+            localStorage.setItem('gh_token', document.getElementById('ghKey').value);
+            localStorage.setItem('gh_repo', document.getElementById('ghPath').value);
+            alert("Sync Config Saved!");
+        };
+
+        window.addEventListener('load', () => {
+            document.getElementById('ghKey').value = localStorage.getItem('gh_token') || "";
+            document.getElementById('ghPath').value = localStorage.getItem('gh_repo') || "";
+        });
+
+        document.getElementById('pubBtn').onclick = () => saveContent('Live');
+        document.getElementById('draftBtn').onclick = () => saveContent('Draft');
+        document.getElementById('signOutBtn').onclick = () => signOut(auth).then(() => location.reload());
+        document.getElementById('checkAll').onchange = (e) => {
+            document.querySelectorAll('.row-cb').forEach(c => c.checked = e.target.checked);
+            checkBulkState();
+        };
+
+    </script>
+</body>
+</html>
