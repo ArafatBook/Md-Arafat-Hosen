@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arafat OS | Ultra CMS Pro v4.5</title>
+    <title>Arafat OS | Ultra CMS Pro v4.6 Final</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -24,16 +24,16 @@
     <aside class="fixed w-64 h-screen glass-panel border-r border-slate-800 hidden lg:flex flex-col z-50">
         <div class="p-8 text-center">
             <h1 class="text-xl font-black text-white tracking-widest uppercase">Arafat<span class="text-indigo-500">.OS</span></h1>
-            <p class="text-[10px] text-slate-500 font-bold mt-1 tracking-tighter">v4.5 STABLE</p>
+            <p class="text-[10px] text-slate-500 font-bold mt-1">v4.6 STABLE</p>
         </div>
         <nav class="flex-1 px-4 space-y-2">
-            <button onclick="showTab('editor-tab')" class="sidebar-btn active w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-edit mr-3"></i> Write Post</button>
-            <button onclick="showTab('posts-tab')" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-list-ul mr-3"></i> Post Manager</button>
-            <button onclick="showTab('media-tab')" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-images mr-3"></i> Media Assets</button>
+            <button onclick="showTab('editor-tab')" id="btn-editor-tab" class="sidebar-btn active w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-edit mr-3"></i> Write Post</button>
+            <button onclick="showTab('posts-tab')" id="btn-posts-tab" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-list-ul mr-3"></i> Post Manager</button>
+            <button onclick="showTab('media-tab')" id="btn-media-tab" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-images mr-3"></i> Media Assets</button>
         </nav>
         <div class="p-6">
-            <div id="autoSaveStatus" class="text-[9px] text-indigo-400 font-bold uppercase text-center mb-3 opacity-0 transition-opacity duration-500">Saved</div>
-            <button id="logoutBtn" class="w-full p-4 rounded-xl bg-red-500/10 text-red-400 text-xs font-bold hover:bg-red-500 hover:text-white transition">Logout</button>
+            <div id="autoSaveStatus" class="text-[9px] text-indigo-400 font-bold uppercase text-center mb-3 opacity-0 transition-opacity duration-500">Auto Saved</div>
+            <button id="logoutBtn" class="w-full p-4 rounded-xl bg-red-500/10 text-red-400 text-xs font-bold hover:bg-red-500 hover:text-white transition">Sign Out</button>
         </div>
     </aside>
 
@@ -44,7 +44,7 @@
                 <h2 id="editorActionTitle" class="text-3xl font-bold">Forge Content</h2>
                 <div class="flex gap-3">
                     <button onclick="openPreview()" class="px-5 py-2 bg-slate-800 rounded-xl text-[11px] font-bold hover:bg-slate-700 transition"><i class="fas fa-eye mr-2"></i> PREVIEW</button>
-                    <button onclick="clearDraft()" class="px-5 py-2 bg-red-500/10 text-red-400 rounded-xl text-[11px] font-bold hover:bg-red-500 hover:text-white transition">NEW POST</button>
+                    <button onclick="resetEditor()" class="px-5 py-2 bg-red-500/10 text-red-400 rounded-xl text-[11px] font-bold hover:bg-red-500 hover:text-white transition">NEW POST</button>
                 </div>
             </div>
 
@@ -52,27 +52,19 @@
                 <div class="xl:col-span-3 space-y-6">
                     <div class="glass-panel p-8 rounded-[32px]">
                         <input type="hidden" id="editDocId">
-                        <input type="text" id="postTitle" placeholder="Post Title..." class="w-full bg-transparent text-4xl font-bold outline-none border-none placeholder-slate-800">
+                        <input type="text" id="postTitle" placeholder="Post Title..." class="w-full bg-transparent text-4xl font-bold outline-none border-none placeholder-slate-900">
                         <input type="text" id="postSlug" placeholder="url-slug-here" class="bg-transparent text-indigo-400 outline-none w-full mt-2 font-mono text-sm border-none">
                     </div>
                     <div class="editor-wrapper shadow-2xl rounded-[24px] overflow-hidden"><div id="editor"></div></div>
-                    
-                    <div class="glass-panel p-6 rounded-[24px] border-t-2 border-indigo-500">
-                        <p class="text-[10px] text-slate-500 font-bold uppercase mb-2">Search Preview</p>
-                        <div class="bg-white p-4 rounded-lg">
-                            <h3 id="seoTitle" class="text-blue-700 text-lg font-normal truncate">Title Preview</h3>
-                            <p id="seoDesc" class="text-gray-600 text-sm line-clamp-2">Meta description preview...</p>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="xl:col-span-1 space-y-6">
                     <div class="glass-panel p-6 rounded-[32px] sticky top-6">
                         <label class="text-[10px] font-bold text-slate-500 uppercase block mb-2">Metadata</label>
-                        <textarea id="metaInput" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-2xl text-xs outline-none h-32 mb-6"></textarea>
+                        <textarea id="metaInput" placeholder="SEO Description..." class="w-full bg-slate-900 border border-slate-800 p-4 rounded-2xl text-xs outline-none h-32 mb-6 resize-none"></textarea>
                         
                         <div class="space-y-3">
-                            <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-2xl shadow-lg transition">PUBLISH LIVE</button>
+                            <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-2xl shadow-lg transition transform active:scale-95">PUBLISH LIVE</button>
                             <button id="draftBtn" class="w-full bg-slate-800 text-slate-400 font-bold py-3 rounded-2xl text-xs transition">SAVE AS DRAFT</button>
                         </div>
                     </div>
@@ -82,14 +74,14 @@
 
         <section id="posts-tab" class="tab-content hidden space-y-8">
             <div class="flex justify-between items-center">
-                <h2 class="text-3xl font-bold">Management</h2>
-                <button onclick="bulkDelete()" id="bulkBtn" class="hidden bg-red-500 px-6 py-2 rounded-xl text-xs font-bold transition">DELETE SELECTED</button>
+                <h2 class="text-3xl font-bold">Post Management</h2>
+                <button onclick="bulkDelete()" id="bulkBtn" class="hidden bg-red-600 px-6 py-2 rounded-xl text-xs font-bold transition hover:bg-red-500">DELETE SELECTED</button>
             </div>
             <div class="glass-panel rounded-[32px] overflow-hidden">
                 <table class="w-full text-left">
                     <thead class="bg-slate-900 text-slate-500 text-[10px] uppercase font-bold border-b border-white/5">
                         <tr>
-                            <th class="p-6 w-10"><input type="checkbox" id="selectAll"></th>
+                            <th class="p-6 w-10"><input type="checkbox" id="selectAll" class="accent-indigo-500"></th>
                             <th class="p-6">Content</th>
                             <th class="p-6">Status</th>
                             <th class="p-6 text-right">Actions</th>
@@ -101,7 +93,7 @@
         </section>
 
         <section id="media-tab" class="tab-content hidden space-y-8">
-            <h2 class="text-3xl font-bold">Assets</h2>
+            <h2 class="text-3xl font-bold">Media Library</h2>
             <div id="mediaGrid" class="grid grid-cols-2 md:grid-cols-6 gap-4"></div>
         </section>
 
@@ -109,8 +101,8 @@
 
     <div id="previewModal">
         <div class="max-w-4xl mx-auto bg-white text-black p-10 lg:p-20 rounded-[40px] relative min-h-screen shadow-2xl">
-            <button onclick="closePreview()" class="absolute top-5 right-5 text-gray-400 text-2xl hover:text-black">&times;</button>
-            <h1 id="pvTitle" class="text-4xl font-bold mb-5"></h1>
+            <button onclick="closePreview()" class="absolute top-5 right-5 text-gray-400 text-3xl hover:text-red-500">&times;</button>
+            <h1 id="pvTitle" class="text-4xl font-bold mb-8 text-black"></h1>
             <div id="pvContent" class="prose max-w-none"></div>
         </div>
     </div>
@@ -124,24 +116,47 @@
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U", authDomain: "md-arafat-hosen.firebaseapp.com", projectId: "md-arafat-hosen", storageBucket: "md-arafat-hosen.firebasestorage.app" };
+        const firebaseConfig = { 
+            apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U", 
+            authDomain: "md-arafat-hosen.firebaseapp.com", 
+            projectId: "md-arafat-hosen", 
+            storageBucket: "md-arafat-hosen.firebasestorage.app" 
+        };
+
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const storage = getStorage(app);
 
-        onAuthStateChanged(auth, (user) => { if (user) { document.body.style.display = "flex"; loadPostsTable(); restoreDraft(); startAutoSave(); } else window.location.href = "login.html"; });
+        // UI Auth check
+        onAuthStateChanged(auth, (user) => { 
+            if (user) { 
+                document.body.style.display = "flex"; 
+                loadPostsTable(); 
+                restoreDraft();
+                startAutoSave();
+            } else {
+                window.location.href = "login.html"; 
+            }
+        });
 
-        // Quill Initialization
+        // Initialize Quill
         var quill = new Quill('#editor', {
             theme: 'snow',
             modules: {
                 imageResize: { displaySize: true },
-                toolbar: [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline'], [{ 'color': [] }, { 'background': [] }], [{ 'align': [] }], ['link', 'image', 'video'], ['clean']]
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                ]
             }
         });
 
-        // --- FIXED IMAGE UPLOAD ---
+        // --- FIXED IMAGE UPLOAD HANDLER ---
         quill.getModule('toolbar').addHandler('image', () => {
             const input = document.createElement('input');
             input.setAttribute('type', 'file');
@@ -152,37 +167,51 @@
                 if (!file) return;
 
                 const range = quill.getSelection(true);
-                const storageRef = ref(storage, 'cms_images/' + Date.now() + "_" + file.name);
-                
+                // Temporary loading placeholder
+                quill.insertText(range.index, " [Uploading Image...] ", { 'italic': true, 'color': '#8b5cf6' });
+
+                const storageRef = ref(storage, 'cms_uploads/' + Date.now() + "_" + file.name);
                 try {
                     const snapshot = await uploadBytes(storageRef, file);
                     const url = await getDownloadURL(snapshot.ref);
+                    
+                    // Remove loading text and insert image
+                    quill.deleteText(range.index, 22);
                     quill.insertEmbed(range.index, 'image', url);
-                    quill.setSelection(range.index + 1);
-                } catch (e) { alert("Upload failed: " + e.message); }
+                } catch (e) {
+                    alert("Upload Failed: " + e.message);
+                    quill.deleteText(range.index, 22);
+                }
             };
         });
 
-        // --- AUTO SAVE (NO POPUP) ---
+        // --- SILENT AUTO SAVE ---
         function startAutoSave() {
             setInterval(() => {
+                const title = document.getElementById('postTitle').value;
                 const content = quill.root.innerHTML;
-                if(content.length > 20 && !document.getElementById('editDocId').value) {
-                    localStorage.setItem('arafat_v4_draft', JSON.stringify({
-                        title: document.getElementById('postTitle').value,
+                const docId = document.getElementById('editDocId').value;
+                
+                // Only auto-save new posts (no existing editId)
+                if(!docId && (content.length > 30 || title.length > 5)) {
+                    const draftData = {
+                        title: title,
+                        slug: document.getElementById('postSlug').value,
                         content: content,
-                        meta: document.getElementById('metaInput').value,
-                        slug: document.getElementById('postSlug').value
-                    }));
-                    document.getElementById('autoSaveStatus').style.opacity = '1';
-                    setTimeout(() => document.getElementById('autoSaveStatus').style.opacity = '0', 2000);
+                        meta: document.getElementById('metaInput').value
+                    };
+                    localStorage.setItem('arafat_cms_v46_draft', JSON.stringify(draftData));
+                    
+                    const badge = document.getElementById('autoSaveStatus');
+                    badge.style.opacity = '1';
+                    setTimeout(() => badge.style.opacity = '0', 1500);
                 }
-            }, 10000);
+            }, 20000);
         }
 
         function restoreDraft() {
-            const saved = localStorage.getItem('arafat_v4_draft');
-            if(saved) {
+            const saved = localStorage.getItem('arafat_cms_v46_draft');
+            if(saved && !document.getElementById('editDocId').value) {
                 const data = JSON.parse(saved);
                 document.getElementById('postTitle').value = data.title || '';
                 document.getElementById('postSlug').value = data.slug || '';
@@ -191,41 +220,44 @@
             }
         }
 
-        window.clearDraft = () => {
-            if(confirm("Start new post? This will clear current draft.")) {
-                localStorage.removeItem('arafat_v4_draft');
+        window.resetEditor = () => {
+            if(confirm("Discard current draft and start new?")) {
+                localStorage.removeItem('arafat_cms_v46_draft');
                 location.reload();
             }
         };
 
-        // UI Tabs
+        // --- CORE CMS LOGIC ---
         window.showTab = (id) => {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
             document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
-            const btn = Array.from(document.querySelectorAll('.sidebar-btn')).find(b => b.getAttribute('onclick').includes(id));
-            if(btn) btn.classList.add('active');
+            document.getElementById('btn-' + id).classList.add('active');
             if(id === 'media-tab') loadMedia();
         };
 
-        // CMS Actions
-        async function savePost(status) {
+        async function performSave(status) {
             const id = document.getElementById('editDocId').value;
+            const title = document.getElementById('postTitle').value;
+            if(!title) return alert("Title is required!");
+
             const post = {
-                title: document.getElementById('postTitle').value,
-                slug: document.getElementById('postSlug').value || Date.now().toString(),
+                title: title,
+                slug: document.getElementById('postSlug').value || title.toLowerCase().replace(/ /g, '-'),
                 content: quill.root.innerHTML,
                 meta: document.getElementById('metaInput').value,
                 status: status,
                 timestamp: serverTimestamp()
             };
+
             try {
                 if(id) await updateDoc(doc(db, "blogs", id), post);
                 else await addDoc(collection(db, "blogs"), post);
-                localStorage.removeItem('arafat_v4_draft');
-                alert("Success!");
+                
+                localStorage.removeItem('arafat_cms_v46_draft');
+                alert("Post Saved Successfully!");
                 location.reload();
-            } catch(e) { alert(e.message); }
+            } catch(e) { alert("Save Error: " + e.message); }
         }
 
         window.loadPostsTable = async () => {
@@ -238,17 +270,20 @@
                 tbody.innerHTML += `
                     <tr class="hover:bg-white/5 transition">
                         <td class="p-6"><input type="checkbox" value="${d.id}" class="post-cb accent-indigo-500" onchange="checkBulk()"></td>
-                        <td class="p-6"><div class="font-bold">${data.title}</div><div class="text-[10px] text-slate-500 font-mono">${data.slug}</div></td>
-                        <td class="p-6"><span class="text-[9px] px-2 py-1 rounded bg-indigo-500/10 text-indigo-400 font-black">${data.status}</span></td>
-                        <td class="p-6 text-right space-x-2">
-                            <button onclick="editPost('${d.id}')" class="text-indigo-400"><i class="fas fa-edit"></i></button>
-                            <button onclick="deleteSingle('${d.id}')" class="text-slate-600"><i class="fas fa-trash"></i></button>
+                        <td class="p-6">
+                            <div class="font-bold text-slate-200">${data.title}</div>
+                            <div class="text-[10px] text-slate-500 font-mono">${data.slug}</div>
+                        </td>
+                        <td class="p-6"><span class="text-[9px] px-2 py-1 rounded bg-indigo-500/10 text-indigo-400 font-black uppercase">${data.status}</span></td>
+                        <td class="p-6 text-right space-x-3">
+                            <button onclick="editExisting('${d.id}')" class="text-indigo-400 hover:text-white"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteSinglePost('${d.id}')" class="text-slate-600 hover:text-red-500"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>`;
             });
         };
 
-        window.editPost = async (id) => {
+        window.editExisting = async (id) => {
             const snap = await getDoc(doc(db, "blogs", id));
             const data = snap.data();
             document.getElementById('editDocId').value = id;
@@ -256,58 +291,64 @@
             document.getElementById('postSlug').value = data.slug;
             document.getElementById('metaInput').value = data.meta;
             quill.root.innerHTML = data.content;
+            document.getElementById('editorActionTitle').innerText = "Update Content";
             showTab('editor-tab');
         };
 
-        window.deleteSingle = async (id) => { if(confirm("Delete?")) { await deleteDoc(doc(db, "blogs", id)); loadPostsTable(); } };
+        window.deleteSinglePost = async (id) => {
+            if(confirm("Permanently delete this post?")) {
+                await deleteDoc(doc(db, "blogs", id));
+                loadPostsTable();
+            }
+        };
 
         window.checkBulk = () => {
-            const selected = document.querySelectorAll('.post-cb:checked').length;
-            document.getElementById('bulkBtn').style.display = selected > 0 ? 'block' : 'none';
+            const count = document.querySelectorAll('.post-cb:checked').length;
+            document.getElementById('bulkBtn').style.display = count > 0 ? 'block' : 'none';
         };
 
         window.bulkDelete = async () => {
             const selected = document.querySelectorAll('.post-cb:checked');
-            if(confirm(`Delete ${selected.length} items?`)) {
+            if(confirm(`Delete ${selected.length} posts?`)) {
                 for(let cb of selected) await deleteDoc(doc(db, "blogs", cb.value));
                 loadPostsTable();
             }
         };
 
-        // Preview Logic
+        // UI Helpers
         window.openPreview = () => {
-            document.getElementById('pvTitle').innerText = document.getElementById('postTitle').value || "Untiled";
+            document.getElementById('pvTitle').innerText = document.getElementById('postTitle').value || "Untiled Post";
             document.getElementById('pvContent').innerHTML = quill.root.innerHTML;
             document.getElementById('previewModal').style.display = 'block';
         };
         window.closePreview = () => document.getElementById('previewModal').style.display = 'none';
 
-        // SEO Preview
         document.getElementById('postTitle').addEventListener('input', (e) => {
-            document.getElementById('seoTitle').innerText = e.target.value || "Title Preview";
-            document.getElementById('postSlug').value = e.target.value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-        });
-        document.getElementById('metaInput').addEventListener('input', (e) => {
-            document.getElementById('seoDesc').innerText = e.target.value || "Meta description preview...";
+            document.getElementById('postSlug').value = e.target.value.toLowerCase().trim().replace(/ /g, '-').replace(/[^\w-]+/g, '');
         });
 
         async function loadMedia() {
-            const res = await listAll(ref(storage, 'cms_images/'));
+            const res = await listAll(ref(storage, 'cms_uploads/'));
             const grid = document.getElementById('mediaGrid');
             grid.innerHTML = '';
             res.items.forEach(async (item) => {
                 const url = await getDownloadURL(item);
-                grid.innerHTML += `<div class="p-2 glass-panel rounded-xl"><img src="${url}" class="w-full aspect-square object-cover rounded-lg mb-2"><button onclick="navigator.clipboard.writeText('${url}')" class="w-full text-[9px] bg-indigo-600 py-1 rounded">URL</button></div>`;
+                grid.innerHTML += `
+                    <div class="glass-panel p-2 rounded-xl">
+                        <img src="${url}" class="w-full aspect-square object-cover rounded-lg mb-2">
+                        <button onclick="navigator.clipboard.writeText('${url}'); alert('URL Copied')" class="w-full text-[9px] bg-indigo-600 py-1 rounded font-bold">COPY LINK</button>
+                    </div>`;
             });
         }
 
-        document.getElementById('publishBtn').onclick = () => savePost('Live');
-        document.getElementById('draftBtn').onclick = () => savePost('Draft');
-        document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => location.reload());
-        document.getElementById('selectAll').onchange = (e) => {
+        // Event Listeners
+        document.getElementById('publishBtn').addEventListener('click', () => performSave('Live'));
+        document.getElementById('draftBtn').addEventListener('click', () => performSave('Draft'));
+        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth).then(() => location.reload()));
+        document.getElementById('selectAll').addEventListener('change', (e) => {
             document.querySelectorAll('.post-cb').forEach(cb => cb.checked = e.target.checked);
             checkBulk();
-        };
+        });
     </script>
 </body>
 </html>
