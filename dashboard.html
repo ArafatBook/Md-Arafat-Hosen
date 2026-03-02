@@ -9,117 +9,57 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
-        :root { --accent: #8b5cf6; --bg-dark: #020617; --card-dark: #0f172a; }
+        :root { --accent: #8b5cf6; --bg-dark: #020617; }
         body { font-family: 'Outfit', sans-serif; background-color: var(--bg-dark); color: #f8fafc; display: none; }
         .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .sidebar-item { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .sidebar-item:hover { background: rgba(139, 92, 246, 0.1); border-left: 4px solid var(--accent); }
-        #editor { height: 450px; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.1) !important; color: white; border-radius: 0 0 12px 12px; }
+        #editor { height: 400px; background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.1) !important; color: white; border-radius: 0 0 12px 12px; }
         .ql-toolbar { background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.1) !important; border-radius: 12px 12px 0 0; }
-        .ql-stroke { stroke: #94a3b8 !important; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
 </head>
 <body class="min-h-screen">
 
     <aside class="fixed w-72 h-screen glass-panel border-r border-slate-800 hidden lg:flex flex-col z-50">
-        <div class="p-8">
-            <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent italic tracking-tighter">Arafat CMS 2.0</h1>
-        </div>
-        
-        <nav class="flex-1 px-4 mt-4 space-y-1">
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-4 mb-2">Main Menu</div>
-            <a href="#" class="sidebar-item flex items-center p-4 rounded-xl text-indigo-400 bg-indigo-500/5">
-                <i class="fas fa-edit mr-3"></i> Write Content
-            </a>
-            <a href="https://github.com/ArafatBook/Md-Arafat-Hosen/tree/main/posts" target="_blank" class="sidebar-item flex items-center p-4 rounded-xl text-slate-400 hover:text-white">
-                <i class="fas fa-folder-open mr-3"></i> Media & Assets
-            </a>
-            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-4 mt-8 mb-2">System</div>
-            <a href="#" onclick="localStorage.removeItem('my_gh_token'); location.reload();" class="sidebar-item flex items-center p-4 rounded-xl text-slate-400 hover:text-yellow-400">
-                <i class="fas fa-key mr-3"></i> Reset Token
-            </a>
+        <div class="p-8"><h1 class="text-2xl font-bold text-indigo-400 italic">Arafat CMS</h1></div>
+        <nav class="flex-1 px-4 space-y-2">
+            <a href="#" class="flex items-center p-4 rounded-xl text-indigo-400 bg-indigo-500/5"><i class="fas fa-edit mr-3"></i> Write Post</a>
+            <a href="#" onclick="localStorage.removeItem('my_gh_token'); location.reload();" class="flex items-center p-4 rounded-xl text-slate-400 hover:text-yellow-400"><i class="fas fa-key mr-3"></i> Reset Token</a>
         </nav>
-
         <div class="p-6">
-            <button id="logoutBtn" class="flex items-center w-full p-4 rounded-2xl bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition-all font-bold">
-                <i class="fas fa-power-off mr-3"></i> Logout Account
-            </button>
+            <button id="logoutBtn" class="w-full p-4 rounded-2xl bg-red-500/10 text-red-400 font-bold hover:bg-red-500 hover:text-white transition">Logout</button>
         </div>
     </aside>
 
     <main class="lg:ml-72 p-6 md:p-12">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
-            <div>
-                <h2 id="greeting" class="text-3xl font-bold tracking-tight">Loading...</h2>
-                <p class="text-slate-400">Ready to build something amazing today?</p>
-            </div>
-            <div class="flex gap-4">
-                <div class="glass-panel px-6 py-3 rounded-2xl text-center">
-                    <span class="block text-xs text-slate-500 uppercase font-bold">Server</span>
-                    <span class="text-green-400 font-bold tracking-widest text-sm">● ONLINE</span>
-                </div>
-            </div>
+        <header class="mb-10">
+            <h2 class="text-3xl font-bold">Create New Post</h2>
+            <p class="text-slate-400 italic">Design: Professional Template v3</p>
         </header>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="glass-panel p-6 rounded-3xl border-l-4 border-indigo-500">
-                <i class="fas fa-file-invoice text-indigo-500 mb-4 text-xl"></i>
-                <h4 class="text-slate-400 text-xs font-bold uppercase tracking-wider">Storage Target</h4>
-                <p class="text-lg font-bold">GitHub /posts</p>
-            </div>
-            <div class="glass-panel p-6 rounded-3xl border-l-4 border-purple-500">
-                <i class="fas fa-bolt text-purple-500 mb-4 text-xl"></i>
-                <h4 class="text-slate-400 text-xs font-bold uppercase tracking-wider">Deployment</h4>
-                <p class="text-lg font-bold">Real-time Push</p>
-            </div>
-            <div class="glass-panel p-6 rounded-3xl border-l-4 border-cyan-500">
-                <i class="fas fa-shield-alt text-cyan-500 mb-4 text-xl"></i>
-                <h4 class="text-slate-400 text-xs font-bold uppercase tracking-wider">Security</h4>
-                <p class="text-lg font-bold">Token Encrypted</p>
-            </div>
-        </div>
 
         <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
             <div class="xl:col-span-3 space-y-6">
-                <div class="glass-panel p-8 rounded-[32px] shadow-2xl">
-                    <input type="text" id="postTitle" placeholder="The Art of Storytelling..." class="w-full bg-transparent text-4xl font-bold outline-none border-none placeholder-slate-800">
-                    <div class="flex items-center mt-6 pt-6 border-t border-slate-800/50">
-                        <div class="bg-indigo-500/10 text-indigo-400 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest mr-3">URL SLUG</div>
-                        <input type="text" id="postSlug" placeholder="automatic-url-generation" class="bg-transparent text-slate-400 outline-none w-full font-mono text-sm">
-                    </div>
+                <div class="glass-panel p-8 rounded-[32px]">
+                    <input type="text" id="postTitle" placeholder="Post Title..." class="w-full bg-transparent text-4xl font-bold outline-none border-none placeholder-slate-800">
+                    <input type="text" id="postSlug" placeholder="url-slug" class="bg-transparent text-indigo-400 outline-none w-full font-mono mt-4 text-sm border-t border-slate-800 pt-4">
                 </div>
-                <div class="shadow-2xl rounded-2xl overflow-hidden">
-                    <div id="editor"></div>
-                </div>
+                <div id="editor"></div>
             </div>
 
             <div class="xl:col-span-1 space-y-6">
-                <div class="glass-panel p-8 rounded-[32px] sticky top-8">
-                    <h3 class="text-sm font-bold uppercase mb-6 tracking-widest text-slate-500 border-b border-slate-800 pb-4">Configuration</h3>
+                <div class="glass-panel p-6 rounded-[32px]">
+                    <label class="text-xs font-bold text-slate-500 uppercase block mb-2">Featured Image URL</label>
+                    <input type="text" id="postImage" placeholder="https://..." class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl text-sm mb-4 outline-none">
                     
-                    <div class="space-y-6">
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase block mb-2">Featured Image</label>
-                            <input type="text" id="postImage" placeholder="Paste URL..." class="w-full bg-slate-900 border border-slate-800 p-4 rounded-2xl text-sm outline-none focus:border-indigo-500 transition-all">
-                        </div>
+                    <label class="text-xs font-bold text-slate-500 uppercase block mb-2">Category</label>
+                    <select id="category" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl text-sm mb-6 outline-none">
+                        <option>Web Development</option>
+                        <option>Video Editing</option>
+                        <option>Game Dev</option>
+                        <option>Tutorial</option>
+                    </select>
 
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase block mb-2">Category</label>
-                            <select id="category" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-2xl text-sm outline-none cursor-pointer hover:border-indigo-500">
-                                <option>Video Editing</option>
-                                <option>Web Development</option>
-                                <option>Game Design</option>
-                                <option>Marketing</option>
-                                <option>Android Projects</option>
-                            </select>
-                        </div>
-
-                        <button id="publishBtn" class="w-full bg-gradient-to-br from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-5 rounded-2xl shadow-xl shadow-indigo-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-3">
-                            <i class="fas fa-paper-plane"></i> PUBLISH LIVE
-                        </button>
-                    </div>
+                    <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-5 rounded-2xl shadow-lg transition transform active:scale-95">
+                        <i class="fas fa-paper-plane mr-2"></i> PUBLISH LIVE
+                    </button>
                 </div>
             </div>
         </div>
@@ -129,9 +69,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U",
             authDomain: "md-arafat-hosen.firebaseapp.com",
@@ -144,28 +83,15 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // GREETING LOGIC
-        const hr = new Date().getHours();
-        const greeting = hr < 12 ? "Good Morning, Arafat" : hr < 18 ? "Good Afternoon, Arafat" : "Good Evening, Arafat";
-        document.getElementById('greeting').innerText = greeting;
-
-        // AUTO SLUG
+        // UI Helpers
+        onAuthStateChanged(auth, (user) => { if (user) document.body.style.display = "block"; else window.location.href = "login.html"; });
         document.getElementById('postTitle').addEventListener('input', (e) => {
-            document.getElementById('postSlug').value = e.target.value
-                .toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+            document.getElementById('postSlug').value = e.target.value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
         });
 
-        // QUILL SETUP
-        var quill = new Quill('#editor', {
-            theme: 'snow',
-            modules: { toolbar: [['bold', 'italic', 'underline'], ['link', 'code-block'], [{ 'header': 1 }, { 'header': 2 }], [{ 'list': 'ordered'}, { 'list': 'bullet' }]] }
-        });
+        var quill = new Quill('#editor', { theme: 'snow', modules: { toolbar: [['bold', 'italic'], ['link', 'blockquote', 'code-block'], [{ 'header': 1 }, { 'header': 2 }], [{ 'list': 'ordered'}, { 'list': 'bullet' }]] } });
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) document.body.style.display = "block";
-            else window.location.href = "login.html";
-        });
-
+        // PUBLISH FUNCTION
         document.getElementById('publishBtn').addEventListener('click', async () => {
             const title = document.getElementById('postTitle').value;
             const slug = document.getElementById('postSlug').value;
@@ -176,46 +102,115 @@
             let GITHUB_TOKEN = localStorage.getItem('my_gh_token');
             if (!GITHUB_TOKEN) {
                 GITHUB_TOKEN = prompt("Enter GitHub Token:");
-                if (GITHUB_TOKEN) localStorage.setItem('my_gh_token', GITHUB_TOKEN);
-                else return;
+                if (GITHUB_TOKEN) localStorage.setItem('my_gh_token', GITHUB_TOKEN); else return;
             }
 
             const btn = document.getElementById('publishBtn');
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SYNCING...';
+            btn.innerHTML = 'DEPLOYING...';
             btn.disabled = true;
 
             try {
-                // Firebase
+                // 1. Save to Firebase
                 await addDoc(collection(db, "blogs"), { title, slug, category, image, timestamp: serverTimestamp() });
 
-                // HTML Construction
-                const htmlTemplate = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${title}</title><style>body{font-family:system-ui;line-height:1.8;max-width:800px;margin:auto;padding:40px;color:#1e293b}img{max-width:100%;border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,0.1)}h1{font-size:3rem;letter-spacing:-2px;line-height:1.1}</style></head><body><p style="text-transform:uppercase;font-weight:bold;color:#6366f1;letter-spacing:2px">${category}</p><h1>${title}</h1><img src="${image}"><article style="margin-top:40px;font-size:1.2rem">${content}</article></body></html>`;
-                
-                const encoded = btoa(unescape(encodeURIComponent(htmlTemplate)));
+                // 2. The Professional HTML Template (Auto-Nav Integrated)
+                const htmlTemplate = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title} | Md Arafat Hosen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .post-navigation { margin-top: 60px; padding-top: 30px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .nav-group { display: flex; gap: 10px; }
+        .blog-container { padding: 120px 20px 60px; max-width: 850px; margin: 0 auto; min-height: 70vh; }
+        .featured-img { width: 100%; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .btn-nav { background: #3b82f6; color: white; padding: 10px 22px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; }
+        .btn-nav:hover { background: #1d4ed8; transform: translateY(-2px); }
+        article img { max-width: 100%; border-radius: 12px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">Md Arafat Hosen</a>
+            <nav><ul class="nav-links" id="navLinks">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../blog.html">Blog</a></li>
+            </ul></nav>
+        </div>
+    </header>
 
-                const res = await fetch(`https://api.github.com/repos/ArafatBook/Md-Arafat-Hosen/contents/posts/${slug}.html`, {
+    <main class="container blog-container">
+        <p style="color: #6366f1; font-weight: bold; text-transform: uppercase; margin-bottom: 10px;">${category}</p>
+        <h1 style="color: #1e293b; margin-bottom: 25px; font-size: 2.8rem; line-height: 1.2;">${title}</h1>
+        <img src="${image}" class="featured-img">
+        
+        <article style="font-size: 1.15rem; color: #334155; line-height: 1.8;">${content}</article>
+
+        <div class="post-navigation">
+            <a href="../blog.html" class="btn-nav" style="background: #64748b;">All Posts</a>
+            <div class="nav-group" id="navGroup">
+                </div>
+        </div>
+    </main>
+
+    <footer style="padding: 40px 0; text-align: center; border-top: 1px solid #eee; margin-top: 60px;">
+        <p>© 2026 Md Arafat Hosen. All rights reserved.</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U",
+            authDomain: "md-arafat-hosen.firebaseapp.com",
+            projectId: "md-arafat-hosen"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function initNav() {
+            const currentSlug = "${slug}";
+            const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
+            const querySnapshot = await getDocs(q);
+            const blogs = [];
+            querySnapshot.forEach((doc) => blogs.push(doc.data()));
+
+            const index = blogs.findIndex(b => b.slug === currentSlug);
+            const navGroup = document.getElementById('navGroup');
+
+            if (index < blogs.length - 1) {
+                navGroup.innerHTML += '<a href="' + blogs[index + 1].slug + '.html" class="btn-nav">Previous</a>';
+            }
+            if (index > 0) {
+                navGroup.innerHTML += '<a href="' + blogs[index - 1].slug + '.html" class="btn-nav">Next</a>';
+            }
+        }
+        initNav();
+    </script>
+</body>
+</html>`;
+
+                // 3. GitHub Upload
+                const encoded = btoa(unescape(encodeURIComponent(htmlTemplate)));
+                const res = await fetch(\`https://api.github.com/repos/ArafatBook/Md-Arafat-Hosen/contents/posts/\${slug}.html\`, {
                     method: "PUT",
-                    headers: { "Authorization": `token ${GITHUB_TOKEN}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: `CMS Push: ${title}`, content: encoded })
+                    headers: { "Authorization": \`token \${GITHUB_TOKEN}\`, "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: \`Post: \${title}\`, content: encoded })
                 });
 
-                if(res.ok) {
-                    alert("✨ Masterpiece Published Successfully!");
-                    location.reload();
-                } else {
-                    const errorMsg = await res.json();
-                    if(errorMsg.message === "Bad credentials") {
-                        localStorage.removeItem('my_gh_token');
-                        alert("Token Expired. Try again.");
-                    } else alert(errorMsg.message);
-                }
+                if(res.ok) { alert("🚀 Success!"); location.reload(); }
+                else { const e = await res.json(); alert(e.message); }
+
             } catch (e) { alert(e.message); }
-            finally { btn.innerHTML = '<i class="fas fa-paper-plane"></i> PUBLISH LIVE'; btn.disabled = false; }
+            finally { btn.innerHTML = "PUBLISH LIVE"; btn.disabled = false; }
         });
 
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            signOut(auth).then(() => window.location.href = "login.html");
-        });
+        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth).then(() => window.location.href = "login.html"));
     </script>
 </body>
 </html>
