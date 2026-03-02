@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/x-icon" href="https://lh3.googleusercontent.com/u/0/d/1oSezMeeMzuX0q9EPG3dYFhrdr0yhADMx">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog | Md Arafat Hosen</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <style>
-        .blog-thumb { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
-        .post-tag { font-size: 10px; color: #6366f1; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 5px; }
-    </style>
 </head>
 <body>
 
     <header>
         <div class="container nav-container">
             <a href="index.html" class="logo">Md Arafat Hosen</a>
-            <div class="menu-icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+            
+            <div class="menu-icon" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+
             <nav>
                 <ul class="nav-links" id="navLinks">
                     <i class="fas fa-times close-icon" onclick="toggleMenu()"></i>
-                    <li><a href="index.html#home">Home</a></li>
-                    <li><a href="index.html#services">Service</a></li>
-                    <li><a href="index.html#contact">Contact</a></li>
-                    <li><a href="blog.html" class="active">Blog</a></li>
+                    <li><a href="index.html#home" onclick="toggleMenu()">Home</a></li>
+                    <li><a href="index.html#services" onclick="toggleMenu()">Service</a></li>
+                    <li><a href="index.html#contact" onclick="toggleMenu()">Contact</a></li>
+                    <li><a href="blog.html" class="btn-blog" onclick="toggleMenu()">Blog</a></li>
                 </ul>
             </nav>
         </div>
@@ -31,16 +32,19 @@
 
     <section class="services-section container" style="min-height: 80vh; padding-top: 120px;">
         <h2 class="section-title">Latest Blog Posts</h2>
+        
         <div id="blog-posts-container" class="services-grid">
-            <p style="text-align: center; grid-column: 1/-1;">Loading all stories...</p>
+            <p style="text-align: center; grid-column: 1/-1;">Loading...</p>
         </div>
     </section>
 
     <footer>
-        <div class="container text-center">
+        <div class="container">
             <p>© 2026 Md Arafat Hosen. All rights reserved.</p>
         </div>
     </footer>
+
+    <script src="script.js"></script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -57,56 +61,51 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        async function loadAllPosts() {
+        async function fetchBlogs() {
             const container = document.getElementById('blog-posts-container');
-            let allPosts = [];
+            let combinedData = [];
 
             try {
-                // ১. Firebase থেকে ডেটা আনা
-                const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
-                const querySnapshot = await getDocs(q);
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    allPosts.push({
-                        title: data.title,
-                        category: data.category || "General",
-                        image: data.image || "https://via.placeholder.com/300",
-                        link: `posts/${data.slug}.html`,
-                        source: 'firebase'
-                    });
-                });
-
-                // ২. blogs.json থেকে ডেটা আনা
+                // ১. blogs.json থেকে ডেটা ফেচ করা (আপনার আগের লজিক)
                 try {
-                    const jsonRes = await fetch('blogs.json');
-                    if(jsonRes.ok) {
-                        const jsonData = await jsonRes.json();
-                        // JSON এর ডেটাকেও লিস্টে যোগ করা
-                        jsonData.forEach(item => {
-                            allPosts.push({
-                                title: item.title,
-                                category: item.category || "Archive",
-                                image: item.image || item.thumb || "https://via.placeholder.com/300",
-                                link: item.link,
-                                source: 'json'
-                            });
-                        });
+                    const response = await fetch('blogs.json');
+                    if(response.ok) {
+                        const jsonData = await response.json();
+                        jsonData.forEach(post => combinedData.push({
+                            title: post.title,
+                            desc: post.desc || "Manual Archive Post",
+                            link: post.link
+                        }));
                     }
-                } catch (e) { console.log("JSON file not found or empty"); }
+                } catch (e) { console.log("JSON load failed or empty"); }
 
-                // ৩. স্ক্রিনে দেখানো
-                if (allPosts.length === 0) {
-                    container.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">No posts found anywhere.</p>';
+                // ২. Firebase থেকে ডেটা ফেচ করা (ড্যাশবোর্ড পোস্ট)
+                try {
+                    const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
+                    const querySnapshot = await getDocs(q);
+                    querySnapshot.forEach((doc) => {
+                        const fbPost = doc.data();
+                        combinedData.push({
+                            title: fbPost.title,
+                            desc: fbPost.category || "New Update",
+                            link: `posts/${fbPost.slug}.html`
+                        });
+                    });
+                } catch (e) { console.log("Firebase load failed"); }
+
+                // ৩. কন্টেইনারে ডেটা দেখানো (আপনার দেওয়া আগের ডিজাইনে)
+                container.innerHTML = ''; 
+
+                if (combinedData.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">No posts available.</p>';
                     return;
                 }
 
-                container.innerHTML = ''; 
-                allPosts.forEach(post => {
+                combinedData.forEach(post => {
                     container.innerHTML += `
-                        <div class="service-card" style="text-align: left;">
-                            <img src="${post.image}" class="blog-thumb" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
-                            <span class="post-tag">${post.category}</span>
-                            <h3 style="margin-top: 5px;">${post.title}</h3>
+                        <div class="service-card">
+                            <h3>${post.title}</h3>
+                            <p>${post.desc}</p>
                             <br>
                             <a href="${post.link}" class="btn">Read More</a>
                         </div>
@@ -114,16 +113,19 @@
                 });
 
             } catch (error) {
-                console.error("Error:", error);
-                container.innerHTML = '<p style="text-align: center; color: red;">Failed to sync posts.</p>';
+                console.error("General Error loading posts");
+                container.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">Error loading content.</p>';
             }
         }
 
-        window.onload = loadAllPosts;
+        // পেজ লোড হলে ফাংশনটি কল হবে
+        window.onload = fetchBlogs;
     </script>
 
     <script>
-        function toggleMenu() { document.getElementById("navLinks").classList.toggle("active"); }
+        function toggleMenu() {
+            document.getElementById("navLinks").classList.toggle("active");
+        }
     </script>
 </body>
 </html>
