@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Blog Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #0f172a; color: white; display: none; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+    <div class="max-w-5xl mx-auto">
+        <header class="flex justify-between items-center mb-10 border-b border-gray-800 pb-6">
+            <h1 class="text-2xl font-bold text-indigo-400 tracking-tighter">MD ARAFAT HOSEN <span class="text-white text-sm font-light">| DASHBOARD</span></h1>
+            <button id="logoutBtn" class="bg-red-500/10 text-red-400 px-5 py-2 rounded-lg hover:bg-red-500 hover:text-white transition">Logout</button>
+        </header>
+
+        <div class="grid grid-cols-1 gap-8">
+            <div class="glass p-8 rounded-2xl shadow-2xl">
+                <h2 class="text-xl font-medium mb-6 flex items-center"><i class="fas fa-pen-nib mr-3 text-indigo-500"></i> Write New Post</h2>
+                
+                <div class="space-y-5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <input type="text" id="postTitle" placeholder="Post Title" class="w-full bg-gray-900 border border-gray-800 p-3.5 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <input type="text" id="postSlug" placeholder="Slug (e.g. post1)" class="w-full bg-gray-900 border border-gray-700 p-3.5 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+
+                    <textarea id="postContent" rows="12" placeholder="Write your content here (HTML supported)..." class="w-full bg-gray-900 border border-gray-800 p-5 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none font-mono"></textarea>
+
+                    <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-xl transition transform active:scale-95">
+                        <i class="fas fa-paper-plane mr-2"></i> PUBLISH TO GITHUB
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = { /* আপনার FIREBASE CONFIG এখানে */ };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Security Check
+        onAuthStateChanged(auth, (user) => { if (user) { document.body.style.display = "block"; } else { window.location.href = "login.html"; } });
+
+        document.getElementById('publishBtn').addEventListener('click', async () => {
+            const title = document.getElementById('postTitle').value;
+            const slug = document.getElementById('postSlug').value;
+            const content = document.getElementById('postContent').value;
+            
+            const GITHUB_TOKEN = "YOUR_GITHUB_TOKEN"; 
+            const REPO = "Md-Arafat-Hosen/My-blog"; 
+
+            if(!title || !slug || !content) return alert("Fill all fields!");
+            const btn = document.getElementById('publishBtn');
+            btn.innerText = "Publishing..."; btn.disabled = true;
+
+            try {
+                const htmlTemplate = `<!DOCTYPE html><html><head><title>${title}</title></head><body><h1>${title}</h1><div>${content}</div></body></html>`;
+                const encodedContent = btoa(unescape(encodeURIComponent(htmlTemplate)));
+
+                const res = await fetch(`https://api.github.com/repos/${REPO}/contents/posts/${slug}.html`, {
+                    method: "PUT",
+                    headers: { "Authorization": `token ${GITHUB_TOKEN}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: `New Post: ${title}`, content: encodedContent })
+                });
+
+                if(res.ok) { alert("Success! Live on your site."); location.reload(); }
+                else { alert("GitHub Error!"); }
+            } catch (err) { alert(err.message); } 
+            finally { btn.innerText = "PUBLISH TO GITHUB"; btn.disabled = false; }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => { signOut(auth).then(() => window.location.href = "login.html"); });
+    </script>
+</body>
+</html>
