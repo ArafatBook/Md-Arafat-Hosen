@@ -1,22 +1,22 @@
 [
   {
     "title": "Video Editing",
-    "desc": "২০২৬ সালে ভিডিও এডিটিং ক্যারিয়ার শুরু করার জন্য প্রয়োজনীয় সফটওয়্যার এবং টেকনিক নিয়ে বিস্তারিত আলোচনা।",
+    "desc": "Learn more about video editing.",
     "link": "posts/Video-Editing.html"
   },
   {
     "title": "Email Marketing",
-    "desc": "কিভাবে কোল্ড ইমেইল পাঠিয়ে আন্তর্জাতিক মার্কেটপ্লেস থেকে বড় বড় প্রজেক্ট জয় করা যায় তার গোপন কৌশল।",
+    "desc": "Learn more about email marketing.",
     "link": "posts/Email-Marketing.html"
   },
   {
     "title": "Thumbnail Design",
-    "desc": "আপনার ভিডিওর ভিউ বাড়াতে আকর্ষণীয় থাম্বনেইল ডিজাইনের গুরুত্ব এবং কিছু ডিজাইন সিক্রেট।",
+    "desc": "Learn more about thumbnail design.",
     "link": "posts/Thumbnail-Design.html"
   },
   {
     "title": "About Me",
-    "desc": "একজন নতুন ফ্রিল্যান্সার হিসেবে শুরুতে যে ভুলগুলো এড়িয়ে চলা উচিত এবং সঠিক পথ খোঁজার উপায়।",
+    "desc": "Learn more about me.",
     "link": "posts/About-Me.html"
   }
 ]
