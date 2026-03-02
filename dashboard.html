@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arafat OS | Absolute CMS v5.0 Full</title>
+    <title>Arafat OS | Pro CMS v5.5</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -12,173 +12,141 @@
         :root { --accent: #8b5cf6; --bg-dark: #020617; }
         body { font-family: 'Outfit', sans-serif; background-color: var(--bg-dark); color: #f8fafc; display: none; }
         
-        /* UI Enhancements */
         .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .sidebar-btn.active { background: rgba(139, 92, 246, 0.15); color: #a78bfa; border-left: 4px solid #8b5cf6; }
         
-        /* Responsive Editor */
-        #editor { min-height: 400px; background: #0f172a; border: none !important; color: #e2e8f0; font-size: 16px; border-radius: 0 0 24px 24px; padding: 20px; }
-        .ql-toolbar { background: #1e293b !important; border: none !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 24px 24px 0 0; padding: 12px !important; }
-        .ql-snow .ql-stroke { stroke: #94a3b8 !important; }
+        #editor { min-height: 450px; background: #0f172a; border: none !important; color: #e2e8f0; font-size: 16px; border-radius: 0 0 24px 24px; padding: 20px; }
+        .ql-toolbar { background: #1e293b !important; border: none !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 24px 24px 0 0; }
+
+        /* Mobile 3-Dot Menu Style */
+        #mobileMenuDropdown { display: none; position: absolute; bottom: 80px; right: 20px; width: 200px; z-index: 1000; }
         
-        /* SEO Preview Card */
-        .seo-card { background: #fff; padding: 15px; border-radius: 12px; max-width: 100%; font-family: arial, sans-serif; margin-top: 10px; border: 1px solid #dfe1e5; }
-        .seo-title { color: #1a0dab; font-size: 18px; text-decoration: none; display: block; margin-bottom: 2px; }
-        .seo-url { color: #202124; font-size: 12px; margin-bottom: 4px; display: block; }
-        .seo-desc { color: #4d5156; font-size: 13px; line-height: 1.5; }
+        /* Install Notification */
+        #installToast { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; width: 90%; max-width: 400px; animation: slideDown 0.5s ease-out; }
+        @keyframes slideDown { from { top: -100px; } to { top: 20px; } }
 
-        /* Mobile Adjustments */
         @media (max-width: 1024px) {
-            .mobile-nav { display: flex; position: fixed; bottom: 0; width: 100%; z-index: 100; }
-            main { margin-bottom: 80px; }
             .sidebar-desktop { display: none; }
+            main { margin-bottom: 100px; padding: 20px; }
         }
-
-        /* Live Preview Modal */
-        #previewModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; overflow-y: auto; padding: 20px; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col lg:flex-row">
 
+    <div id="installToast" class="glass-panel p-5 rounded-3xl border-indigo-500/50 shadow-2xl flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+            <div class="bg-indigo-600 w-10 h-10 rounded-xl flex items-center justify-center shadow-lg">
+                <i class="fas fa-rocket text-white"></i>
+            </div>
+            <div>
+                <h4 class="text-xs font-bold">Install Arafat OS</h4>
+                <p class="text-[10px] text-slate-400">Add to home screen for better experience.</p>
+            </div>
+        </div>
+        <div class="flex flex-col gap-1">
+            <button id="btnInstall" class="bg-indigo-600 text-[10px] px-4 py-2 rounded-lg font-bold">INSTALL</button>
+            <button onclick="closeInstallToast()" class="text-[9px] text-slate-500 text-center uppercase">Later</button>
+        </div>
+    </div>
+
     <aside class="sidebar-desktop fixed w-64 h-screen glass-panel border-r border-slate-800 flex flex-col z-50">
         <div class="p-8 text-center">
-            <h1 class="text-xl font-black text-white tracking-widest uppercase">Arafat<span class="text-indigo-500">.OS</span></h1>
-            <p class="text-[9px] text-slate-500 font-bold mt-1 uppercase">v5.0 All-In-One</p>
+            <h1 class="text-xl font-black text-white uppercase tracking-tighter">Arafat<span class="text-indigo-500">.OS</span></h1>
         </div>
         <nav class="flex-1 px-4 space-y-2">
-            <button onclick="showTab('editor-tab')" id="d-editor-tab" class="sidebar-btn active w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-feather mr-3"></i> Write</button>
+            <button onclick="showTab('editor-tab')" id="d-editor-tab" class="sidebar-btn active w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-feather mr-3"></i> Editor</button>
             <button onclick="showTab('posts-tab')" id="d-posts-tab" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-layer-group mr-3"></i> Content</button>
             <button onclick="showTab('media-tab')" id="d-media-tab" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fas fa-photo-video mr-3"></i> Assets</button>
-            <button onclick="showTab('github-tab')" id="d-github-tab" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fab fa-github mr-3"></i> GitHub Settings</button>
+            <button onclick="showTab('github-tab')" id="d-github-tab" class="sidebar-btn w-full flex items-center p-4 rounded-xl text-slate-400 transition"><i class="fab fa-github mr-3"></i> GitHub</button>
         </nav>
         <div class="p-6">
-            <div id="saveIndicator" class="text-[9px] text-green-500 font-bold text-center mb-2 opacity-0 transition">Auto-Saved</div>
             <button id="logoutBtn" class="w-full p-4 rounded-xl bg-red-500/10 text-red-400 text-xs font-bold hover:bg-red-500 hover:text-white transition">Sign Out</button>
         </div>
     </aside>
 
-    <nav class="mobile-nav lg:hidden glass-panel border-t border-slate-800 flex justify-around items-center p-4">
-        <button onclick="showTab('editor-tab')" class="text-slate-400 hover:text-indigo-400 p-2"><i class="fas fa-edit text-xl"></i></button>
-        <button onclick="showTab('posts-tab')" class="text-slate-400 hover:text-indigo-400 p-2"><i class="fas fa-list text-xl"></i></button>
-        <button onclick="showTab('media-tab')" class="text-slate-400 hover:text-indigo-400 p-2"><i class="fas fa-image text-xl"></i></button>
-        <button onclick="showTab('github-tab')" class="text-slate-400 hover:text-indigo-400 p-2"><i class="fab fa-github text-xl"></i></button>
+    <nav class="lg:hidden fixed bottom-0 w-full glass-panel border-t border-slate-800 flex justify-between items-center px-8 py-4 z-[1001]">
+        <button onclick="showTab('editor-tab')" class="text-slate-400 p-2"><i class="fas fa-edit text-xl"></i></button>
+        <button onclick="showTab('posts-tab')" class="text-slate-400 p-2"><i class="fas fa-list-ul text-xl"></i></button>
+        <button onclick="showTab('media-tab')" class="text-slate-400 p-2"><i class="fas fa-image text-xl"></i></button>
+        
+        <button onclick="toggleMobileMenu()" class="text-indigo-500 p-2 bg-indigo-500/10 rounded-full w-10 h-10 flex items-center justify-center">
+            <i class="fas fa-ellipsis-v"></i>
+        </button>
+
+        <div id="mobileMenuDropdown" class="glass-panel p-2 rounded-2xl shadow-2xl border border-white/10">
+            <button onclick="showTab('github-tab'); toggleMobileMenu()" class="w-full text-left p-4 text-xs font-bold border-b border-white/5 flex items-center gap-3"><i class="fab fa-github text-indigo-400"></i> GitHub Settings</button>
+            <button onclick="openPreview(); toggleMobileMenu()" class="w-full text-left p-4 text-xs font-bold border-b border-white/5 flex items-center gap-3"><i class="fas fa-eye text-indigo-400"></i> Live Preview</button>
+            <button onclick="signOutBtn(); toggleMobileMenu()" class="w-full text-left p-4 text-xs font-bold text-red-400 flex items-center gap-3"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
     </nav>
 
-    <main class="flex-1 lg:ml-64 p-4 lg:p-10 w-full overflow-y-auto">
-        
+    <main class="flex-1 lg:ml-64 p-4 lg:p-10 w-full overflow-y-auto pb-24">
         <section id="editor-tab" class="tab-content space-y-6">
             <div class="flex justify-between items-center">
-                <h2 class="text-2xl font-bold" id="pageTitle">New Post</h2>
+                <h2 class="text-2xl font-bold" id="pageTitle">Post Creation</h2>
                 <div class="flex gap-2">
-                    <button onclick="openPreview()" class="bg-slate-800 p-2 rounded-lg text-xs font-bold px-4 hover:bg-slate-700 transition">PREVIEW</button>
-                    <button onclick="resetDraft()" class="bg-red-500/10 text-red-500 p-2 rounded-lg text-xs font-bold px-4 hover:bg-red-500 hover:text-white transition">NEW</button>
+                    <button onclick="resetDraft()" class="hidden lg:block bg-red-500/10 text-red-500 p-2 rounded-lg text-xs font-bold px-4">CLEAR</button>
+                    <button id="publishBtn" class="bg-indigo-600 px-6 py-2 rounded-xl text-xs font-bold shadow-lg shadow-indigo-500/20">PUBLISH</button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
-                <div class="xl:col-span-3 space-y-6">
-                    <div class="glass-panel p-6 rounded-3xl">
-                        <input type="hidden" id="editDocId">
-                        <input type="text" id="postTitle" placeholder="Catchy Title..." class="w-full bg-transparent text-3xl font-bold outline-none border-none placeholder-slate-800">
-                        <div class="flex items-center mt-2 text-xs font-mono text-indigo-400">
-                            <span class="text-slate-600 mr-1">/</span>
-                            <input type="text" id="postSlug" placeholder="url-slug" class="bg-transparent border-none outline-none w-full">
-                        </div>
-                    </div>
-                    
-                    <div class="rounded-3xl overflow-hidden shadow-2xl">
-                        <div id="editor"></div>
-                    </div>
-
-                    <div class="glass-panel p-6 rounded-3xl border-t-4 border-indigo-500">
-                        <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-3">Google Search Preview</h4>
-                        <div class="seo-card">
-                            <span class="seo-url">mdarafathosen.top › <span id="slugPrev">...</span></span>
-                            <a href="#" class="seo-title" id="titlePrev">Arafat OS CMS Post</a>
-                            <p class="seo-desc" id="descPrev">Write your content description in the sidebar to see how it ranks here.</p>
-                        </div>
-                    </div>
+            <div class="space-y-4">
+                <div class="glass-panel p-6 rounded-3xl">
+                    <input type="hidden" id="editDocId">
+                    <input type="text" id="postTitle" placeholder="Post Title..." class="w-full bg-transparent text-2xl lg:text-3xl font-bold outline-none border-none placeholder-slate-800">
+                    <input type="text" id="postSlug" placeholder="url-slug" class="bg-transparent border-none outline-none w-full text-indigo-400 font-mono text-xs mt-1">
+                </div>
+                
+                <div class="rounded-3xl overflow-hidden glass-panel border-none">
+                    <div id="editor"></div>
                 </div>
 
-                <div class="xl:col-span-1 space-y-6">
-                    <div class="glass-panel p-6 rounded-3xl sticky top-6">
-                        <div class="mb-4">
-                            <label class="text-[10px] font-bold text-slate-500 uppercase block mb-2">Metadata / Description</label>
-                            <textarea id="metaInput" class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-xs outline-none h-24 resize-none"></textarea>
-                        </div>
-                        <div class="mb-6">
-                            <label class="text-[10px] font-bold text-slate-500 uppercase block mb-2">Category</label>
-                            <input type="text" id="categoryInput" list="catOptions" class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-xs outline-none">
-                            <datalist id="catOptions"><option value="Web Design"><option value="Tech"><option value="Tutorial"></datalist>
-                        </div>
-                        <div class="space-y-2">
-                            <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 font-bold py-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
-                                <i class="fas fa-paper-plane text-xs"></i> PUBLISH LIVE
-                            </button>
-                            <button id="draftBtn" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-400 font-bold py-3 rounded-xl text-xs transition">SAVE DRAFT</button>
-                        </div>
-                    </div>
+                <div class="glass-panel p-6 rounded-3xl space-y-4">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase">SEO Meta Description</label>
+                    <textarea id="metaInput" class="w-full bg-slate-900/50 border border-slate-800 p-4 rounded-xl text-xs outline-none h-20 resize-none"></textarea>
                 </div>
             </div>
         </section>
 
-        <section id="posts-tab" class="tab-content hidden space-y-6">
-            <div class="flex justify-between items-center">
-                <h2 class="text-2xl font-bold">Content Inventory</h2>
-                <button onclick="bulkDelete()" id="bulkDeleteBtn" class="hidden bg-red-600 px-6 py-2 rounded-xl text-xs font-bold transition hover:bg-red-500">DELETE SELECTED</button>
-            </div>
-            <div class="glass-panel rounded-3xl overflow-x-auto">
+        <section id="posts-tab" class="tab-content hidden">
+            <h2 class="text-2xl font-bold mb-6">Manage Content</h2>
+            <div class="glass-panel rounded-3xl overflow-hidden overflow-x-auto">
                 <table class="w-full text-left">
-                    <thead class="bg-slate-900/50 text-slate-500 text-[10px] uppercase font-bold border-b border-white/5">
-                        <tr>
-                            <th class="p-5 w-10"><input type="checkbox" id="selectAll"></th>
-                            <th class="p-5">Post Detail</th>
-                            <th class="p-5">Status</th>
-                            <th class="p-5 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="postList" class="text-sm divide-y divide-white/5"></tbody>
+                    <tbody id="postList" class="divide-y divide-white/5"></tbody>
                 </table>
             </div>
         </section>
 
-        <section id="media-tab" class="tab-content hidden space-y-6">
-            <h2 class="text-2xl font-bold">Digital Assets</h2>
-            <div id="mediaGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
+        <section id="media-tab" class="tab-content hidden">
+            <h2 class="text-2xl font-bold mb-6">Media Library</h2>
+            <div id="mediaGrid" class="grid grid-cols-2 md:grid-cols-6 gap-4"></div>
         </section>
 
-        <section id="github-tab" class="tab-content hidden space-y-6">
-            <h2 class="text-2xl font-bold">GitHub Configuration</h2>
-            <div class="glass-panel p-8 rounded-3xl max-w-2xl">
-                <p class="text-slate-400 text-sm mb-6">Enter your GitHub Token and Repo info to push posts directly to your blog site.</p>
-                <div class="space-y-4">
-                    <input type="password" id="ghToken" placeholder="GitHub Personal Access Token" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl outline-none">
-                    <input type="text" id="ghRepo" placeholder="ArafatBook/Md-Arafat-Hosen" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl outline-none">
-                    <button onclick="saveGHConfig()" class="bg-indigo-600 px-8 py-3 rounded-xl font-bold hover:bg-indigo-500 transition">Save Config</button>
-                </div>
+        <section id="github-tab" class="tab-content hidden">
+            <h2 class="text-2xl font-bold mb-6">GitHub Config</h2>
+            <div class="glass-panel p-8 rounded-3xl space-y-4">
+                <input type="password" id="ghToken" placeholder="GitHub Token" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl outline-none">
+                <input type="text" id="ghRepo" placeholder="Username/Repository" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl outline-none">
+                <button onclick="saveGHConfig()" class="bg-indigo-600 px-8 py-3 rounded-xl font-bold">Save Changes</button>
             </div>
         </section>
-
     </main>
 
-    <div id="previewModal">
-        <div class="max-w-4xl mx-auto bg-white text-black p-8 lg:p-16 rounded-[40px] relative shadow-2xl min-h-screen">
-            <button onclick="closePreview()" class="fixed top-8 right-8 bg-slate-100 text-slate-400 w-12 h-12 rounded-full flex items-center justify-center hover:text-red-500 transition shadow-lg z-50"><i class="fas fa-times"></i></button>
-            <h1 id="pvTitle" class="text-4xl font-black mb-6 leading-tight"></h1>
-            <div id="pvContent" class="prose max-w-none prose-indigo"></div>
+    <div id="previewModal" class="hidden fixed inset-0 bg-black/95 z-[5000] overflow-y-auto p-4 lg:p-20">
+        <div class="max-w-4xl mx-auto bg-white text-black p-8 rounded-[40px]">
+            <button onclick="document.getElementById('previewModal').classList.add('hidden')" class="mb-10 text-slate-400 font-bold uppercase text-xs tracking-widest flex items-center gap-2"><i class="fas fa-arrow-left"></i> Back to Editor</button>
+            <h1 id="pvTitle" class="text-4xl font-black mb-8"></h1>
+            <div id="pvContent" class="prose max-w-none prose-slate"></div>
         </div>
     </div>
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, getDoc, serverTimestamp, query, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-        // --- Firebase Config ---
         const firebaseConfig = { 
             apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U", 
             authDomain: "md-arafat-hosen.firebaseapp.com", 
@@ -191,151 +159,96 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
 
-        // --- Auth Listener ---
+        // --- Auth & Session ---
         onAuthStateChanged(auth, (user) => { 
             if (user) { 
                 document.body.style.display = "flex"; 
                 loadPosts(); 
-                loadMedia(); 
-                restoreDraft();
-                startAutoSave();
-            } else { 
-                window.location.href = "login.html"; 
-            } 
+                checkInstallStatus();
+            } else { window.location.href = "login.html"; }
         });
 
-        // --- Quill Setup ---
-        var quill = new Quill('#editor', {
-            theme: 'snow',
-            modules: {
-                imageResize: { displaySize: true },
-                toolbar: [
-                    [{ 'header': [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'color': [] }, { 'background': [] }],
-                    [{ 'align': [] }],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['link', 'image', 'video'],
-                    ['clean']
-                ]
+        // --- PWA & Install Notification Logic ---
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Check if user has already seen the notification
+            if (!localStorage.getItem('arafat_os_installed_notified')) {
+                document.getElementById('installToast').style.display = 'flex';
             }
         });
 
-        // --- FEATURE: DIRECT IMAGE UPLOAD ---
-        quill.getModule('toolbar').addHandler('image', () => {
-            const input = document.createElement('input');
-            input.setAttribute('type', 'file');
-            input.setAttribute('accept', 'image/*');
-            input.click();
-            input.onchange = async () => {
-                const file = input.files[0];
-                const range = quill.getSelection(true);
-                const sRef = ref(storage, 'posts_images/' + Date.now() + "_" + file.name);
-                
-                try {
-                    const snap = await uploadBytes(sRef, file);
-                    const url = await getDownloadURL(snap.ref);
-                    quill.insertEmbed(range.index, 'image', url);
-                } catch(e) { alert("Image Upload Failed: " + e.message); }
-            };
-        });
-
-        // --- FEATURE: SILENT AUTO-SAVE ---
-        function startAutoSave() {
-            setInterval(() => {
-                const docId = document.getElementById('editDocId').value;
-                if(!docId) { // Only save if not editing existing
-                    const draft = {
-                        title: document.getElementById('postTitle').value,
-                        slug: document.getElementById('postSlug').value,
-                        content: quill.root.innerHTML,
-                        meta: document.getElementById('metaInput').value
-                    };
-                    localStorage.setItem('arafat_v5_draft', JSON.stringify(draft));
-                    const ind = document.getElementById('saveIndicator');
-                    ind.style.opacity = '1';
-                    setTimeout(() => ind.style.opacity = '0', 2000);
+        document.getElementById('btnInstall').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    localStorage.setItem('arafat_os_installed_notified', 'true');
+                    closeInstallToast();
                 }
-            }, 15000);
-        }
-
-        function restoreDraft() {
-            const saved = localStorage.getItem('arafat_v5_draft');
-            if(saved && !document.getElementById('editDocId').value) {
-                const d = JSON.parse(saved);
-                document.getElementById('postTitle').value = d.title || "";
-                document.getElementById('postSlug').value = d.slug || "";
-                document.getElementById('metaInput').value = d.meta || "";
-                quill.root.innerHTML = d.content || "";
+                deferredPrompt = null;
             }
-        }
+        });
 
-        window.resetDraft = () => {
-            if(confirm("Discard changes and start new post?")) {
-                localStorage.removeItem('arafat_v5_draft');
-                location.reload();
-            }
+        window.closeInstallToast = () => {
+            document.getElementById('installToast').style.display = 'none';
+            // Mark as notified so it doesn't show again next time
+            localStorage.setItem('arafat_os_installed_notified', 'true');
         };
 
-        // --- NAVIGATION ---
+        // --- UI & Navigation ---
+        window.toggleMobileMenu = () => {
+            const menu = document.getElementById('mobileMenuDropdown');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        };
+
         window.showTab = (id) => {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
             document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
-            const activeBtn = document.getElementById('d-' + id);
-            if(activeBtn) activeBtn.classList.add('active');
+            if(document.getElementById('d-'+id)) document.getElementById('d-'+id).classList.add('active');
+            if(id === 'media-tab') loadMedia();
         };
 
-        // --- CORE CRUD ---
-        async function saveToDB(status) {
-            const editId = document.getElementById('editDocId').value;
-            const title = document.getElementById('postTitle').value;
-            if(!title) return alert("Title please!");
+        // --- Editor Setup ---
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [[{'header':[1,2,false]}],['bold','italic','underline'],['link','image','video'],['clean']]
+            }
+        });
 
-            const postData = {
-                title: title,
+        quill.getModule('toolbar').addHandler('image', () => {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file'); input.setAttribute('accept', 'image/*');
+            input.click();
+            input.onchange = async () => {
+                const file = input.files[0];
+                const sRef = ref(storage, 'cms_v5/' + Date.now() + "_" + file.name);
+                const snap = await uploadBytes(sRef, file);
+                const url = await getDownloadURL(snap.ref);
+                quill.insertEmbed(quill.getSelection().index, 'image', url);
+            };
+        });
+
+        // --- CRUD Ops ---
+        async function savePost() {
+            const id = document.getElementById('editDocId').value;
+            const post = {
+                title: document.getElementById('postTitle').value,
                 slug: document.getElementById('postSlug').value || Date.now().toString(),
                 content: quill.root.innerHTML,
                 meta: document.getElementById('metaInput').value,
-                category: document.getElementById('categoryInput').value || "General",
-                status: status,
                 timestamp: serverTimestamp()
             };
-
+            if(!post.title) return alert("Title required");
+            
             try {
-                if(editId) await updateDoc(doc(db, "blogs", editId), postData);
-                else await addDoc(collection(db, "blogs"), postData);
-
-                // GITHUB PUSH IF LIVE
-                if(status === 'Live') await pushToGitHub(postData);
-
-                localStorage.removeItem('arafat_v5_draft');
-                alert("Saved successfully!");
-                location.reload();
+                if(id) await updateDoc(doc(db, "blogs", id), post);
+                else await addDoc(collection(db, "blogs"), post);
+                alert("Success!"); location.reload();
             } catch(e) { alert(e.message); }
-        }
-
-        async function pushToGitHub(data) {
-            const token = localStorage.getItem('gh_token');
-            const repo = localStorage.getItem('gh_repo');
-            if(!token || !repo) return;
-
-            const htmlContent = `---
-layout: post
-title: "${data.title}"
-description: "${data.meta}"
-category: "${data.category}"
----
-${data.content}`;
-
-            const encoded = btoa(unescape(encodeURIComponent(htmlContent)));
-            const url = `https://api.github.com/repos/${repo}/contents/_posts/${data.slug}.html`;
-
-            await fetch(url, {
-                method: "PUT",
-                headers: { "Authorization": `token ${token}`, "Content-Type": "application/json" },
-                body: JSON.stringify({ message: "Post from Arafat OS CMS", content: encoded })
-            });
         }
 
         window.loadPosts = async () => {
@@ -347,15 +260,13 @@ ${data.content}`;
                 const data = d.data();
                 list.innerHTML += `
                     <tr class="hover:bg-white/5 transition">
-                        <td class="p-5"><input type="checkbox" value="${d.id}" class="post-cb accent-indigo-500" onchange="toggleBulk()"></td>
-                        <td class="p-5">
+                        <td class="p-6">
                             <div class="font-bold text-slate-200">${data.title}</div>
-                            <div class="text-[10px] text-slate-500 font-mono uppercase">${data.category}</div>
+                            <div class="text-[10px] text-slate-500 font-mono">${data.slug}</div>
                         </td>
-                        <td class="p-5"><span class="px-2 py-1 rounded text-[9px] font-black uppercase ${data.status === 'Live' ? 'bg-green-500/10 text-green-500' : 'bg-yellow-500/10 text-yellow-500'}">${data.status}</span></td>
-                        <td class="p-5 text-right space-x-3">
-                            <button onclick="editPost('${d.id}')" class="text-indigo-400 hover:text-white"><i class="fas fa-edit"></i></button>
-                            <button onclick="deleteSingle('${d.id}')" class="text-slate-600 hover:text-red-500"><i class="fas fa-trash"></i></button>
+                        <td class="p-6 text-right space-x-4">
+                            <button onclick="editPost('${d.id}')" class="text-indigo-400"><i class="fas fa-edit"></i></button>
+                            <button onclick="delPost('${d.id}')" class="text-slate-600"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>`;
             });
@@ -368,81 +279,33 @@ ${data.content}`;
             document.getElementById('postTitle').value = d.title;
             document.getElementById('postSlug').value = d.slug;
             document.getElementById('metaInput').value = d.meta;
-            document.getElementById('categoryInput').value = d.category;
             quill.root.innerHTML = d.content;
-            document.getElementById('pageTitle').innerText = "Edit Post";
             showTab('editor-tab');
         };
 
-        window.deleteSingle = async (id) => { if(confirm("Sure?")) { await deleteDoc(doc(db, "blogs", id)); loadPosts(); } };
+        window.delPost = async (id) => { if(confirm("Delete?")) { await deleteDoc(doc(db, "blogs", id)); loadPosts(); } };
 
-        // --- BULK DELETE ---
-        window.toggleBulk = () => {
-            const count = document.querySelectorAll('.post-cb:checked').length;
-            document.getElementById('bulkDeleteBtn').style.display = count > 0 ? 'block' : 'none';
-        }
-        window.bulkDelete = async () => {
-            const selected = document.querySelectorAll('.post-cb:checked');
-            if(confirm(`Delete ${selected.length} posts?`)) {
-                for(let cb of selected) await deleteDoc(doc(db, "blogs", cb.value));
-                loadPosts();
-            }
-        }
-        document.getElementById('selectAll').onchange = (e) => {
-            document.querySelectorAll('.post-cb').forEach(c => c.checked = e.target.checked);
-            toggleBulk();
-        }
-
-        // --- LIVE PREVIEW ---
-        window.openPreview = () => {
-            document.getElementById('pvTitle').innerText = document.getElementById('postTitle').value || "No Title";
-            document.getElementById('pvContent').innerHTML = quill.root.innerHTML;
-            document.getElementById('previewModal').style.display = 'block';
-        };
-        window.closePreview = () => document.getElementById('previewModal').style.display = 'none';
-
-        // --- ASSETS ---
-        async function loadMedia() {
-            const res = await listAll(ref(storage, 'posts_images/'));
+        window.loadMedia = async () => {
+            const res = await listAll(ref(storage, 'cms_v5/'));
             const grid = document.getElementById('mediaGrid');
             grid.innerHTML = '';
             res.items.forEach(async (item) => {
                 const url = await getDownloadURL(item);
-                grid.innerHTML += `
-                    <div class="glass-panel p-2 rounded-2xl relative group">
-                        <img src="${url}" class="w-full aspect-square object-cover rounded-xl">
-                        <button onclick="navigator.clipboard.writeText('${url}'); alert('Link Copied')" class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition rounded-xl flex items-center justify-center font-bold text-[10px]">COPY LINK</button>
-                    </div>`;
+                grid.innerHTML += `<div class="glass-panel p-2 rounded-xl"><img src="${url}" class="w-full aspect-square object-cover rounded-lg"></div>`;
             });
-        }
-
-        // --- GITHUB CONFIG ---
-        window.saveGHConfig = () => {
-            localStorage.setItem('gh_token', document.getElementById('ghToken').value);
-            localStorage.setItem('gh_repo', document.getElementById('ghRepo').value);
-            alert("GitHub Config Saved!");
         };
-        
-        // Load existing GH Config
-        window.addEventListener('load', () => {
-            document.getElementById('ghToken').value = localStorage.getItem('gh_token') || "";
-            document.getElementById('ghRepo').value = localStorage.getItem('gh_repo') || "";
-        });
 
-        // --- SEO Realtime ---
+        window.openPreview = () => {
+            document.getElementById('pvTitle').innerText = document.getElementById('postTitle').value;
+            document.getElementById('pvContent').innerHTML = quill.root.innerHTML;
+            document.getElementById('previewModal').classList.remove('hidden');
+        };
+
+        window.signOutBtn = () => signOut(auth).then(() => location.reload());
+        document.getElementById('publishBtn').onclick = savePost;
         document.getElementById('postTitle').oninput = (e) => {
-            document.getElementById('titlePrev').innerText = e.target.value || "Arafat OS CMS Post";
             document.getElementById('postSlug').value = e.target.value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-            document.getElementById('slugPrev').innerText = document.getElementById('postSlug').value;
         };
-        document.getElementById('metaInput').oninput = (e) => {
-            document.getElementById('descPrev').innerText = e.target.value || "Description preview...";
-        };
-
-        document.getElementById('publishBtn').onclick = () => saveToDB('Live');
-        document.getElementById('draftBtn').onclick = () => saveToDB('Draft');
-        document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => location.reload());
-
     </script>
 </body>
 </html>
