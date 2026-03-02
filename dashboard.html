@@ -18,9 +18,11 @@
         .ql-snow .ql-fill { fill: #cbd5e1 !important; }
         .ql-snow .ql-picker { color: #cbd5e1 !important; }
         
-        .upload-box { border: 2px dashed rgba(255,255,255,0.1); transition: 0.3s; cursor: pointer; min-height: 150px; display: flex; align-items: center; justify-content: center; }
-        .upload-box:hover { border-color: #8b5cf6; background: rgba(139, 92, 246, 0.05); }
-        #imagePreview { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; display: none; }
+        /* New Thumbnail Box Design */
+        .upload-area { border: 2px dashed rgba(139, 92, 246, 0.3); transition: 0.3s; position: relative; overflow: hidden; min-height: 200px; }
+        .upload-area:hover { border-color: #8b5cf6; background: rgba(139, 92, 246, 0.05); }
+        #imagePreview { width: 100%; height: 200px; object-fit: cover; display: none; border-radius: 12px; }
+        .remove-img { position: absolute; top: 10px; right: 10px; background: rgba(239, 68, 68, 0.9); width: 30px; height: 30px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -42,6 +44,10 @@
                 <h2 class="text-3xl font-bold">New Publication</h2>
                 <p class="text-slate-400 italic">Status: <span class="text-green-400">● Smart-Nav Sync Enabled</span></p>
             </div>
+            <div class="text-right">
+                <span class="text-xs text-slate-500 block">Est. Read Time</span>
+                <span id="readTime" class="text-indigo-400 font-bold">0 min read</span>
+            </div>
         </header>
 
         <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
@@ -54,6 +60,11 @@
                     </div>
                 </div>
 
+                <div class="glass-panel p-6 rounded-[24px]">
+                    <label class="text-xs font-bold text-slate-500 uppercase block mb-2">Meta Description (SEO)</label>
+                    <textarea id="metaDesc" placeholder="Write a brief summary for Google search results..." class="w-full bg-transparent outline-none text-slate-300 resize-none h-20 text-sm"></textarea>
+                </div>
+
                 <div class="editor-wrapper shadow-2xl">
                     <div id="editor"></div>
                 </div>
@@ -61,13 +72,17 @@
 
             <div class="xl:col-span-1 space-y-6">
                 <div class="glass-panel p-6 rounded-[32px] sticky top-6">
-                    <label class="text-xs font-bold text-slate-500 uppercase block mb-2">Featured Thumbnail (Optional)</label>
-                    <div onclick="document.getElementById('fileInput').click()" class="upload-box rounded-2xl p-4 text-center mb-4">
+                    <label class="text-xs font-bold text-slate-500 uppercase block mb-2">Featured Thumbnail</label>
+                    <div id="dropZone" class="upload-area rounded-2xl flex flex-col items-center justify-center text-center mb-4 cursor-pointer">
                         <input type="file" id="fileInput" class="hidden" accept="image/*">
-                        <img id="imagePreview" src="" alt="Preview">
-                        <div id="uploadPlaceholder">
-                            <i class="fas fa-cloud-upload-alt text-3xl text-slate-600 mb-2"></i>
-                            <p class="text-xs text-slate-500">Click to Upload</p>
+                        <div id="removeImg" class="remove-img"><i class="fas fa-times text-white"></i></div>
+                        <img id="imagePreview" src="">
+                        <div id="uploadPlaceholder" class="p-4">
+                            <div class="w-16 h-16 bg-indigo-500/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-image text-2xl text-indigo-400"></i>
+                            </div>
+                            <p class="text-xs text-slate-400 px-4">Drag & Drop or <span class="text-indigo-400 font-bold">Browse</span></p>
+                            <p class="text-[10px] text-slate-600 mt-1">Recommended: 1200x630px</p>
                         </div>
                     </div>
                     
@@ -118,21 +133,47 @@
         const fileInput = document.getElementById('fileInput');
         const imagePreview = document.getElementById('imagePreview');
         const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+        const dropZone = document.getElementById('dropZone');
+        const removeImg = document.getElementById('removeImg');
         let selectedFile = null;
 
-        fileInput.addEventListener('change', (e) => {
-            selectedFile = e.target.files[0];
-            if (selectedFile) {
+        // Image Handling Logic
+        function handleFile(file) {
+            if (file && file.type.startsWith('image/')) {
+                selectedFile = file;
                 const reader = new FileReader();
                 reader.onload = (re) => {
                     imagePreview.src = re.target.result;
                     imagePreview.style.display = 'block';
+                    removeImg.style.display = 'flex';
                     uploadPlaceholder.style.display = 'none';
                 }
-                reader.readAsDataURL(selectedFile);
+                reader.readAsDataURL(file);
             }
+        }
+
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+        // Drag and Drop
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = "#8b5cf6"; });
+        dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = "rgba(139, 92, 246, 0.3)"; });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            handleFile(e.dataTransfer.files[0]);
         });
 
+        removeImg.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectedFile = null;
+            imagePreview.src = '';
+            imagePreview.style.display = 'none';
+            removeImg.style.display = 'none';
+            uploadPlaceholder.style.display = 'block';
+            fileInput.value = '';
+        });
+
+        // Slug & Read Time Logic
         document.getElementById('postTitle').addEventListener('input', (e) => {
             document.getElementById('postSlug').value = e.target.value.toLowerCase().trim().replace(/ /g, '-').replace(/[^\w-]+/g, '');
         });
@@ -142,24 +183,26 @@
             placeholder: 'Write something amazing...',
             modules: {
                 imageResize: { displaySize: true },
-                toolbar: [
-                    [{ 'header': [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline'],
-                    [{ 'color': [] }, { 'background': [] }],
-                    [{ 'align': [] }],
-                    ['link', 'image', 'video'],
-                    ['clean']
-                ]
+                toolbar: [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline'], [{ 'color': [] }], [{ 'align': [] }], ['link', 'image', 'video'], ['clean']]
             }
         });
 
+        quill.on('text-change', () => {
+            const text = quill.getText();
+            const words = text.trim().split(/\s+/).length;
+            const time = Math.ceil(words / 200);
+            document.getElementById('readTime').innerText = `${time} min read`;
+        });
+
+        // Publish Logic
         document.getElementById('publishBtn').addEventListener('click', async () => {
             const title = document.getElementById('postTitle').value;
             const slug = document.getElementById('postSlug').value;
+            const meta = document.getElementById('metaDesc').value;
             const category = document.getElementById('categoryInput').value || "General";
             const content = quill.root.innerHTML;
 
-            if(!title || !slug) return alert("Title and Slug are required!");
+            if(!title || !selectedFile) return alert("Title and Image are required!");
 
             let GITHUB_TOKEN = localStorage.getItem('my_gh_token');
             if (!GITHUB_TOKEN) {
@@ -172,20 +215,11 @@
             btn.disabled = true;
 
             try {
-                let imageURL = ""; 
+                const storageRef = ref(storage, 'thumbnails/' + Date.now() + "_" + selectedFile.name);
+                const snapshot = await uploadBytes(storageRef, selectedFile);
+                const imageURL = await getDownloadURL(snapshot.ref);
 
-                // ১. যদি ইমেজ থাকে তবেই আপলোড হবে (Optional Logic)
-                if (selectedFile) {
-                    const storageRef = ref(storage, 'thumbnails/' + Date.now() + "_" + selectedFile.name);
-                    const snapshot = await uploadBytes(storageRef, selectedFile);
-                    imageURL = await getDownloadURL(snapshot.ref);
-                }
-
-                // ২. ফায়ারবেস ডেটাবেসে সিঙ্ক
                 await addDoc(collection(db, "blogs"), { title, slug, category, image: imageURL, timestamp: serverTimestamp() });
-
-                // ৩. HTML টেমপ্লেট জেনারেশন
-                const imgHTML = imageURL ? `<img src="${imageURL}" class="featured-img">` : '';
 
                 const htmlTemplate = `<!DOCTYPE html>
 <html lang="en">
@@ -193,6 +227,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>\${title} | Md Arafat Hosen</title>
+    <meta name="description" content="\${meta}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
     <style>
@@ -204,7 +239,6 @@
         article img { max-width: 100%; height: auto; border-radius: 12px; margin: 20px 0; }
         .post-navigation { margin-top: 60px; padding-top: 30px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
         .btn-nav { background: #3b82f6; color: white !important; padding: 12px 25px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
-        .btn-nav:hover { background: #1d4ed8; transform: translateY(-2px); }
     </style>
 </head>
 <body>
@@ -212,10 +246,10 @@
     <main class="blog-container">
         <span class="post-category">\${category}</span>
         <h1 class="post-title">\${title}</h1>
-        ${imgHTML}
+        <img src="\${imageURL}" class="featured-img">
         <article>\${content}</article>
         <div class="post-navigation">
-            <a href="../blog.html" class="btn-nav" style="background: #64748b;"><i class="fas fa-th-large"></i> All Posts</a>
+            <a href="../blog.html" class="btn-nav" style="background: #64748b;"><i class="fas fa-th-large"></i> All</a>
             <div id="navGroup" style="display:flex; gap:10px;"></div>
         </div>
     </main>
@@ -244,8 +278,8 @@
 </html>`;
 
                 const finalHTML = htmlTemplate
-                    .replace(/\${title}/g, title).replace(/\${category}/g, category)
-                    .replace(/\${content}/g, content).replace(/\${slug}/g, slug);
+                    .replace(/\${title}/g, title).replace(/\${category}/g, category).replace(/\${meta}/g, meta)
+                    .replace(/\${imageURL}/g, imageURL).replace(/\${content}/g, content).replace(/\${slug}/g, slug);
 
                 const encoded = btoa(unescape(encodeURIComponent(finalHTML)));
                 const githubURL = `https://api.github.com/repos/ArafatBook/Md-Arafat-Hosen/contents/posts/${slug}.html`;
@@ -256,21 +290,11 @@
                     body: JSON.stringify({ message: "CMS Publish: " + title, content: encoded })
                 });
 
-                if(res.ok) {
-                    alert("🚀 Success! Post is Live.");
-                    location.reload();
-                } else {
-                    const errorData = await res.json();
-                    alert("GitHub Error: " + errorData.message);
-                }
+                if(res.ok) { alert("🚀 Live!"); location.reload(); }
+                else { alert("GitHub Error"); }
 
-            } catch (e) {
-                console.error(e);
-                alert("Error: " + e.message);
-            } finally {
-                btn.innerHTML = '<i class="fas fa-globe mr-2"></i> PUBLISH LIVE';
-                btn.disabled = false;
-            }
+            } catch (e) { alert("Error: " + e.message); }
+            finally { btn.innerHTML = '<i class="fas fa-globe mr-2"></i> PUBLISH LIVE'; btn.disabled = false; }
         });
 
         document.getElementById('logoutBtn').addEventListener('click', () => {
