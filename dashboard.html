@@ -32,7 +32,7 @@
     <main class="lg:ml-72 p-6 md:p-12">
         <header class="mb-10">
             <h2 class="text-3xl font-bold">Create New Post</h2>
-            <p class="text-slate-400 italic">Design: Professional Template v3</p>
+            <p class="text-slate-400 italic">Status: Secure & Auto-Nav Enabled</p>
         </header>
 
         <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
@@ -69,7 +69,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U",
@@ -83,15 +83,17 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // UI Helpers
-        onAuthStateChanged(auth, (user) => { if (user) document.body.style.display = "block"; else window.location.href = "login.html"; });
+        onAuthStateChanged(auth, (user) => { 
+            if (user) document.body.style.display = "block"; 
+            else window.location.href = "login.html"; 
+        });
+
         document.getElementById('postTitle').addEventListener('input', (e) => {
             document.getElementById('postSlug').value = e.target.value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
         });
 
         var quill = new Quill('#editor', { theme: 'snow', modules: { toolbar: [['bold', 'italic'], ['link', 'blockquote', 'code-block'], [{ 'header': 1 }, { 'header': 2 }], [{ 'list': 'ordered'}, { 'list': 'bullet' }]] } });
 
-        // PUBLISH FUNCTION
         document.getElementById('publishBtn').addEventListener('click', async () => {
             const title = document.getElementById('postTitle').value;
             const slug = document.getElementById('postSlug').value;
@@ -106,14 +108,14 @@
             }
 
             const btn = document.getElementById('publishBtn');
-            btn.innerHTML = 'DEPLOYING...';
+            btn.innerHTML = 'SYNCING...';
             btn.disabled = true;
 
             try {
-                // 1. Save to Firebase
+                // 1. Firebase Sync
                 await addDoc(collection(db, "blogs"), { title, slug, category, image, timestamp: serverTimestamp() });
 
-                // 2. The Professional HTML Template (Auto-Nav Integrated)
+                // 2. Generate Template (Escaped $ and ` to prevent syntax errors)
                 const htmlTemplate = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -127,7 +129,7 @@
         .nav-group { display: flex; gap: 10px; }
         .blog-container { padding: 120px 20px 60px; max-width: 850px; margin: 0 auto; min-height: 70vh; }
         .featured-img { width: 100%; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-        .btn-nav { background: #3b82f6; color: white; padding: 10px 22px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; }
+        .btn-nav { background: #3b82f6; color: white; padding: 10px 22px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; display: inline-block; border: none; cursor: pointer; }
         .btn-nav:hover { background: #1d4ed8; transform: translateY(-2px); }
         article img { max-width: 100%; border-radius: 12px; }
     </style>
@@ -136,7 +138,7 @@
     <header>
         <div class="container nav-container">
             <a href="../index.html" class="logo">Md Arafat Hosen</a>
-            <nav><ul class="nav-links" id="navLinks">
+            <nav><ul class="nav-links">
                 <li><a href="../index.html">Home</a></li>
                 <li><a href="../blog.html">Blog</a></li>
             </ul></nav>
@@ -147,13 +149,11 @@
         <p style="color: #6366f1; font-weight: bold; text-transform: uppercase; margin-bottom: 10px;">${category}</p>
         <h1 style="color: #1e293b; margin-bottom: 25px; font-size: 2.8rem; line-height: 1.2;">${title}</h1>
         <img src="${image}" class="featured-img">
-        
         <article style="font-size: 1.15rem; color: #334155; line-height: 1.8;">${content}</article>
 
         <div class="post-navigation">
             <a href="../blog.html" class="btn-nav" style="background: #64748b;">All Posts</a>
-            <div class="nav-group" id="navGroup">
-                </div>
+            <div class="nav-group" id="navGroup"></div>
         </div>
     </main>
 
@@ -191,26 +191,45 @@
             }
         }
         initNav();
-    </script>
+    <\/script>
 </body>
 </html>`;
 
-                // 3. GitHub Upload
+                // 3. Push to GitHub
                 const encoded = btoa(unescape(encodeURIComponent(htmlTemplate)));
-                const res = await fetch(\`https://api.github.com/repos/ArafatBook/Md-Arafat-Hosen/contents/posts/\${slug}.html\`, {
+                const githubURL = "https://api.github.com/repos/ArafatBook/Md-Arafat-Hosen/contents/posts/" + slug + ".html";
+
+                const res = await fetch(githubURL, {
                     method: "PUT",
-                    headers: { "Authorization": \`token \${GITHUB_TOKEN}\`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: \`Post: \${title}\`, content: encoded })
+                    headers: { 
+                        "Authorization": "token " + GITHUB_TOKEN, 
+                        "Content-Type": "application/json" 
+                    },
+                    body: JSON.stringify({ 
+                        message: "Add post: " + title, 
+                        content: encoded 
+                    })
                 });
 
-                if(res.ok) { alert("🚀 Success!"); location.reload(); }
-                else { const e = await res.json(); alert(e.message); }
+                if(res.ok) { 
+                    alert("🚀 Success! Post is live."); 
+                    location.reload(); 
+                } else { 
+                    const e = await res.json(); 
+                    alert("GitHub Error: " + e.message); 
+                }
 
-            } catch (e) { alert(e.message); }
-            finally { btn.innerHTML = "PUBLISH LIVE"; btn.disabled = false; }
+            } catch (e) { 
+                alert("Firebase Error: " + e.message); 
+            } finally { 
+                btn.innerHTML = "PUBLISH LIVE"; 
+                btn.disabled = false; 
+            }
         });
 
-        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth).then(() => window.location.href = "login.html"));
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            signOut(auth).then(() => window.location.href = "login.html");
+        });
     </script>
 </body>
 </html>
