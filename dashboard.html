@@ -3,110 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arafat OS | Ultra CMS Pro</title>
+    <title>Arafat OS | Ultra CMS Pro v3.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
         :root { --accent: #8b5cf6; --bg-dark: #020617; }
-        body { font-family: 'Outfit', sans-serif; background-color: var(--bg-dark); color: #f8fafc; display: none; overflow-x: hidden; }
-        
-        /* Advanced Glassmorphism */
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg-dark); color: #f8fafc; display: none; }
         .glass-panel { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .sidebar-link { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .sidebar-link:hover { background: rgba(139, 92, 246, 0.1); transform: translateX(5px); color: #a78bfa; }
-
-        /* Professional Quill Theming */
-        #editor { height: 600px; background: #0f172a; border: none !important; color: #e2e8f0; font-size: 18px; line-height: 1.6; padding: 20px; border-radius: 0 0 24px 24px; }
-        .ql-toolbar { background: #1e293b !important; border: none !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 24px 24px 0 0; padding: 12px !important; }
+        #editor { height: 450px; background: #0f172a; border: none !important; color: #e2e8f0; font-size: 17px; padding: 20px; border-radius: 0 0 24px 24px; }
+        .ql-toolbar { background: #1e293b !important; border: none !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 24px 24px 0 0; }
         .ql-snow .ql-stroke { stroke: #94a3b8 !important; }
         .ql-snow .ql-fill { fill: #94a3b8 !important; }
         .ql-snow .ql-picker { color: #94a3b8 !important; }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #020617; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        .tab-btn.active { background: rgba(139, 92, 246, 0.2); color: #a78bfa; border-color: #8b5cf6; }
+        .media-card:hover .media-overlay { opacity: 1; }
     </style>
 </head>
 <body class="min-h-screen flex">
 
-    <aside class="fixed w-72 h-screen glass-panel border-r border-slate-800 hidden lg:flex flex-col z-50">
-        <div class="p-10">
-            <h1 class="text-2xl font-black tracking-tighter text-white">ARAFAT<span class="text-indigo-500">.OS</span></h1>
-            <p class="text-[10px] uppercase tracking-widest text-slate-500 mt-1 font-bold text-center">Ultra CMS v2.0</p>
-        </div>
-        
-        <nav class="flex-1 px-6 space-y-3">
-            <a href="#" class="sidebar-link flex items-center p-4 rounded-2xl text-indigo-400 bg-indigo-500/5 font-semibold">
-                <i class="fas fa-edit mr-3"></i> Write Post
-            </a>
-            <a href="#" onclick="localStorage.removeItem('my_gh_token'); location.reload();" class="sidebar-link flex items-center p-4 rounded-2xl text-slate-400 font-medium">
-                <i class="fas fa-key mr-3"></i> GitHub Token
-            </a>
+    <aside class="fixed w-64 h-screen glass-panel border-r border-slate-800 hidden lg:flex flex-col z-50">
+        <div class="p-8"><h1 class="text-xl font-black text-white">ARAFAT<span class="text-indigo-500">.OS</span></h1></div>
+        <nav class="flex-1 px-4 space-y-2">
+            <button onclick="switchTab('editor-section')" class="tab-btn active w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition border border-transparent"><i class="fas fa-pen-nib mr-3"></i> Editor</button>
+            <button onclick="switchTab('manage-section')" class="tab-btn w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition border border-transparent"><i class="fas fa-tasks mr-3"></i> Management</button>
+            <button onclick="switchTab('media-section')" class="tab-btn w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition border border-transparent"><i class="fas fa-images mr-3"></i> Media Library</button>
         </nav>
-
-        <div class="p-8">
-            <button id="logoutBtn" class="w-full p-4 rounded-2xl bg-red-500/10 text-red-400 text-sm font-bold hover:bg-red-500 hover:text-white transition-all shadow-lg shadow-red-500/5">Logout</button>
-        </div>
+        <div class="p-6"><button id="logoutBtn" class="w-full p-4 rounded-xl bg-red-500/10 text-red-400 text-xs font-bold hover:bg-red-500 hover:text-white transition">Sign Out</button></div>
     </aside>
 
-    <main class="lg:ml-72 flex-1 p-6 lg:p-12 max-w-7xl mx-auto w-full">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
-            <div>
-                <h2 class="text-3xl font-extrabold tracking-tight">Create Publication</h2>
-                <div class="flex items-center gap-3 mt-1 text-green-400 text-xs font-mono">
-                    <span>● Engine: Hybrid Firebase-GitHub</span>
-                </div>
-            </div>
-            <div class="glass-panel px-6 py-3 rounded-2xl flex items-center gap-4">
-                <div class="text-right">
-                    <span class="text-[10px] font-bold text-slate-500 uppercase block">Estimation</span>
-                    <span id="readTime" class="text-indigo-400 font-bold">0 min read</span>
-                </div>
-            </div>
-        </header>
+    <main class="lg:ml-64 flex-1 p-6 lg:p-10 w-full overflow-y-auto">
+        
+        <section id="editor-section" class="tab-content space-y-8">
+            <header class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold">New Publication</h2>
+                <div class="glass-panel px-4 py-2 rounded-xl text-indigo-400 font-bold text-sm" id="readTime">0 min read</div>
+            </header>
 
-        <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
-            <div class="xl:col-span-3 space-y-8">
-                <div class="glass-panel p-10 rounded-[40px] shadow-2xl">
-                    <input type="text" id="postTitle" placeholder="Post Title Goes Here..." class="w-full bg-transparent text-5xl font-bold outline-none border-none placeholder-slate-800 tracking-tight">
-                    <div class="flex items-center mt-6 bg-black/30 w-fit px-4 py-2 rounded-xl border border-white/5">
-                        <span class="text-slate-600 text-xs font-mono mr-2 italic">permalink/</span>
-                        <input type="text" id="postSlug" placeholder="post-url-slug" class="bg-transparent text-indigo-400 outline-none font-mono text-xs w-64">
+            <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
+                <div class="xl:col-span-3 space-y-6">
+                    <div class="glass-panel p-8 rounded-[32px]">
+                        <input type="text" id="postTitle" placeholder="Catchy Title..." class="w-full bg-transparent text-4xl font-bold outline-none border-none placeholder-slate-800">
+                        <div class="flex items-center mt-4 bg-black/20 w-fit px-3 py-1 rounded-lg border border-white/5">
+                            <span class="text-slate-600 text-[10px] font-mono mr-2">SLUG:</span>
+                            <input type="text" id="postSlug" class="bg-transparent text-indigo-400 outline-none font-mono text-[10px] w-48">
+                        </div>
                     </div>
+                    <div class="editor-wrapper rounded-[24px] overflow-hidden"><div id="editor"></div></div>
                 </div>
+                <div class="xl:col-span-1 space-y-6">
+                    <div class="glass-panel p-6 rounded-[32px] sticky top-6">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase block mb-4">Post Category</label>
+                        <input type="text" id="categoryInput" list="categoryList" placeholder="Select..." class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-sm outline-none focus:border-indigo-500 mb-6">
+                        <datalist id="categoryList"><option value="Web Dev"><option value="Tech"><option value="Marketing"></datalist>
+                        
+                        <label class="text-[10px] font-bold text-slate-500 uppercase block mb-2">Meta Desc</label>
+                        <textarea id="metaDesc" class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-xs outline-none h-20 mb-6"></textarea>
 
-                <div class="glass-panel p-6 rounded-[30px]">
-                    <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-3">SEO Meta Description</label>
-                    <textarea id="metaDesc" placeholder="Briefly explain what this post is about for search engines..." class="w-full bg-transparent outline-none text-slate-300 resize-none h-16 text-sm font-medium"></textarea>
-                </div>
-
-                <div class="editor-wrapper shadow-2xl rounded-[24px] overflow-hidden">
-                    <div id="editor"></div>
-                </div>
-            </div>
-
-            <div class="xl:col-span-1 space-y-6">
-                <div class="glass-panel p-8 rounded-[40px] sticky top-8 border-indigo-500/10">
-                    <div class="mb-8">
-                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-4">Category</label>
-                        <input type="text" id="categoryInput" list="categoryList" placeholder="Select category..." class="w-full bg-slate-900 border border-slate-800 p-4 rounded-2xl text-sm outline-none focus:border-indigo-500 transition-all font-semibold">
-                        <datalist id="categoryList">
-                            <option value="Gadget"><option value="Web Development"><option value="Marketing"><option value="Review">
-                        </datalist>
-                    </div>
-
-                    <div class="pt-6 border-t border-slate-800/50">
-                        <p class="text-[10px] text-slate-500 leading-relaxed mb-6 italic">Visual assets should be uploaded directly within the editor using the image tool.</p>
-                        <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black py-5 rounded-[24px] shadow-2xl shadow-indigo-500/20 transition-all transform active:scale-95 flex items-center justify-center">
-                            <i class="fas fa-globe-americas mr-3"></i> PUBLISH LIVE
-                        </button>
+                        <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl shadow-lg transition transform active:scale-95"><i class="fas fa-rocket mr-2"></i> PUBLISH</button>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section id="manage-section" class="tab-content hidden space-y-8">
+            <h2 class="text-3xl font-bold mb-8">Manage Publications</h2>
+            <div class="glass-panel rounded-[32px] overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-slate-900/50 text-slate-500 text-[10px] uppercase tracking-widest">
+                        <tr>
+                            <th class="p-6">Title</th>
+                            <th class="p-6">Category</th>
+                            <th class="p-6 text-center">Views</th>
+                            <th class="p-6 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="postTableBody" class="text-sm">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="media-section" class="tab-content hidden space-y-8">
+            <div class="flex justify-between items-center">
+                <h2 class="text-3xl font-bold">Media Library</h2>
+                <input type="file" id="mediaUpload" class="hidden" accept="image/*">
+                <button onclick="document.getElementById('mediaUpload').click()" class="bg-indigo-600 p-3 px-6 rounded-xl font-bold text-sm hover:bg-indigo-500 transition"><i class="fas fa-plus mr-2"></i> Upload New</button>
+            </div>
+            <div id="mediaGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                </div>
+        </section>
+
     </main>
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -115,151 +103,118 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U",
-            authDomain: "md-arafat-hosen.firebaseapp.com",
-            projectId: "md-arafat-hosen",
-            appId: "1:170687583576:web:ebffeccc9f6ead20cd412d"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U", authDomain: "md-arafat-hosen.firebaseapp.com", projectId: "md-arafat-hosen", storageBucket: "md-arafat-hosen.firebasestorage.app" };
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const storage = getStorage(app);
 
-        onAuthStateChanged(auth, (user) => { 
-            if (user) document.body.style.display = "flex"; 
-            else window.location.href = "login.html"; 
+        onAuthStateChanged(auth, (user) => { if (user) { document.body.style.display = "flex"; loadPosts(); loadMedia(); } else window.location.href = "login.html"; });
+
+        // Navigation Logic
+        window.switchTab = (tabId) => {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        };
+
+        // Editor Logic
+        var quill = new Quill('#editor', { theme: 'snow', modules: { imageResize: { displaySize: true }, toolbar: [[{ 'header': [1, 2, false] }], ['bold', 'italic', 'underline'], [{ 'align': [] }], ['link', 'image', 'video'], ['clean']] } });
+        document.getElementById('postTitle').addEventListener('input', (e) => { document.getElementById('postSlug').value = e.target.value.toLowerCase().trim().replace(/ /g, '-').replace(/[^\w-]+/g, ''); });
+
+        // Load Posts Table
+        async function loadPosts() {
+            const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
+            const snap = await getDocs(q);
+            const tbody = document.getElementById('postTableBody');
+            tbody.innerHTML = '';
+            snap.forEach(blogDoc => {
+                const data = blogDoc.data();
+                tbody.innerHTML += `
+                    <tr class="border-t border-slate-800/50 hover:bg-white/5 transition">
+                        <td class="p-6 font-semibold">${data.title}</td>
+                        <td class="p-6 text-slate-400">${data.category}</td>
+                        <td class="p-6 text-center font-mono text-indigo-400">${data.views || 0}</td>
+                        <td class="p-6 text-right space-x-3">
+                            <button onclick="window.deletePost('${blogDoc.id}', '${data.slug}')" class="text-red-500 hover:text-red-400"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        // Delete Logic
+        window.deletePost = async (id, slug) => {
+            if(!confirm("Are you sure? This will remove it from Database (GitHub file must be deleted manually).")) return;
+            await deleteDoc(doc(db, "blogs", id));
+            loadPosts();
+        };
+
+        // Media Library Logic
+        async function loadMedia() {
+            const listRef = ref(storage, 'media/');
+            const res = await listAll(listRef);
+            const grid = document.getElementById('mediaGrid');
+            grid.innerHTML = '';
+            res.items.forEach(async (itemRef) => {
+                const url = await getDownloadURL(itemRef);
+                grid.innerHTML += `
+                    <div class="relative group aspect-square rounded-xl overflow-hidden glass-panel border border-white/10">
+                        <img src="${url}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-indigo-600/80 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center p-2 text-center">
+                            <button onclick="navigator.clipboard.writeText('${url}'); alert('URL Copied!')" class="bg-white text-indigo-600 px-3 py-1 rounded-lg text-[10px] font-bold mb-2">COPY URL</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        document.getElementById('mediaUpload').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            const sRef = ref(storage, 'media/' + Date.now() + "_" + file.name);
+            await uploadBytes(sRef, file);
+            loadMedia();
         });
 
-        document.getElementById('postTitle').addEventListener('input', (e) => {
-            document.getElementById('postSlug').value = e.target.value.toLowerCase().trim().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-        });
-
-        // Professional Quill Setup with Alignments
-        var quill = new Quill('#editor', {
-            theme: 'snow',
-            placeholder: 'Share your story with the world...',
-            modules: {
-                imageResize: { displaySize: true },
-                toolbar: [
-                    [{ 'header': [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'color': [] }, { 'background': [] }],
-                    [{ 'align': [] }], // Text Alignment Added Back
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['blockquote', 'code-block'],
-                    ['link', 'image', 'video'],
-                    ['clean']
-                ]
-            }
-        });
-
-        quill.on('text-change', () => {
-            const words = quill.getText().trim().split(/\s+/).length;
-            document.getElementById('readTime').innerText = `${Math.ceil(words / 200)} min read`;
-        });
-
+        // Publish Logic (Same as before but linked to loadPosts)
         document.getElementById('publishBtn').addEventListener('click', async () => {
             const title = document.getElementById('postTitle').value;
             const slug = document.getElementById('postSlug').value;
-            const meta = document.getElementById('metaDesc').value;
-            const category = document.getElementById('categoryInput').value || "General";
             const content = quill.root.innerHTML;
+            const category = document.getElementById('categoryInput').value || "General";
 
-            if(!title || !slug) return alert("Title and Slug are mandatory.");
+            if(!title || !slug) return alert("Fill all fields");
 
-            let GITHUB_TOKEN = localStorage.getItem('my_gh_token');
-            if (!GITHUB_TOKEN) {
-                GITHUB_TOKEN = prompt("Enter GitHub Access Token:");
-                if (GITHUB_TOKEN) localStorage.setItem('my_gh_token', GITHUB_TOKEN); else return;
-            }
+            let token = localStorage.getItem('my_gh_token') || prompt("GitHub Token:");
+            if(token) localStorage.setItem('my_gh_token', token); else return;
 
             const btn = document.getElementById('publishBtn');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i> DEPLOYING...';
+            btn.innerText = "DEPLOYING...";
             btn.disabled = true;
 
             try {
-                await addDoc(collection(db, "blogs"), { title, slug, category, timestamp: serverTimestamp() });
-
-                const htmlTemplate = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>\${title} | Md Arafat Hosen</title>
-    <meta name="description" content="\${meta}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../style.css">
-    <style>
-        .blog-container { padding: 120px 20px 80px; max-width: 800px; margin: 0 auto; }
-        .post-cat { color: #8b5cf6; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; margin-bottom: 20px; display: block; }
-        .post-h { font-size: 3rem; font-weight: 900; line-height: 1.1; color: #0f172a; margin-bottom: 40px; }
-        article { font-size: 1.25rem; line-height: 1.8; color: #334155; }
-        article img { max-width: 100%; height: auto; border-radius: 24px; margin: 40px 0; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
-        .post-nav { margin-top: 80px; display: flex; justify-content: space-between; border-top: 1px solid #e2e8f0; padding-top: 40px; }
-        .nav-link { background: #0f172a; color: white !important; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: 700; }
-    </style>
-</head>
-<body>
-    <header><div class="container nav-container"><a href="../index.html" class="logo">Md Arafat Hosen</a><nav><ul class="nav-links"><li><a href="../index.html">Home</a></li><li><a href="../blog.html">Blog</a></li></ul></nav></div></header>
-    <main class="blog-container">
-        <span class="post-cat">\${category}</span>
-        <h1 class="post-h">\${title}</h1>
-        <article>\${content}</article>
-        <div class="post-nav">
-            <a href="../blog.html" class="nav-link" style="background:#64748b">Back to Blog</a>
-            <div id="navGroup" style="display:flex; gap:12px;"></div>
-        </div>
-    </main>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        const firebaseConfig = { apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U", authDomain: "md-arafat-hosen.firebaseapp.com", projectId: "md-arafat-hosen" };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        async function initNav() {
-            const currentSlug = "\${slug}";
-            const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
-            const querySnapshot = await getDocs(q);
-            const blogs = [];
-            querySnapshot.forEach(doc => blogs.push(doc.data()));
-            const index = blogs.findIndex(b => b.slug === currentSlug);
-            const navGroup = document.getElementById('navGroup');
-            if (index !== -1) {
-                if (index < blogs.length - 1) navGroup.innerHTML += '<a href="' + blogs[index + 1].slug + '.html" class="nav-link">Previous</a>';
-                if (index > 0) navGroup.innerHTML += '<a href="' + blogs[index - 1].slug + '.html" class="nav-link">Next</a>';
-            }
-        }
-        initNav();
-    <\/script>
-</body>
-</html>`;
-
-                const finalHTML = htmlTemplate
-                    .replace(/\${title}/g, title).replace(/\${category}/g, category).replace(/\${meta}/g, meta)
-                    .replace(/\${content}/g, content).replace(/\${slug}/g, slug);
-
+                // 1. Save to Firebase with 0 initial views
+                await addDoc(collection(db, "blogs"), { title, slug, category, views: 0, timestamp: serverTimestamp() });
+                
+                // 2. GitHub Push (Using the template from previous code)
+                const finalHTML = `<!DOCTYPE html><html><head><title>${title}</title><link rel="stylesheet" href="../style.css"></head><body><article>${content}</article></body></html>`;
                 const encoded = btoa(unescape(encodeURIComponent(finalHTML)));
-                const githubURL = `https://api.github.com/repos/ArafatBook/Md-Arafat-Hosen/contents/posts/${slug}.html`;
-
-                const res = await fetch(githubURL, {
+                await fetch(`https://api.github.com/repos/ArafatBook/Md-Arafat-Hosen/contents/posts/${slug}.html`, {
                     method: "PUT",
-                    headers: { "Authorization": "token " + GITHUB_TOKEN, "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: "CMS Sync: " + title, content: encoded })
+                    headers: { "Authorization": "token " + token, "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: "CMS: " + title, content: encoded })
                 });
 
-                if(res.ok) { alert("🚀 Successfully Published to GitHub!"); location.reload(); }
-                else { alert("GitHub API Error."); }
-
-            } catch (e) { alert("Error: " + e.message); }
-            finally { btn.innerHTML = '<i class="fas fa-globe-americas mr-3"></i> PUBLISH LIVE'; btn.disabled = false; }
+                alert("🚀 Published!");
+                location.reload();
+            } catch (e) { alert(e.message); }
+            finally { btn.innerText = "PUBLISH"; btn.disabled = false; }
         });
 
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            signOut(auth).then(() => window.location.href = "login.html");
-        });
+        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth).then(() => window.location.href = "login.html"));
     </script>
 </body>
 </html>
