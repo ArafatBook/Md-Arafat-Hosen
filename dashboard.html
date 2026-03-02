@@ -3,103 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Md Arafat Hosen | Professional Dashboard</title>
+    <title>Arafat | Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #0b0f1a; color: #e2e8f0; display: none; }
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .sidebar-item:hover { background: rgba(99, 102, 241, 0.1); border-left: 4px solid #6366f1; }
-        .sidebar-active { background: rgba(99, 102, 241, 0.2); border-left: 4px solid #6366f1; color: #818cf8; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --bg-dark: #05070a;
+            --card-dark: #0f121a;
+            --accent: #6366f1;
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-dark); 
+            color: #e2e8f0; 
+            display: none; /* Security hiding */
+        }
+
+        .glass { background: rgba(15, 18, 26, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        
+        /* Quill Editor Customization */
+        #editor { height: 400px; background: #161b26; border: 1px solid #2d3748 !important; border-radius: 0 0 12px 12px; color: white; }
+        .ql-toolbar { background: #1f2937; border: 1px solid #2d3748 !important; border-radius: 12px 12px 0 0; }
+        .ql-stroke { stroke: #cbd5e1 !important; }
+        
+        .nav-link:hover { background: rgba(99, 102, 241, 0.1); color: var(--accent); }
+        .active-nav { background: rgba(99, 102, 241, 0.15); color: var(--accent); border-right: 3px solid var(--accent); }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen flex">
 
-    <div class="flex">
-        <aside class="w-64 min-h-screen glass-card hidden md:block fixed left-0 top-0 overflow-y-auto">
-            <div class="p-6">
-                <h2 class="text-xl font-bold text-white tracking-widest uppercase italic">ARAFAT <span class="text-indigo-500 font-light">OS</span></h2>
+    <aside class="w-64 border-r border-gray-800 hidden lg:flex flex-col fixed h-full bg-[#080a0f] z-50">
+        <div class="p-8">
+            <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent italic">ARAFAT.PRO</h1>
+        </div>
+        
+        <nav class="flex-1 px-4 space-y-2">
+            <a href="#" class="nav-link active-nav flex items-center p-3 rounded-xl transition-all">
+                <i class="fas fa-plus-circle mr-3"></i> New Post
+            </a>
+            <a href="#" class="nav-link flex items-center p-3 rounded-xl transition-all text-gray-400">
+                <i class="fas fa-layer-group mr-3"></i> All Blogs
+            </a>
+            <a href="#" class="nav-link flex items-center p-3 rounded-xl transition-all text-gray-400">
+                <i class="fas fa-images mr-3"></i> Media Library
+            </a>
+            <a href="#" class="nav-link flex items-center p-3 rounded-xl transition-all text-gray-400">
+                <i class="fas fa-chart-bar mr-3"></i> Analytics
+            </a>
+        </nav>
+
+        <div class="p-6 border-t border-gray-800">
+            <button id="logoutBtn" class="flex items-center text-red-400 hover:text-red-300 transition w-full">
+                <i class="fas fa-power-off mr-3"></i> Log Out
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 lg:ml-64 p-4 md:p-10">
+        
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+            <div>
+                <h2 class="text-3xl font-bold text-white tracking-tight">Write Story</h2>
+                <p class="text-gray-500">Create and deploy content to your GitHub site.</p>
             </div>
-            <nav class="mt-6 space-y-1">
-                <a href="#" class="sidebar-item sidebar-active flex items-center px-6 py-4 transition-all">
-                    <i class="fas fa-th-large mr-4"></i> Dashboard
-                </a>
-                <a href="#" class="sidebar-item flex items-center px-6 py-4 text-gray-400 transition-all hover:text-white">
-                    <i class="fas fa-file-alt mr-4"></i> My Posts
-                </a>
-                <a href="#" class="sidebar-item flex items-center px-6 py-4 text-gray-400 transition-all hover:text-white">
-                    <i class="fas fa-chart-line mr-4"></i> Analytics
-                </a>
-                <a href="#" class="sidebar-item flex items-center px-6 py-4 text-gray-400 transition-all hover:text-white">
-                    <i class="fas fa-cog mr-4"></i> Settings
-                </a>
-            </nav>
-        </aside>
-
-        <main class="flex-1 md:ml-64 p-4 md:p-10">
-            <div class="flex justify-between items-center mb-8">
-                <div>
-                    <h1 class="text-3xl font-bold text-white">Create Post</h1>
-                    <p class="text-gray-400 text-sm mt-1">Publish your ideas to the world.</p>
-                </div>
-                <div class="flex items-center gap-4">
-                    <button id="logoutBtn" class="bg-red-500/10 text-red-400 border border-red-500/20 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white transition">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="glass-card p-6 rounded-2xl">
-                    <p class="text-gray-400 text-sm uppercase tracking-wider">Total Posts</p>
-                    <h3 class="text-3xl font-bold mt-2">--</h3>
-                </div>
-                <div class="glass-card p-6 rounded-2xl">
-                    <p class="text-gray-400 text-sm uppercase tracking-wider">Views</p>
-                    <h3 class="text-3xl font-bold mt-2 text-indigo-400">0.0k</h3>
-                </div>
-                <div class="glass-card p-6 rounded-2xl">
-                    <p class="text-gray-400 text-sm uppercase tracking-wider">Status</p>
-                    <h3 class="text-3xl font-bold mt-2 text-green-400">Live</h3>
+            <div class="flex gap-3">
+                <div class="glass px-4 py-2 rounded-lg flex items-center">
+                    <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+                    <span class="text-xs uppercase font-semibold text-gray-300">Live Server</span>
                 </div>
             </div>
+        </header>
 
-            <div class="glass-card rounded-2xl p-6 md:p-8 shadow-2xl">
-                <div class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-sm text-gray-400 ml-1">Post Title</label>
-                            <input type="text" id="postTitle" placeholder="The Future of Web Dev" class="w-full bg-slate-900/50 border border-slate-700 p-4 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition shadow-inner">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm text-gray-400 ml-1">URL Slug (URL path)</label>
-                            <input type="text" id="postSlug" placeholder="future-web-dev" class="w-full bg-slate-900/50 border border-slate-700 p-4 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition shadow-inner">
-                        </div>
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            
+            <div class="xl:col-span-2 space-y-6">
+                <div class="glass p-6 rounded-2xl space-y-4">
+                    <input type="text" id="postTitle" placeholder="Enter post title..." class="w-full bg-transparent text-2xl font-bold border-none outline-none focus:ring-0 placeholder-gray-700">
+                    <div class="flex items-center text-sm text-gray-500 border-t border-gray-800 pt-4">
+                        <span class="mr-2 italic">Permalink:</span>
+                        <span class="text-indigo-400">mdarafathosen.top/posts/</span>
+                        <input type="text" id="postSlug" placeholder="url-slug" class="bg-transparent border-none outline-none focus:ring-0 text-indigo-400 w-full">
                     </div>
+                </div>
 
-                    <div class="space-y-2">
-                        <label class="text-sm text-gray-400 ml-1">Post Content (HTML Supported)</label>
-                        <textarea id="postContent" rows="14" placeholder="<p>Start writing your story...</p>" class="w-full bg-slate-900/50 border border-slate-700 p-6 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition font-mono shadow-inner"></textarea>
-                    </div>
+                <div class="rounded-2xl overflow-hidden">
+                    <div id="editor"></div>
+                </div>
+            </div>
 
-                    <div class="flex flex-col md:flex-row gap-4 items-center justify-between pt-4">
-                        <p class="text-xs text-slate-500 italic"><i class="fas fa-info-circle mr-1"></i> Tip: Use &lt;img&gt; tags to add images to your content.</p>
-                        <button id="publishBtn" class="w-full md:w-auto px-10 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/30 transition transform active:scale-95 flex items-center justify-center gap-2">
-                            <i class="fas fa-paper-plane"></i> PUBLISH POST
+            <div class="space-y-6">
+                <div class="glass p-6 rounded-2xl">
+                    <h3 class="font-semibold mb-4 text-white border-b border-gray-800 pb-2">Publishing Settings</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-xs text-gray-500 uppercase">Featured Image URL</label>
+                            <input type="text" id="postImage" placeholder="https://..." class="w-full bg-gray-900/50 border border-gray-800 p-3 rounded-lg mt-1 outline-none focus:border-indigo-500 transition text-sm">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-500 uppercase">Category</label>
+                            <select id="category" class="w-full bg-gray-900/50 border border-gray-800 p-3 rounded-lg mt-1 outline-none text-sm">
+                                <option>Video Editing</option>
+                                <option>Web Development</option>
+                                <option>Game Dev</option>
+                                <option>Marketing</option>
+                            </select>
+                        </div>
+                        <button id="publishBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2">
+                            <i class="fas fa-rocket"></i> PUBLISH TO LIVE
                         </button>
                     </div>
                 </div>
-            </div>
-        </main>
-    </div>
 
+                <div class="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 p-6 rounded-2xl border border-indigo-500/20">
+                    <h4 class="text-sm font-bold text-indigo-300 mb-2">Pro Tip</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed">Always use high-quality images and clear slugs for better SEO rankings in Google Search.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // --- Firebase Config ---
+        // Initialize Quill Editor
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: { toolbar: [['bold', 'italic', 'underline'], ['link', 'blockquote', 'code-block'], [{ 'header': 1 }, { 'header': 2 }], [{ 'list': 'ordered'}, { 'list': 'bullet' }]] }
+        });
+
         const firebaseConfig = {
             apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U",
             authDomain: "md-arafat-hosen.firebaseapp.com",
@@ -112,63 +152,53 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Security Check: Only Admin can enter
+        // Access Control
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.body.style.display = "block";
-            } else {
-                window.location.href = "login.html";
-            }
+            if (user) { document.body.style.display = "flex"; } 
+            else { window.location.href = "login.html"; }
         });
 
-        // Publish Event
+        // Publish Action
         document.getElementById('publishBtn').addEventListener('click', async () => {
             const title = document.getElementById('postTitle').value;
             const slug = document.getElementById('postSlug').value;
-            const content = document.getElementById('postContent').value;
+            const category = document.getElementById('category').value;
+            const image = document.getElementById('postImage').value;
+            const content = quill.root.innerHTML; // Get rich text HTML
             
-            const GITHUB_TOKEN = "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"; 
-            const REPO = "ArafatBook/Md-Arafat-Hosen"; 
+            const GITHUB_TOKEN = "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";
+            const REPO = "ArafatBook/Md-Arafat-Hosen";
 
-            if(!title || !slug || !content) return alert("All fields are required!");
+            if(!title || !slug || content === "<p><br></p>") return alert("Title, Slug and Content are required!");
 
             const btn = document.getElementById('publishBtn');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> PUBLISHING...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deploying...';
             btn.disabled = true;
 
             try {
-                // 1. Firebase Firestore Save
+                // 1. Firebase Save
                 await addDoc(collection(db, "blogs"), {
-                    title: title,
-                    slug: slug,
-                    timestamp: serverTimestamp()
+                    title, slug, category, image, timestamp: serverTimestamp()
                 });
 
-                // 2. GitHub Upload
-                const htmlTemplate = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${title}</title><style>body{font-family:sans-serif;line-height:1.6;padding:20px;max-width:800px;margin:auto;}</style></head><body><h1>${title}</h1><article>${content}</article></body></html>`;
+                // 2. GitHub Push
+                const htmlTemplate = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${title}</title><link rel="stylesheet" href="../style.css"></head><body><div class="post-container"><img src="${image}"><h1>${title}</h1><div class="content">${content}</div></div></body></html>`;
                 const encodedContent = btoa(unescape(encodeURIComponent(htmlTemplate)));
 
                 const res = await fetch(`https://api.github.com/repos/${REPO}/contents/posts/${slug}.html`, {
                     method: "PUT",
-                    headers: { "Authorization": `token ${GITHUB_TOKEN}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: `New Blog: ${title}`, content: encodedContent })
+                    headers: { "Authorization": `token ${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}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: `CMS Update: ${title}`, content: encodedContent })
                 });
 
                 if(res.ok) {
-                    alert("🚀 Post published successfully on Database & GitHub!");
+                    alert("🚀 Post is live on your domain!");
                     location.reload();
-                } else {
-                    alert("❌ GitHub Error! Check your settings.");
-                }
-            } catch (err) {
-                alert("Error: " + err.message);
-            } finally {
-                btn.innerHTML = '<i class="fas fa-paper-plane"></i> PUBLISH POST';
-                btn.disabled = false;
-            }
+                } else { alert("GitHub Error! Check console."); }
+            } catch (err) { alert("Error: " + err.message); } 
+            finally { btn.innerHTML = '<i class="fas fa-rocket"></i> PUBLISH TO LIVE'; btn.disabled = false; }
         });
 
-        // Logout
         document.getElementById('logoutBtn').addEventListener('click', () => {
             signOut(auth).then(() => window.location.href = "login.html");
         });
