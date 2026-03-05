@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arafat OS | Professional CMS v7.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Arafat OS | Ultimate CMS v7.5</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6366f1">
@@ -14,128 +14,130 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-        :root { --accent: #6366f1; --bg-dark: #020617; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: #f8fafc; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; }
         
-        /* Glassmorphism UI */
-        .glass-card { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .sidebar-item.active { background: linear-gradient(90deg, rgba(99, 102, 241, 0.2) 0%, transparent 100%); color: #818cf8; border-left: 4px solid #6366f1; }
+        /* UI Elements */
+        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .sidebar-item.active { background: linear-gradient(90deg, rgba(99, 102, 241, 0.15) 0%, transparent 100%); color: #818cf8; border-left: 4px solid #6366f1; }
         
-        /* Layout Adjustments */
-        #sidebar { transition: all 0.3s ease-in-out; }
-        .sidebar-hide { transform: translateX(-100%); position: fixed; }
+        /* Mobile Sidebar Logic */
+        #sidebar { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 9999; }
+        .sidebar-closed { transform: translateX(-100%); }
+        .sidebar-open { transform: translateX(0); }
+        #overlay { display: none; background: rgba(0,0,0,0.7); z-index: 9998; }
+        #overlay.active { display: block; }
+
+        /* Editor Customization */
+        #editor { min-height: 400px; background: #0f172a; border: none !important; color: #e2e8f0; border-radius: 0 0 24px 24px; }
+        .ql-toolbar { background: #1e293b !important; border: none !important; border-bottom: 1px solid rgba(255,255,255,0.05) !important; border-radius: 24px 24px 0 0; }
         
-        #editor { min-height: 400px; background: #0f172a; border: none !important; color: #e2e8f0; border-radius: 0 0 20px 20px; }
-        .ql-toolbar { background: #1e293b !important; border: none !important; border-bottom: 1px solid rgba(255,255,255,0.1) !important; border-radius: 20px 20px 0 0; }
+        /* SEO Result Preview */
+        .seo-preview { background: white; color: #4d5156; padding: 15px; border-radius: 12px; font-family: arial; }
         
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        /* Install Popup */
+        #installNotice { display: none; position: fixed; bottom: 20px; left: 15px; right: 15px; z-index: 10000; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col lg:flex-row overflow-hidden">
+<body class="min-h-screen flex flex-col lg:flex-row overflow-x-hidden">
 
-    <header class="lg:hidden flex items-center justify-between p-4 glass-card sticky top-0 z-[1000]">
-        <button id="menuToggle" class="text-indigo-400 text-xl w-10 h-10 flex items-center justify-center rounded-xl bg-indigo-500/10">
+    <div id="overlay" class="fixed inset-0 lg:hidden"></div>
+
+    <header class="lg:hidden flex items-center justify-between p-4 glass sticky top-0 z-[1001]">
+        <button id="menuBtn" class="text-indigo-400 p-2 text-2xl">
             <i class="fas fa-bars-staggered"></i>
         </button>
-        <span class="font-bold tracking-tighter text-lg uppercase">Arafat<span class="text-indigo-500">.OS</span></span>
+        <h1 class="font-bold text-xl uppercase tracking-tighter">Arafat<span class="text-indigo-500">.OS</span></h1>
         <div class="w-10"></div>
     </header>
 
-    <aside id="sidebar" class="w-72 glass-card border-r border-slate-800 flex flex-col fixed lg:static inset-y-0 left-0 z-[1100] sidebar-hide lg:sidebar-show">
-        <div class="p-8 text-center hidden lg:block">
-            <h1 class="text-2xl font-black tracking-tighter uppercase">Arafat<span class="text-indigo-500">.OS</span></h1>
-            <p class="text-[10px] text-slate-500 font-bold mt-1 tracking-widest">ADMIN ENGINE V7</p>
+    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 w-72 glass border-r border-slate-800 flex flex-col sidebar-closed lg:sidebar-open">
+        <div class="p-10 text-center hidden lg:block">
+            <h1 class="text-2xl font-black text-white uppercase tracking-tighter">Arafat<span class="text-indigo-500">.OS</span></h1>
+            <p class="text-[9px] text-slate-500 font-bold mt-2 tracking-[0.2em]">ULTIMATE ENGINE v7.5</p>
         </div>
 
-        <nav class="flex-1 px-4 space-y-1 mt-4">
-            <button onclick="tabNav('editor-tab')" id="tab-editor-tab" class="sidebar-item active w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition group">
-                <i class="fas fa-plus-circle mr-3 group-hover:scale-110 transition"></i> Create New Post
+        <nav class="flex-1 px-4 space-y-1 mt-6 lg:mt-0">
+            <button onclick="tabNav('editor-tab')" class="sidebar-item active w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition group" id="btn-editor-tab">
+                <i class="fas fa-plus-circle mr-3 group-hover:scale-110 transition"></i> Create Post
             </button>
-            <button onclick="tabNav('posts-tab')" id="tab-posts-tab" class="sidebar-item w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition group">
-                <i class="fas fa-table-list mr-3"></i> Post Manager
+            <button onclick="tabNav('posts-tab')" class="sidebar-item w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition group" id="btn-posts-tab">
+                <i class="fas fa-layer-group mr-3"></i> Post Manager
             </button>
-            <button onclick="tabNav('media-tab')" id="tab-media-tab" class="sidebar-item w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition group">
-                <i class="fas fa-images mr-3"></i> Media Cloud
+            <button onclick="tabNav('media-tab')" class="sidebar-item w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition group" id="btn-media-tab">
+                <i class="fas fa-photo-film mr-3"></i> Media Cloud
             </button>
-            <button onclick="tabNav('github-tab')" id="tab-github-tab" class="sidebar-item w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition group">
+            <button onclick="tabNav('github-tab')" class="sidebar-item w-full flex items-center p-4 rounded-xl text-slate-400 hover:text-white transition group" id="btn-github-tab">
                 <i class="fab fa-github mr-3"></i> GitHub Sync
             </button>
         </nav>
 
-        <div class="p-6">
+        <div class="p-8">
             <button id="signOutBtn" class="w-full p-4 rounded-2xl bg-red-500/10 text-red-500 text-xs font-bold uppercase hover:bg-red-500 hover:text-white transition shadow-lg">Sign Out</button>
         </div>
     </aside>
 
-    <main class="flex-1 h-screen overflow-y-auto p-4 lg:p-10">
+    <main class="flex-1 p-4 lg:p-10 w-full overflow-y-auto h-screen">
         
         <section id="editor-tab" class="tab-view space-y-6">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h2 class="text-3xl font-bold">Write Something Great</h2>
-                    <p class="text-slate-500 text-sm">Create and optimize your blog posts</p>
+                    <h2 class="text-3xl font-bold">New Content</h2>
+                    <p class="text-slate-500 text-xs mt-1">Write and optimize your blog post for search engines.</p>
                 </div>
                 <div class="flex gap-2 w-full md:w-auto">
                     <button onclick="viewPreview()" class="flex-1 md:flex-none bg-slate-800 px-6 py-3 rounded-xl font-bold text-xs uppercase transition">Preview</button>
-                    <button id="pubBtn" class="flex-1 md:flex-none bg-indigo-600 px-8 py-3 rounded-xl font-bold text-xs uppercase shadow-xl shadow-indigo-500/20 hover:bg-indigo-500 transition">Publish Live</button>
+                    <button id="pubBtn" class="flex-1 md:flex-none bg-indigo-600 px-8 py-3 rounded-xl font-bold text-xs uppercase shadow-xl hover:bg-indigo-500 transition">Publish Live</button>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
                 <div class="xl:col-span-3 space-y-6">
-                    <div class="glass-card p-6 rounded-3xl">
+                    <div class="glass p-6 rounded-[32px]">
                         <input type="hidden" id="editId">
-                        <input type="text" id="pTitle" placeholder="Post Title..." class="w-full bg-transparent text-3xl font-bold outline-none placeholder-slate-800">
-                        <div class="flex items-center gap-2 mt-2 text-[10px] text-indigo-400 font-mono">
+                        <input type="text" id="pTitle" placeholder="Post Title..." class="w-full bg-transparent text-3xl font-bold outline-none border-none placeholder-slate-800 mb-2">
+                        <div class="flex items-center gap-2 text-[10px] text-indigo-400 font-mono">
                             <span class="text-slate-600">PATH:</span>
-                            <input type="text" id="pSlug" class="bg-transparent outline-none w-full" placeholder="auto-slug">
+                            <input type="text" id="pSlug" class="bg-transparent border-none outline-none w-full" placeholder="auto-slug-here">
                         </div>
                     </div>
                     
-                    <div class="rounded-3xl overflow-hidden shadow-2xl border border-white/5">
-                        <div id="editor"></div>
-                    </div>
+                    <div class="rounded-[32px] overflow-hidden shadow-2xl"><div id="editor"></div></div>
 
-                    <div class="glass-card p-6 rounded-3xl">
-                        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Search Engine Result Preview</h3>
-                        <div class="bg-white p-5 rounded-xl">
-                            <div class="text-[#202124] text-sm">mdarafathosen.top › <span id="seoSlug">url</span></div>
-                            <div class="text-[#1a0dab] text-xl font-medium hover:underline cursor-pointer" id="seoTitle">Page Title Preview</div>
-                            <div class="text-[#4d5156] text-sm mt-1" id="seoDesc">Start writing a meta description to see it here...</div>
+                    <div class="glass p-6 rounded-[32px] border-l-4 border-indigo-500">
+                        <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-4 tracking-widest">Google Search Preview</h4>
+                        <div class="seo-preview">
+                            <div class="text-[14px] text-[#202124] truncate">mdarafathosen.top › <span id="seoSlug">url</span></div>
+                            <div class="text-[20px] text-[#1a0dab] font-medium leading-tight hover:underline cursor-pointer" id="seoTitle">Page Title Example</div>
+                            <div class="text-[14px] leading-relaxed mt-1" id="seoDesc">SEO description will appear here as you type in the sidebar meta box.</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="xl:col-span-1 space-y-6">
-                    <div class="glass-card p-6 rounded-3xl space-y-6 sticky top-6">
+                    <div class="glass p-6 rounded-[32px] space-y-6 sticky top-6">
                         <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase block mb-3">Featured Image URL</label>
-                            <input type="text" id="fImage" class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-xs outline-none focus:border-indigo-500 transition" placeholder="https://...">
+                            <label class="text-[10px] font-bold text-slate-500 uppercase block mb-3">Featured Image</label>
+                            <input type="text" id="fImage" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-2xl text-xs outline-none focus:border-indigo-500 transition" placeholder="Image URL (https://...)">
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase block mb-3">Category</label>
-                            <select id="pCat" class="w-full bg-slate-900 border border-slate-800 p-3 rounded-xl text-xs outline-none focus:border-indigo-500 transition">
-                                <option value="Technology">Technology</option>
-                                <option value="Marketing">Marketing</option>
-                                <option value="Lifestyle">Lifestyle</option>
-                                <option value="Uncategorized">Uncategorized</option>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase block mb-3">Post Category</label>
+                            <select id="pCat" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-2xl text-xs outline-none focus:border-indigo-500 transition">
+                                <option>Technology</option><option>Marketing</option><option>Portfolio</option><option>Tutorial</option>
                             </select>
                         </div>
                         <div>
                             <label class="text-[10px] font-bold text-slate-500 uppercase block mb-3">Meta Description</label>
-                            <textarea id="pMeta" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl text-xs outline-none h-32 resize-none"></textarea>
+                            <textarea id="pMeta" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-2xl text-xs h-32 resize-none outline-none focus:border-indigo-500" placeholder="Summary for SEO..."></textarea>
                         </div>
-                        <button id="draftBtn" class="w-full bg-slate-800 py-4 rounded-xl text-xs font-bold uppercase hover:bg-slate-700 transition">Save as Draft</button>
+                        <button id="draftBtn" class="w-full bg-slate-800 py-4 rounded-2xl text-xs font-bold uppercase hover:bg-slate-700 transition">Save as Draft</button>
                     </div>
                 </div>
             </div>
         </section>
 
         <section id="posts-tab" class="tab-view hidden space-y-6">
-            <h2 class="text-2xl font-bold">Manage Content</h2>
-            <div class="glass-card rounded-3xl overflow-hidden">
+            <h2 class="text-2xl font-bold">Manage Your Posts</h2>
+            <div class="glass rounded-[32px] overflow-hidden">
                 <table class="w-full text-left">
                     <thead class="bg-slate-900/50 text-[10px] text-slate-500 font-bold uppercase border-b border-white/5">
                         <tr>
@@ -149,30 +151,37 @@
             </div>
         </section>
 
-        <section id="github-tab" class="tab-view hidden space-y-6">
-            <h2 class="text-2xl font-bold font-bold">GitHub Sync Configuration</h2>
-            <div class="glass-card p-8 rounded-3xl max-w-xl space-y-5">
-                <input type="password" id="ghKey" placeholder="Personal Access Token" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl text-sm outline-none">
-                <input type="text" id="ghPath" placeholder="Username/Repository" class="w-full bg-slate-900 border border-slate-800 p-4 rounded-xl text-sm outline-none">
-                <button onclick="saveCloud()" class="bg-indigo-600 px-8 py-4 rounded-xl font-bold text-sm transition shadow-lg">CONNECT GITHUB</button>
-            </div>
-        </section>
-
         <section id="media-tab" class="tab-view hidden space-y-6">
-            <h2 class="text-2xl font-bold">Cloud Media Library</h2>
+            <h2 class="text-2xl font-bold">Media Cloud Library</h2>
             <div id="mediaWall" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
         </section>
 
+        <section id="github-tab" class="tab-view hidden space-y-6">
+            <h2 class="text-2xl font-bold">GitHub Sync Engine</h2>
+            <div class="glass p-8 rounded-[32px] max-w-xl space-y-6">
+                <input type="password" id="ghKey" placeholder="GitHub Access Token" class="w-full bg-slate-900 border border-slate-800 p-5 rounded-2xl outline-none">
+                <input type="text" id="ghPath" placeholder="Username/Repository" class="w-full bg-slate-900 border border-slate-800 p-5 rounded-2xl outline-none">
+                <button onclick="saveCloud()" class="bg-indigo-600 px-10 py-4 rounded-2xl font-bold text-sm shadow-xl">CONNECT & SYNC</button>
+            </div>
+        </section>
     </main>
 
-    <div id="installNotice" class="glass-card p-6 rounded-[32px] border-indigo-500/30 shadow-2xl">
+    <div id="installNotice" class="glass p-6 rounded-[32px] border-indigo-500/30 shadow-2xl">
         <div class="flex items-center gap-4 mb-5">
-            <div class="bg-indigo-600 w-12 h-12 rounded-2xl flex items-center justify-center text-white"><i class="fas fa-rocket"></i></div>
-            <div><h3 class="font-bold text-sm">Arafat OS App</h3><p class="text-[10px] text-slate-400">Install for faster access</p></div>
+            <div class="bg-indigo-600 w-12 h-12 rounded-2xl flex items-center justify-center text-white"><i class="fas fa-rocket text-xl"></i></div>
+            <div><h3 class="font-bold text-sm">Arafat OS Web App</h3><p class="text-[10px] text-slate-400">আপনার ফোনে অ্যাপ হিসেবে ব্যবহার করুন।</p></div>
         </div>
         <div class="flex gap-2">
-            <button id="btnInstall" class="flex-1 bg-indigo-600 py-3 rounded-xl text-xs font-bold">INSTALL</button>
-            <button onclick="closeInstall()" class="flex-1 bg-slate-800 py-3 rounded-xl text-xs font-bold">LATER</button>
+            <button id="btnInstall" class="flex-1 bg-indigo-600 py-3 rounded-xl text-xs font-bold">INSTALL NOW</button>
+            <button onclick="closeInstall()" class="flex-1 bg-slate-800 py-3 rounded-xl text-xs font-bold">NOT NOW</button>
+        </div>
+    </div>
+
+    <div id="prevModal" class="fixed inset-0 bg-black/95 hidden z-[11000] overflow-y-auto p-4 md:p-10">
+        <div class="max-w-4xl mx-auto bg-white text-black p-8 md:p-16 rounded-[40px] relative">
+            <button onclick="closePreview()" class="absolute top-6 right-6 text-slate-400 text-3xl hover:text-red-500">&times;</button>
+            <h1 id="pvTitle" class="text-4xl font-black mb-8"></h1>
+            <div id="pvContent" class="prose prose-lg max-w-none"></div>
         </div>
     </div>
 
@@ -185,6 +194,7 @@
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
+        // Firebase Config (Keep same as yours)
         const firebaseConfig = { 
             apiKey: "AIzaSyCz2b-l4frCr-J1Jx98Rnr-JeCaWyMO22U", 
             authDomain: "md-arafat-hosen.firebaseapp.com", 
@@ -197,51 +207,53 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
 
-        // --- Auth & Initial Load ---
+        // Authentication Gate
         onAuthStateChanged(auth, (user) => { 
             if (user) { startCMS(); } else { window.location.href = "login.html"; }
         });
 
-        // --- Sidebar Menu Logic ---
-        const menuBtn = document.getElementById('menuToggle');
+        // --- MOBILE MENU LOGIC ---
+        const menuBtn = document.getElementById('menuBtn');
         const sidebar = document.getElementById('sidebar');
-        menuBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('sidebar-hide');
-            sidebar.classList.toggle('sidebar-show');
-        });
+        const overlay = document.getElementById('overlay');
 
-        // --- Tab Navigation ---
+        menuBtn.onclick = () => { sidebar.classList.toggle('sidebar-closed'); sidebar.classList.toggle('sidebar-open'); overlay.classList.toggle('active'); };
+        overlay.onclick = () => { sidebar.classList.add('sidebar-closed'); sidebar.classList.remove('sidebar-open'); overlay.classList.remove('active'); };
+
+        // --- TAB NAVIGATION ---
         window.tabNav = (id) => {
             document.querySelectorAll('.tab-view').forEach(t => t.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
             document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
-            document.getElementById('tab-' + id).classList.add('active');
-            if(window.innerWidth < 1024) sidebar.classList.add('sidebar-hide');
+            document.getElementById('btn-' + id).classList.add('active');
+            
+            if(window.innerWidth < 1024) { sidebar.classList.add('sidebar-closed'); overlay.classList.remove('active'); }
             if(id === 'media-tab') loadMedia();
+            if(id === 'posts-tab') loadPosts();
         };
 
-        // --- PWA Logic ---
-        let prompt;
+        // --- PWA LOGIC ---
+        let dPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); prompt = e;
+            e.preventDefault(); dPrompt = e;
             if(!localStorage.getItem('pwa_seen')) document.getElementById('installNotice').style.display = 'block';
         });
         document.getElementById('btnInstall').onclick = async () => {
-            if(prompt) { prompt.prompt(); document.getElementById('installNotice').style.display = 'none'; localStorage.setItem('pwa_seen', 'y'); }
+            if(dPrompt) { dPrompt.prompt(); document.getElementById('installNotice').style.display = 'none'; localStorage.setItem('pwa_seen', 'y'); }
         };
         window.closeInstall = () => { document.getElementById('installNotice').style.display = 'none'; localStorage.setItem('pwa_seen', 'y'); };
 
-        // --- Editor Setup ---
+        // --- EDITOR SETUP ---
         var quill = new Quill('#editor', {
             theme: 'snow',
-            modules: { imageResize: { displaySize: true }, toolbar: [[{header:[1,2,false]}, 'bold','italic','underline','link','image','video','clean']] }
+            modules: { imageResize: { displaySize: true }, toolbar: [[{header:[1,2,3,false]},'bold','italic','underline','link','image','video','clean']] }
         });
 
-        // --- CMS Functions ---
+        // --- MAIN CMS LOGIC ---
         async function startCMS() {
             loadPosts();
             restoreDraft();
-            setInterval(autoDraft, 15000);
+            setInterval(autoDraft, 20000);
         }
 
         async function saveContent(status) {
@@ -273,14 +285,14 @@
             snap.forEach(d => {
                 const data = d.data();
                 tbody.innerHTML += `
-                    <tr class="hover:bg-white/5">
+                    <tr class="hover:bg-white/5 transition">
                         <td class="p-6">
                             <div class="font-bold text-indigo-100">${data.title}</div>
-                            <div class="text-[10px] text-slate-500">${data.category}</div>
+                            <div class="text-[10px] text-slate-600">${data.category} | ${data.slug}</div>
                         </td>
                         <td class="p-6 text-[10px] uppercase font-bold text-indigo-400">${data.status}</td>
-                        <td class="p-6 text-right space-x-2">
-                            <button onclick="editDoc('${d.id}')" class="text-indigo-400 hover:text-white"><i class="fas fa-pen-to-square"></i></button>
+                        <td class="p-6 text-right space-x-3">
+                            <button onclick="editDoc('${d.id}')" class="text-indigo-400 hover:text-white"><i class="fas fa-edit"></i></button>
                             <button onclick="deleteDocSingle('${d.id}')" class="text-slate-600 hover:text-red-500"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>`;
@@ -306,23 +318,25 @@
             if(!document.getElementById('editId').value) {
                 const draft = { title: document.getElementById('pTitle').value, content: quill.root.innerHTML };
                 localStorage.setItem('arafat_v7_draft', JSON.stringify(draft));
-                document.getElementById('saveStatus').style.opacity = '1';
-                setTimeout(()=>document.getElementById('saveStatus').style.opacity='0', 1000);
             }
         }
 
         function restoreDraft() {
             const saved = localStorage.getItem('arafat_v7_draft');
-            if(saved) { const d = JSON.parse(saved); document.getElementById('pTitle').value = d.title; quill.root.innerHTML = d.content; }
+            if(saved && !document.getElementById('editId').value) {
+                const d = JSON.parse(saved);
+                document.getElementById('pTitle').value = d.title || "";
+                quill.root.innerHTML = d.content || "";
+            }
         }
 
-        // SEO Linkage
+        // SEO Realtime linkage
         document.getElementById('pTitle').oninput = (e) => {
-            document.getElementById('seoTitle').innerText = e.target.value || "Title";
+            document.getElementById('seoTitle').innerText = e.target.value || "Post Title Example";
             document.getElementById('pSlug').value = e.target.value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
             document.getElementById('seoSlug').innerText = document.getElementById('pSlug').value;
         };
-        document.getElementById('pMeta').oninput = (e) => document.getElementById('seoDesc').innerText = e.target.value;
+        document.getElementById('pMeta').oninput = (e) => document.getElementById('seoDesc').innerText = e.target.value || "SEO description will appear here...";
 
         // Media Wall
         async function loadMedia() {
@@ -331,12 +345,25 @@
             wall.innerHTML = '';
             res.items.forEach(async (item) => {
                 const url = await getDownloadURL(item);
-                wall.innerHTML += `<div class="p-2 glass-card rounded-xl relative group">
-                    <img src="${url}" class="w-full aspect-square object-cover rounded-lg">
-                    <button onclick="navigator.clipboard.writeText('${url}');alert('URL Copied')" class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center text-[10px] font-bold">COPY</button>
+                wall.innerHTML += `<div class="p-2 glass rounded-2xl relative group h-32">
+                    <img src="${url}" class="w-full h-full object-cover rounded-xl">
+                    <button onclick="navigator.clipboard.writeText('${url}');alert('Link Copied')" class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-[10px] font-bold">COPY URL</button>
                 </div>`;
             });
         }
+
+        window.viewPreview = () => {
+            document.getElementById('pvTitle').innerText = document.getElementById('pTitle').value || "Untitled";
+            document.getElementById('pvContent').innerHTML = quill.root.innerHTML;
+            document.getElementById('prevModal').classList.remove('hidden');
+        };
+        window.closePreview = () => document.getElementById('prevModal').classList.add('hidden');
+
+        window.saveCloud = () => {
+            localStorage.setItem('gh_token', document.getElementById('ghKey').value);
+            localStorage.setItem('gh_repo', document.getElementById('ghPath').value);
+            alert("GitHub Config Saved!");
+        };
 
         document.getElementById('pubBtn').onclick = () => saveContent('Live');
         document.getElementById('draftBtn').onclick = () => saveContent('Draft');
